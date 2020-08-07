@@ -1,12 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import BatteryBuddyApp from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
+import { CssBaseline } from "@material-ui/core";
+import ThemeEngine from "./components/themeEngine";
+
+import BatteryBuddyApp from "./components/App";
+
 ReactDOM.render(
-  <React.StrictMode>
+  <ThemeEngine>
+    <CssBaseline />
     <BatteryBuddyApp />
-  </React.StrictMode>,
+  </ThemeEngine>,
   document.getElementById("root")
 );
 
