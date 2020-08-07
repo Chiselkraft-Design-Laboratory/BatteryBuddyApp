@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles, Paper } from "@material-ui/core";
-
+import { SIDEPANEL_WIDTH } from "../../constants/preferences";
 const useStyle = makeStyles((theme) => ({
   root: {
     marginRight: theme.spacing(2),
@@ -9,7 +9,7 @@ const useStyle = makeStyles((theme) => ({
     overflowY: "auto",
     overflowX: "hidden",
 
-    width: "290px",
+    width: SIDEPANEL_WIDTH,
     height: "100%",
     borderRadius: theme.spacing(2),
 

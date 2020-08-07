@@ -1,6 +1,8 @@
 import React from "react";
 import { Toolbar, makeStyles } from "@material-ui/core";
 
+import * as Url from "../../constants/routes";
+
 import Navlink from "./navlink";
 
 const useStyle = makeStyles((theme) => ({
@@ -13,10 +15,10 @@ const NavigationBlock = ({ active, showlinks }) => {
   return (
     <Toolbar className={classes.root}>
       [Brand]
-      <Navlink text="home" />
-      <Navlink text="analytics" />
-      <Navlink text="diagnostics" isActive />
-      <Navlink text="settings" />
+      <Navlink text="home" url={Url.DASHBOARD} />
+      <Navlink text="analytics" url={Url.ANALYTICS} />
+      <Navlink text="diagnostics" url={Url.DIAGNOSTICS} isActive />
+      <Navlink text="settings" url={Url.SETTINGS} />
     </Toolbar>
   );
 };

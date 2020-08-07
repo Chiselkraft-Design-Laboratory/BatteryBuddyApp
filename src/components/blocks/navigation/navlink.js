@@ -1,10 +1,11 @@
 import React from "react";
-import { makeStyles, ButtonBase } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import { Link, useLocation } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
-  link: {
-    padding: theme.spacing(1, 4),
+  root: {
+    padding: theme.spacing(1, 2),
     color: theme.palette.ui.lite3,
     "&:hover": {
       color: theme.palette.ui.seagreen,
@@ -12,19 +13,29 @@ const useStyle = makeStyles((theme) => ({
   },
   active: {
     color: theme.palette.ui.lite,
+    pointerEvents: "none",
   },
 }));
 
-const Navlink = ({ text, icon, isActive }) => {
+const Navlink = ({ text, icon, url }) => {
   const classes = useStyle();
+
+  // let location = useLocation();
+  const isActive = url === useLocation().pathname;
+
   return (
-    <ButtonBase
-      component="a"
-      className={clsx(classes.link, { [classes.active]: isActive })}
+    <Link
+      to={url}
+      className={clsx(
+        classes.root,
+        isActive ? classes.active : classes.default,
+        "MuiButtonBase-root"
+      )}
+      disabled={isActive}
     >
       {icon}
       {text}
-    </ButtonBase>
+    </Link>
   );
 };
 
