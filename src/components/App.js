@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from "react";
+import { Switch, Route } from "react-router-dom";
 
 // Constants
 import * as Ty from "./constants/typedef";
 import * as Pr from "./constants/preferences";
+import * as Url from "./constants/routes";
 
 // Layout
 import BaseLayout from "./layouts";
@@ -93,7 +95,22 @@ class BatteryBuddyApp extends Component {
     } else {
       // linked --show app ui
       makeLayout = (
-        <DefaultSection sidepanel={<SidepanelBlock />}>page</DefaultSection>
+        <DefaultSection sidepanel={<SidepanelBlock />}>
+          <Switch>
+            <Route path={Url.DASHBOARD} exact>
+              <DashboardPage>home</DashboardPage>
+            </Route>
+            <Route path={Url.ANALYTICS}>
+              <AnalyticsPage>Analytics</AnalyticsPage>
+            </Route>
+            <Route path={Url.DIAGNOSTICS}>
+              <DiagnosticsPage>Diagnostics</DiagnosticsPage>
+            </Route>
+            <Route path={Url.SETTINGS}>
+              <SettingsPage>Settings</SettingsPage>
+            </Route>
+          </Switch>
+        </DefaultSection>
       );
     }
 
