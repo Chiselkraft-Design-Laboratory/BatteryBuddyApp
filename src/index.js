@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 
 import { CssBaseline } from "@material-ui/core";
@@ -10,7 +11,9 @@ import BatteryBuddyApp from "./components/App";
 ReactDOM.render(
   <ThemeEngine>
     <CssBaseline />
-    <BatteryBuddyApp />
+    <Router>
+      <BatteryBuddyApp />
+    </Router>
   </ThemeEngine>,
   document.getElementById("root")
 );
