@@ -6,4 +6,15 @@ import CardView from "./views/cardView";
 import PageContent from "./sections/PageContent";
 import SidePane from "./sections/SidePane";
 
-export { BaseLayout, DefaultView, CardView, PageContent, SidePane };
+import Filler from "./helpers/filler";
+import Label from "./helpers/label";
+
+export {
+  BaseLayout,
+  DefaultView,
+  CardView,
+  PageContent,
+  SidePane,
+  Filler,
+  Label,
+};

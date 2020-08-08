@@ -5,18 +5,21 @@ import { Switch, Route } from "react-router-dom";
 import { LinkMode } from "./constants/typedef";
 import * as Url from "./constants/routes";
 
-// Layout
+// Layouts
 import {
   BaseLayout,
   DefaultView,
   CardView,
   SidePane,
   PageContent,
+  Filler,
+  Label,
 } from "./layouts";
 
 // Blocks
 import NavigationBlock from "./blocks/navigation";
 import FooterBlock from "./blocks/footer";
+import * as BatteryInfo from "./blocks/batteryInfo";
 
 class BatteryBuddyApp extends Component {
   constructor(props) {
@@ -89,7 +92,56 @@ class BatteryBuddyApp extends Component {
     } else {
       // linked --show app ui
       pageComposer = (
-        <DefaultView sidepanel={<SidePane />}>
+        <DefaultView
+          sidepanel={
+            <SidePane>
+              <BatteryInfo.ModelinfoPane
+                make="Napino Inc"
+                model="X-SERIES 457"
+                linktype="CANBUS"
+              />
+              <BatteryInfo.MetricPill
+                param="Voltage"
+                value="12.45"
+                suffix="v"
+                alert
+              />
+              <BatteryInfo.MetricPill
+                param="Voltage"
+                value="12.45"
+                suffix="v"
+                alert
+              />
+              <BatteryInfo.MetricPill
+                param="Voltage"
+                value="12.45"
+                suffix="v"
+                alert
+              />
+              <BatteryInfo.MetricPill
+                param="Voltage"
+                value="12.45"
+                suffix="v"
+                alert
+              />
+              <BatteryInfo.HealthPill warnings={4} errors={2} />
+
+              {/* fills blank space */}
+              <Filler />
+              <BatteryInfo.DisconnectPill />
+              <BatteryInfo.SpecsPane
+                qrcode={{ field: "value" }}
+                year={2020}
+                serial="X5210-8625978"
+              >
+                <Label size={6} caption="chemistry" value="Li-Polymer" />
+                <Label size={6} caption="capacity" value="3200AH 24V" />
+                <Label size={6} caption="cell manufacturer" value="LICHEN" />
+                <Label size={6} caption="cell manufacturer" value="13S / 4P" />
+              </BatteryInfo.SpecsPane>
+            </SidePane>
+          }
+        >
           <Switch>
             <Route path={Url.DASHBOARD} exact>
               <PageContent>home</PageContent>
