@@ -16,6 +16,7 @@ const useStyle = makeStyles(
     },
     label: {
       fontSize: "1.28rem",
+      textTransform: "Capitalize",
     },
 
     default: {

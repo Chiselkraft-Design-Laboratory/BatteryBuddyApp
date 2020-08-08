@@ -22,7 +22,7 @@ const useStyle = makeStyles((theme) => ({
     borderRadius: theme.spacing(2),
   },
 }));
-const DiagnosticsPage = (props) => {
+const PageContent = (props) => {
   const classes = useStyle();
   return (
     <Paper elevation={4} className={classes.root}>
@@ -31,4 +31,4 @@ const DiagnosticsPage = (props) => {
   );
 };
 
-export default DiagnosticsPage;
+export default PageContent;
