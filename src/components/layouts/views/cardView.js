@@ -8,7 +8,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const CenterSection = (props) => {
+const CardView = (props) => {
   const classes = useStyle();
   return (
     <Grid
@@ -23,4 +23,4 @@ const CenterSection = (props) => {
   );
 };
 
-export default CenterSection;
+export default CardView;
