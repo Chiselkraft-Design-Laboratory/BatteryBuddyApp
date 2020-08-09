@@ -17,6 +17,7 @@ import {
 } from "./layouts";
 
 import * as BatteryInfo from "./blocks/batteryInfo";
+import ShowMetrics from "./layouts/pages/dashboard/showMetrics";
 
 class BatteryBuddyApp extends Component {
   constructor(props) {
@@ -126,7 +127,22 @@ class BatteryBuddyApp extends Component {
       </SidePane>
     );
 
-    let dashboard = <Page>dashboard</Page>;
+    let dashboard = (
+      <Page>
+        <ShowMetrics wide caption="metrics" title="Voltage">
+          {/* insert graph component here */}
+        </ShowMetrics>
+        <ShowMetrics caption="metrics" title="Current">
+          {/* insert graph component here */}
+        </ShowMetrics>
+        <ShowMetrics caption="metrics" title="Temperature">
+          {/* insert graph component here */}
+        </ShowMetrics>
+        <ShowMetrics wide caption="metrics" title="SoC vs Time">
+          {/* insert graph component here */}
+        </ShowMetrics>
+      </Page>
+    );
     let settings = <Page>settings</Page>;
     let analytics = <Page>analytics</Page>;
     let diagnostics = <Page>diagnostics</Page>;

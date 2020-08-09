@@ -10,7 +10,7 @@ const useStyle = makeStyles((theme) => ({
     overflowX: "hidden",
 
     "&::-webkit-scrollbar": {
-      width: "1px",
+      width: "2px",
     },
     "&::-webkit-scrollbar-track": {
       boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
@@ -19,15 +19,17 @@ const useStyle = makeStyles((theme) => ({
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: theme.palette.ui.seagreen,
-      opacity: 0.2,
+      opacity: 0.1,
     },
   },
 }));
 const Page = (props) => {
   const classes = useStyle();
   return (
-    <Grid container className={classes.root}>
-      {props.children}
+    <Grid container className={classes.root} alignItems="flex-start">
+      <Grid container spacing={3}>
+        {props.children}
+      </Grid>
     </Grid>
   );
 };
