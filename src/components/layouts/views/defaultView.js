@@ -9,7 +9,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const DefaultSection = (props) => {
+const DefaultView = (props) => {
   const classes = useStyle();
   return (
     <Grid
@@ -30,4 +30,4 @@ const DefaultSection = (props) => {
   );
 };
 
-export default DefaultSection;
+export default DefaultView;

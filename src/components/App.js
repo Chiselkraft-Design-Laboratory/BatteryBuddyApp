@@ -1,28 +1,25 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 
 // Constants
-import * as Ty from "./constants/typedef";
-import * as Pr from "./constants/preferences";
+import { LinkMode } from "./constants/typedef";
 import * as Url from "./constants/routes";
 
-// Layout
-import BaseLayout from "./layouts";
-import CenterSection from "./layouts/sections/centerSection";
-import DefaultSection from "./layouts/sections/defaultSection";
+// Layouts
+import {
+  BaseLayout,
+  DefaultView,
+  CardView,
+  SidePane,
+  PageContent,
+  Filler,
+  Label,
+} from "./layouts";
 
 // Blocks
 import NavigationBlock from "./blocks/navigation";
 import FooterBlock from "./blocks/footer";
-import SidepanelBlock from "./blocks/sidepanel";
-
-// Pages
-import {
-  DashboardPage,
-  AnalyticsPage,
-  DiagnosticsPage,
-  SettingsPage,
-} from "./pages";
+import * as BatteryInfo from "./blocks/batteryInfo";
 
 class BatteryBuddyApp extends Component {
   constructor(props) {
@@ -30,7 +27,7 @@ class BatteryBuddyApp extends Component {
 
     // states
     this.state = {
-      isLinked: Ty.LinkMode.CANBUS,
+      isLinked: LinkMode.CANBUS,
     };
 
     // bindings
@@ -50,7 +47,7 @@ class BatteryBuddyApp extends Component {
     status = mode;
 
     // failed after retry
-    status = Ty.LinkMode.NONE;
+    status = LinkMode.NONE;
 
     this.setState({
       isLinked: status,
@@ -68,7 +65,7 @@ class BatteryBuddyApp extends Component {
     }
     // on success
     this.setState({
-      isLinked: Ty.LinkMode.NONE,
+      isLinked: LinkMode.NONE,
     });
   }
 
@@ -82,47 +79,94 @@ class BatteryBuddyApp extends Component {
 
     // link failed
     this.setState({
-      isLinked: Ty.LinkMode.NONE,
+      isLinked: LinkMode.NONE,
     });
   }
 
   render() {
     // cooking layout
-    let makeLayout;
+    let pageComposer;
     if (!this.state.isLinked) {
       // no link --show connection ui
-      makeLayout = <CenterSection>connect dialog</CenterSection>;
+      pageComposer = <CardView>connect dialog</CardView>;
     } else {
       // linked --show app ui
-      makeLayout = (
-        <DefaultSection sidepanel={<SidepanelBlock />}>
+      pageComposer = (
+        <DefaultView
+          sidepanel={
+            <SidePane>
+              <BatteryInfo.ModelinfoPane
+                make="Napino Inc"
+                model="X-SERIES 457"
+                linktype="CANBUS"
+              />
+              <BatteryInfo.MetricPill
+                param="Voltage"
+                value="12.45"
+                suffix="v"
+                alert
+              />
+              <BatteryInfo.MetricPill
+                param="Voltage"
+                value="12.45"
+                suffix="v"
+                alert
+              />
+              <BatteryInfo.MetricPill
+                param="Voltage"
+                value="12.45"
+                suffix="v"
+                alert
+              />
+              <BatteryInfo.MetricPill
+                param="Voltage"
+                value="12.45"
+                suffix="v"
+                alert
+              />
+              <BatteryInfo.HealthPill warnings={4} errors={2} />
+
+              {/* fills blank space */}
+              <Filler />
+              <BatteryInfo.DisconnectPill />
+              <BatteryInfo.SpecsPane
+                qrcode={{ field: "value" }}
+                year={2020}
+                serial="X5210-8625978"
+              >
+                <Label size={6} caption="chemistry" value="Li-Polymer" />
+                <Label size={6} caption="capacity" value="3200AH 24V" />
+                <Label size={6} caption="cell manufacturer" value="LICHEN" />
+                <Label size={6} caption="cell manufacturer" value="13S / 4P" />
+              </BatteryInfo.SpecsPane>
+            </SidePane>
+          }
+        >
           <Switch>
             <Route path={Url.DASHBOARD} exact>
-              <DashboardPage>home</DashboardPage>
+              <PageContent>home</PageContent>
             </Route>
             <Route path={Url.ANALYTICS}>
-              <AnalyticsPage>Analytics</AnalyticsPage>
+              <PageContent>Analytics</PageContent>
             </Route>
             <Route path={Url.DIAGNOSTICS}>
-              <DiagnosticsPage>Diagnostics</DiagnosticsPage>
+              <PageContent>Diagnostics</PageContent>
             </Route>
             <Route path={Url.SETTINGS}>
-              <SettingsPage>Settings</SettingsPage>
+              <PageContent>Settings</PageContent>
             </Route>
           </Switch>
-        </DefaultSection>
+        </DefaultView>
       );
     }
 
     return (
-      <Fragment>
-        <BaseLayout
-          navigation={<NavigationBlock showlinks={this.state.isLinked} />}
-          footer={<FooterBlock />}
-        >
-          {makeLayout}
-        </BaseLayout>
-      </Fragment>
+      <BaseLayout
+        navigation={<NavigationBlock showlinks={this.state.isLinked} />}
+        footer={<FooterBlock />}
+      >
+        {pageComposer}
+      </BaseLayout>
     );
   }
 }

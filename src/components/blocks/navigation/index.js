@@ -25,6 +25,7 @@ const useStyle = makeStyles((theme) => ({
     flexGrow: 1,
   },
 }));
+
 const NavigationBlock = ({ active, showlinks }) => {
   const classes = useStyle();
 

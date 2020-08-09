@@ -30,6 +30,14 @@ const darkspace = createMuiTheme({
       disabled: Swatch.LITE3,
     },
 
+    primary: {
+      main: Swatch.TONE1,
+    },
+
+    secondary: {
+      main: Swatch.TONE3,
+    },
+
     info: { main: Swatch.LITE3 },
     success: { main: Swatch.TONE3 },
     warning: { main: Swatch.TONE4 },
