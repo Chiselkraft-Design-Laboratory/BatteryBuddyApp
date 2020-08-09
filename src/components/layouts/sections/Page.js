@@ -1,10 +1,14 @@
 import React from "react";
-import { makeStyles, Paper } from "@material-ui/core";
+import { makeStyles, Grid } from "@material-ui/core";
 
 const useStyle = makeStyles((theme) => ({
   root: {
+    width: "100%x",
+    height: "100%",
+
     overflowY: "auto",
     overflowX: "hidden",
+
     "&::-webkit-scrollbar": {
       width: "1px",
     },
@@ -17,18 +21,15 @@ const useStyle = makeStyles((theme) => ({
       backgroundColor: theme.palette.ui.seagreen,
       opacity: 0.2,
     },
-    width: "100%x",
-    height: "100%",
-    borderRadius: theme.spacing(2),
   },
 }));
-const PageContent = (props) => {
+const Page = (props) => {
   const classes = useStyle();
   return (
-    <Paper elevation={4} className={classes.root}>
+    <Grid container className={classes.root}>
       {props.children}
-    </Paper>
+    </Grid>
   );
 };
 
-export default PageContent;
+export default Page;
