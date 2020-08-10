@@ -11,16 +11,15 @@ import {
   DefaultView,
   CardView,
   SidePane,
-  PageContent,
-  Filler,
+  Page,
+  Expand,
   Label,
 } from "./layouts";
 
 // Blocks
-import NavigationBlock from "./blocks/navigation";
-import FooterBlock from "./blocks/footer";
 import * as BatteryInfo from "./blocks/batteryInfo";
-
+import SimpleMetrics from "./blocks/metrics/simpleMetrics";
+import TwinMetrics from "./blocks/metrics/twinMetrics";
 class BatteryBuddyApp extends Component {
   constructor(props) {
     super(props);
@@ -84,88 +83,86 @@ class BatteryBuddyApp extends Component {
   }
 
   render() {
-    // cooking layout
-    let pageComposer;
-    if (!this.state.isLinked) {
-      // no link --show connection ui
-      pageComposer = <CardView>connect dialog</CardView>;
-    } else {
-      // linked --show app ui
-      pageComposer = (
-        <DefaultView
-          sidepanel={
-            <SidePane>
-              <BatteryInfo.ModelinfoPane
-                make="Napino Inc"
-                model="X-SERIES 457"
-                linktype="CANBUS"
-              />
-              <BatteryInfo.MetricPill
-                param="Voltage"
-                value="12.45"
-                suffix="v"
-                alert
-              />
-              <BatteryInfo.MetricPill
-                param="Voltage"
-                value="12.45"
-                suffix="v"
-                alert
-              />
-              <BatteryInfo.MetricPill
-                param="Voltage"
-                value="12.45"
-                suffix="v"
-                alert
-              />
-              <BatteryInfo.MetricPill
-                param="Voltage"
-                value="12.45"
-                suffix="v"
-                alert
-              />
-              <BatteryInfo.HealthPill warnings={4} errors={2} />
+    // baking layout
+    let sidepanel = (
+      <SidePane>
+        <BatteryInfo.ModelinfoPane
+          make="Napino Inc"
+          model="X-SERIES 457"
+          linktype="CANBUS"
+        />
+        <BatteryInfo.MetricPill param="Voltage" value="12.45" suffix="v" />
+        <BatteryInfo.MetricPill
+          param="Voltage"
+          value="12.45"
+          suffix="v"
+          alert
+        />
+        <BatteryInfo.MetricPill
+          param="Voltage"
+          value="12.45"
+          suffix="v"
+          alert
+        />
+        <BatteryInfo.MetricPill
+          param="Voltage"
+          value="12.45"
+          suffix="v"
+          alert
+        />
+        <BatteryInfo.HealthPill warnings={4} errors={2} />
 
-              {/* fills blank space */}
-              <Filler />
-              <BatteryInfo.DisconnectPill />
-              <BatteryInfo.SpecsPane
-                qrcode={{ field: "value" }}
-                year={2020}
-                serial="X5210-8625978"
-              >
-                <Label size={6} caption="chemistry" value="Li-Polymer" />
-                <Label size={6} caption="capacity" value="3200AH 24V" />
-                <Label size={6} caption="cell manufacturer" value="LICHEN" />
-                <Label size={6} caption="cell manufacturer" value="13S / 4P" />
-              </BatteryInfo.SpecsPane>
-            </SidePane>
-          }
+        {/* fills blank space */}
+        <Expand />
+        <BatteryInfo.DisconnectPill />
+        <BatteryInfo.SpecsPane
+          qrcode={{ field: "value" }}
+          year={2020}
+          serial="X5210-8625978"
         >
-          <Switch>
-            <Route path={Url.DASHBOARD} exact>
-              <PageContent>home</PageContent>
-            </Route>
-            <Route path={Url.ANALYTICS}>
-              <PageContent>Analytics</PageContent>
-            </Route>
-            <Route path={Url.DIAGNOSTICS}>
-              <PageContent>Diagnostics</PageContent>
-            </Route>
-            <Route path={Url.SETTINGS}>
-              <PageContent>Settings</PageContent>
-            </Route>
-          </Switch>
-        </DefaultView>
-      );
-    }
+          <Label size={6} caption="chemistry" value="Li-Polymer" />
+          <Label size={6} caption="capacity" value="3200AH 24V" />
+          <Label size={6} caption="cell manufacturer" value="LICHEN" />
+          <Label size={6} caption="cell manufacturer" value="13S / 4P" />
+        </BatteryInfo.SpecsPane>
+      </SidePane>
+    );
+
+    let dashboard = (
+      <Page>
+        <SimpleMetrics wide title="Voltage" caption="metrics" />
+        <SimpleMetrics title="Current" caption="metrics" />
+        <SimpleMetrics title="Temperature" caption="metrics" />
+        <SimpleMetrics wide title="SoC vs Time" caption="metrics" />
+      </Page>
+    );
+    let analytics = (
+      <Page>
+        <TwinMetrics>
+          {/* requires backend code to complete design functionalities */}
+          {/* insert graph here */}
+        </TwinMetrics>
+      </Page>
+    );
+    let settings = <Page>analytics</Page>;
+    let diagnostics = <Page>diagnostics</Page>;
 
     return (
-      <BaseLayout
-        navigation={<NavigationBlock showlinks={this.state.isLinked} />}
-        footer={<FooterBlock />}
-      >
-        {pageComposer}
+      <BaseLayout mode={this.state.isLinked}>
+        {this.state.isLinked ? (
+          <DefaultView sidepanel={sidepanel}>
+            <Switch>
+              <Route path={Url.DASHBOARD} exact>
+                {dashboard}
+              </Route>
+              <Route path={Url.ANALYTICS}>{analytics}</Route>
+              <Route path={Url.DIAGNOSTICS}>{diagnostics}</Route>
+              <Route path={Url.SETTINGS}>{settings} </Route>
+            </Switch>
+          </DefaultView>
+        ) : (
+          <CardView>connection mode</CardView>
+        )}
       </BaseLayout>
     );
   }
