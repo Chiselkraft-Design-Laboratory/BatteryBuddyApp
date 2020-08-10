@@ -1,8 +1,8 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 
-const Filler = () => {
+const Expand = () => {
   return <Grid item xs></Grid>;
 };
 
-export default Filler;
+export default Expand;
