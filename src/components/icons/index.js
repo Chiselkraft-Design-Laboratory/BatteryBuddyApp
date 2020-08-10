@@ -10,6 +10,8 @@ import MergeViewIcon from "./mergeviewIcon";
 import OkayIcon from "./okayIcon";
 import WarningIcon from "./warningIcon";
 import ErrorIcon from "./errorIcon";
+import DownArrowIcon from "./downArrowIcon";
+import StopIcon from "./stopIcon";
 
 export {
   BrandIcon,
@@ -24,4 +26,6 @@ export {
   OkayIcon,
   WarningIcon,
   ErrorIcon,
+  DownArrowIcon,
+  StopIcon,
 };

@@ -19,6 +19,7 @@ import {
 // Blocks
 import * as BatteryInfo from "./blocks/batteryInfo";
 import SimpleMetrics from "./blocks/metrics/simpleMetrics";
+import TwinMetrics from "./blocks/metrics/twinMetrics";
 class BatteryBuddyApp extends Component {
   constructor(props) {
     super(props);
@@ -135,8 +136,15 @@ class BatteryBuddyApp extends Component {
         <SimpleMetrics wide title="SoC vs Time" caption="metrics" />
       </Page>
     );
-    let settings = <Page>settings</Page>;
-    let analytics = <Page>analytics</Page>;
+    let analytics = (
+      <Page>
+        <TwinMetrics>
+          {/* requires backend code to complete design functionalities */}
+          {/* insert graph here */}
+        </TwinMetrics>
+      </Page>
+    );
+    let settings = <Page>analytics</Page>;
     let diagnostics = <Page>diagnostics</Page>;
 
     return (
