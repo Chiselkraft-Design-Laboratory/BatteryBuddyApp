@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   Grid,
   Paper,
@@ -20,6 +20,7 @@ import {
   DownArrowIcon,
   StopIcon,
 } from "../../icons";
+
 
 const useStyle = makeStyles(
   (theme) => ({
@@ -65,6 +66,15 @@ const useStyle = makeStyles(
 );
 const TwinMetrics = (props) => {
   const classes = useStyle();
+
+const [mergeState, setState] = useState(false);
+
+const handleIconClick=()=>
+{
+setState(!mergeState)
+}
+
+
   return (
     <Grid item xs={12}>
       <Paper elevation={4} className={classes.root}>
@@ -82,8 +92,12 @@ const TwinMetrics = (props) => {
                     <Expand />
                     <Grid item>
                       <Typography variant="caption">split view</Typography>
-                      <IconButton className={classes.iconbtn}>
+                      <IconButton className={classes.iconbtn}
+                      onClick={handleIconClick}
+                      >
+                        {!mergeState?
                         <SplitViewIcon />
+                        :<MergeViewIcon/>}
                       </IconButton>
                     </Grid>
                     {/* graph area */}

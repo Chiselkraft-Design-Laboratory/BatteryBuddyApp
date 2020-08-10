@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Paper, makeStyles } from "@material-ui/core";
 
-import { Label } from "../../layouts/";
+import { Label } from "../../index";
 
 const useStyle = makeStyles(
   (theme) => ({
@@ -14,22 +14,20 @@ const useStyle = makeStyles(
   }),
   { index: 1 }
 );
-
-const SimpleMetrics = (props) => {
+const ShowMetrics = (props) => {
   const classes = useStyle();
-
   return (
     <Grid item xs={props.wide ? 12 : 6}>
       <Paper elevation={4} className={classes.root}>
-        <Grid container wrap={"nowrap"} direction="column">
-          <Grid item >
+        <Grid container>
+          <Grid item>
             <Label reverse caption={props.caption} value={props.title} />
           </Grid>
-          <Grid item xs >{props.children} </Grid>
+          <Grid item>{props.children}</Grid>
         </Grid>
       </Paper>
     </Grid>
   );
 };
 
-export default SimpleMetrics;
+export default ShowMetrics;

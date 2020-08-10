@@ -19,7 +19,7 @@ const useStyle = makeStyles((theme) => ({
     },
     "&::-webkit-scrollbar-thumb": {
       backgroundColor: theme.palette.ui.seagreen,
-      opacity: 0.2,
+      opacity: 0.1,
     },
   },
 }));

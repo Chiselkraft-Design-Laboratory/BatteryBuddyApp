@@ -20,6 +20,13 @@ import {
 import * as BatteryInfo from "./blocks/batteryInfo";
 import SimpleMetrics from "./blocks/metrics/simpleMetrics";
 import TwinMetrics from "./blocks/metrics/twinMetrics";
+// redux
+import { connect } from 'react-redux'
+
+// charts
+import Barchart from "./charts/Barchart";
+import Areachart from './charts/Areachart'
+
 class BatteryBuddyApp extends Component {
   constructor(props) {
     super(props);
@@ -130,10 +137,23 @@ class BatteryBuddyApp extends Component {
 
     let dashboard = (
       <Page>
-        <SimpleMetrics wide title="Voltage" caption="metrics" />
-        <SimpleMetrics title="Current" caption="metrics" />
-        <SimpleMetrics title="Temperature" caption="metrics" />
-        <SimpleMetrics wide title="SoC vs Time" caption="metrics" />
+        <SimpleMetrics wide title="Voltage" caption="metrics" >
+      <Barchart data={this.props.voltage}  isLine={true}  width={900} height ={300}/>
+
+        </SimpleMetrics>
+    
+
+        <SimpleMetrics title="Current" caption="metrics"  >
+      <Areachart data ={this.props.current} colorArea ={'grey'} colorLine={'blue'}  width={500}/>
+
+        </SimpleMetrics>
+        <SimpleMetrics title="Temperature" caption="metrics" >
+      <Areachart data ={this.props.Temperature} colorArea ={'grey'} colorLine={'blue'}  width={500}/>
+      </SimpleMetrics>
+        <SimpleMetrics wide title="SoC vs Time" caption="metrics" >
+      <Areachart data ={this.props.SocvsTime} colorArea ={'grey'} colorLine={'blue'} width={1100}/>
+
+        </SimpleMetrics>
       </Page>
     );
     let analytics = (
@@ -141,6 +161,20 @@ class BatteryBuddyApp extends Component {
         <TwinMetrics>
           {/* requires backend code to complete design functionalities */}
           {/* insert graph here */}
+
+
+
+          <Areachart data ={this.props.voltage} colorArea ={'grey'} colorLine={'blue'} width={1000} data2=
+          {this.props.current}
+          colorArea2 ={'yellow'} colorLine2={'green'} 
+          />
+
+
+{/* <Barchart data={this.props.voltage}  isLine={true}  width={400} height ={200}/> */}
+
+
+     
+
         </TwinMetrics>
       </Page>
     );
@@ -160,12 +194,26 @@ class BatteryBuddyApp extends Component {
               <Route path={Url.SETTINGS}>{settings} </Route>
             </Switch>
           </DefaultView>
+   
         ) : (
           <CardView>connection mode</CardView>
         )}
       </BaseLayout>
+
     );
   }
 }
 
-export default BatteryBuddyApp;
+
+const mapStateToProps = (state)=>{
+  console.log(state)
+  return{
+  current:state.current,
+  Temperature:state.Temperature,
+  SocvsTime:state.SocvsTime,
+  voltage:state.voltage
+  }
+}
+
+export default connect(mapStateToProps)(BatteryBuddyApp)
+// export default BatteryBuddyApp;
