@@ -20,6 +20,8 @@ import {
 import * as BatteryInfo from "./blocks/batteryInfo";
 import SimpleMetrics from "./blocks/metrics/simpleMetrics";
 import TwinMetrics from "./blocks/metrics/twinMetrics";
+import DiagMetrics from "./blocks/metrics/diagnostics";
+
 class BatteryBuddyApp extends Component {
   constructor(props) {
     super(props);
@@ -144,8 +146,14 @@ class BatteryBuddyApp extends Component {
         </TwinMetrics>
       </Page>
     );
+    let diagnostics = (
+      <Page>
+        <DiagMetrics health title="Diagnostics" caption="Battery">
+          {/* <Label value="scanning in progress" /> */}
+        </DiagMetrics>
+      </Page>
+    );
     let settings = <Page>analytics</Page>;
-    let diagnostics = <Page>diagnostics</Page>;
 
     return (
       <BaseLayout mode={this.state.isLinked}>
