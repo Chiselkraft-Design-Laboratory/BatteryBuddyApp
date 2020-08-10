@@ -16,8 +16,9 @@ import {
   Label,
 } from "./layouts";
 
+// Blocks
 import * as BatteryInfo from "./blocks/batteryInfo";
-
+import SimpleMetrics from "./blocks/metrics/simpleMetrics";
 class BatteryBuddyApp extends Component {
   constructor(props) {
     super(props);
@@ -126,7 +127,14 @@ class BatteryBuddyApp extends Component {
       </SidePane>
     );
 
-    let dashboard = <Page>dashboard</Page>;
+    let dashboard = (
+      <Page>
+        <SimpleMetrics wide title="Voltage" caption="metrics" />
+        <SimpleMetrics title="Current" caption="metrics" />
+        <SimpleMetrics title="Temperature" caption="metrics" />
+        <SimpleMetrics wide title="SoC vs Time" caption="metrics" />
+      </Page>
+    );
     let settings = <Page>settings</Page>;
     let analytics = <Page>analytics</Page>;
     let diagnostics = <Page>diagnostics</Page>;
@@ -139,9 +147,9 @@ class BatteryBuddyApp extends Component {
               <Route path={Url.DASHBOARD} exact>
                 {dashboard}
               </Route>
-              <Route path={Url.ANALYTICS}> {analytics}</Route>
+              <Route path={Url.ANALYTICS}>{analytics}</Route>
               <Route path={Url.DIAGNOSTICS}>{diagnostics}</Route>
-              <Route path={Url.SETTINGS}> {settings} </Route>
+              <Route path={Url.SETTINGS}>{settings} </Route>
             </Switch>
           </DefaultView>
         ) : (
