@@ -1,11 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import BatteryBuddyApp from "./components/App";
 import * as serviceWorker from "./serviceWorker";
+
+import ThemeWorks from "./components/themeworks";
+import BatteryBuddyApp from "./components/App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BatteryBuddyApp />
+    <ThemeWorks>
+      <BatteryBuddyApp />
+    </ThemeWorks>
   </React.StrictMode>,
   document.getElementById("root")
 );
