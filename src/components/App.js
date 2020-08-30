@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
-export class BatteryBuddyApp extends Component {
+export class BatteryBuddyApp extends React.Component {
   render() {
-    return <div>Hello world!</div>;
+    return <React.Fragment></React.Fragment>;
   }
 }
 
