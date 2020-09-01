@@ -2,15 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 
-import ThemeWorks from "./components/themeworks";
 import BatteryBuddyApp from "./components/App";
 
+import ThemeWorks from "./components/themeworks";
+import { DeviceManagerProvider } from "./components/core/devicemanager";
+
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeWorks>
+  <ThemeWorks>
+    <DeviceManagerProvider>
       <BatteryBuddyApp />
-    </ThemeWorks>
-  </React.StrictMode>,
+    </DeviceManagerProvider>
+  </ThemeWorks>,
   document.getElementById("root")
 );
 
