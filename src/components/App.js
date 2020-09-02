@@ -7,23 +7,29 @@ import BaseLayout from "./canvas/layouts/baselayout";
 import PageProvider from "./canvas/pages";
 import ConnectWizard from "./canvas/connectwizard";
 import SideBar from "./canvas/sidebar";
+import Footer from "./canvas/footer";
+import NavBar from "./canvas/navbar";
 
 class BatteryBuddyApp extends React.Component {
+  componentDidMount() {
+    if (!this.props.device.linked) {
+      // this.props.device.connect();
+    }
+  }
   render() {
     const { device } = this.props;
-    console.log("devicemanager", device);
     return (
       <BaseLayout
-        navigation="navigation"
-        footer="footer"
+        navigation={<NavBar showlinks={device.linked} />}
+        footer={<Footer />}
         wizard={!device.linked}
       >
         {device.linked ? (
           <React.Fragment>
-            <SideBar />
+            {/* <SideBar />
             <Suspense fallback={<div>Loading...</div>}>
               <PageProvider />
-            </Suspense>
+            </Suspense> */}
           </React.Fragment>
         ) : (
           <ConnectWizard handleConnect={device.connect} />
