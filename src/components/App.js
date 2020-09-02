@@ -1,13 +1,12 @@
 import React from "react";
 
-// constants
-import { linkMode } from "./constants/typedef";
 // context
 import withDeviceManager from "./core/devicemanager";
 // canvas
 import BaseLayout from "./canvas/layouts/baselayout";
 import DashboardPage from "./canvas/pages/dashboard";
 import ConnectWizard from "./canvas/connectwizard";
+import SideBar from "./canvas/sidebar";
 
 class BatteryBuddyApp extends React.Component {
   render() {
@@ -21,6 +20,7 @@ class BatteryBuddyApp extends React.Component {
       >
         {device.linked ? (
           <React.Fragment>
+            <SideBar />
             <DashboardPage />
           </React.Fragment>
         ) : (
