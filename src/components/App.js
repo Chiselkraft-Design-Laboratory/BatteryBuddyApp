@@ -7,6 +7,7 @@ import BaseLayout from "./canvas/layouts/baselayout";
 import PageProvider from "./canvas/pages";
 import ConnectWizard from "./canvas/connectwizard";
 import SideBar from "./canvas/sidebar";
+import Footer from "./canvas/footer";
 
 class BatteryBuddyApp extends React.Component {
   render() {
@@ -15,7 +16,7 @@ class BatteryBuddyApp extends React.Component {
     return (
       <BaseLayout
         navigation="navigation"
-        footer="footer"
+        footer={<Footer />}
         wizard={!device.linked}
       >
         {device.linked ? (
