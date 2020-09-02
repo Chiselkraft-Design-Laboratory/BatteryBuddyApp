@@ -9,6 +9,7 @@ import ConnectWizard from "./canvas/connectwizard";
 import SideBar from "./canvas/sidebar";
 import Footer from "./canvas/footer";
 import NavBar from "./canvas/navbar";
+import Notify from "./canvas/notify";
 
 class BatteryBuddyApp extends React.Component {
   componentDidMount() {
@@ -34,6 +35,7 @@ class BatteryBuddyApp extends React.Component {
         ) : (
           <ConnectWizard handleConnect={device.connect} />
         )}
+        <Notify message={"this is how notifications will appear"} />
       </BaseLayout>
     );
   }
