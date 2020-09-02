@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 
 import BatteryBuddyApp from "./components/App";
@@ -10,7 +11,9 @@ import { DeviceManagerProvider } from "./components/core/devicemanager";
 ReactDOM.render(
   <ThemeWorks>
     <DeviceManagerProvider>
-      <BatteryBuddyApp />
+      <Router>
+        <BatteryBuddyApp />
+      </Router>
     </DeviceManagerProvider>
   </ThemeWorks>,
   document.getElementById("root")

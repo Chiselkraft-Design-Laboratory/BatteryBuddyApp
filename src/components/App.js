@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 // context
 import withDeviceManager from "./core/devicemanager";
 // canvas
 import BaseLayout from "./canvas/layouts/baselayout";
-import DashboardPage from "./canvas/pages/dashboard";
+import PageProvider from "./canvas/pages";
 import ConnectWizard from "./canvas/connectwizard";
 import SideBar from "./canvas/sidebar";
 
@@ -21,7 +21,9 @@ class BatteryBuddyApp extends React.Component {
         {device.linked ? (
           <React.Fragment>
             <SideBar />
-            <DashboardPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <PageProvider />
+            </Suspense>
           </React.Fragment>
         ) : (
           <ConnectWizard handleConnect={device.connect} />
