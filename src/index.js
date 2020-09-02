@@ -1,16 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 
-import ThemeWorks from "./components/themeworks";
 import BatteryBuddyApp from "./components/App";
 
+import ThemeWorks from "./components/themeworks";
+import { DeviceManagerProvider } from "./components/core/devicemanager";
+
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeWorks>
-      <BatteryBuddyApp />
-    </ThemeWorks>
-  </React.StrictMode>,
+  <ThemeWorks>
+    <DeviceManagerProvider>
+      <Router>
+        <BatteryBuddyApp />
+      </Router>
+    </DeviceManagerProvider>
+  </ThemeWorks>,
   document.getElementById("root")
 );
 
