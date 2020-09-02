@@ -7,13 +7,9 @@ import withDeviceManager from "./core/devicemanager";
 // canvas
 import BaseLayout from "./canvas/layouts/baselayout";
 import DashboardPage from "./canvas/pages/dashboard";
+import ConnectWizard from "./canvas/connectwizard";
 
 class BatteryBuddyApp extends React.Component {
-  componentDidMount() {
-    if (!this.props.device.linked) {
-      this.props.device.connect(linkMode.CANBUS);
-    }
-  }
   render() {
     const { device } = this.props;
     console.log("devicemanager", device);
@@ -28,7 +24,7 @@ class BatteryBuddyApp extends React.Component {
             <DashboardPage />
           </React.Fragment>
         ) : (
-          "connect wizard"
+          <ConnectWizard handleConnect={device.connect} />
         )}
       </BaseLayout>
     );
