@@ -1,16 +1,17 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+
 // constants
 import { linkMode } from "./constants/typedef";
 // context
 import withDeviceManager from "./core/devicemanager";
 // canvas
 import BaseLayout from "./canvas/layouts/baselayout";
+import DashboardPage from "./canvas/pages/dashboard";
 
-export class BatteryBuddyApp extends React.Component {
+class BatteryBuddyApp extends React.Component {
   componentDidMount() {
     if (!this.props.device.linked) {
-      // this.props.device.connect(linkMode.CANBUS);
+      this.props.device.connect(linkMode.CANBUS);
     }
   }
   render() {
@@ -23,17 +24,11 @@ export class BatteryBuddyApp extends React.Component {
         wizard={!device.linked}
       >
         {device.linked ? (
-          "page"
+          <React.Fragment>
+            <DashboardPage />
+          </React.Fragment>
         ) : (
-          <div>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={device.connect}
-            >
-              connect
-            </Button>
-          </div>
+          "connect wizard"
         )}
       </BaseLayout>
     );
