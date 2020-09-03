@@ -33,9 +33,9 @@ class BatteryBuddyApp extends React.Component {
             </Suspense> */}
           </React.Fragment>
         ) : (
-          <ConnectWizard handleConnect={device.connect} />
+          <ConnectWizard connect={device.connect} />
         )}
-        <Notify message={"this is how notifications will appear"} />
+        {/* <Notify message={"this is how notifications will appear"} /> */}
       </BaseLayout>
     );
   }
