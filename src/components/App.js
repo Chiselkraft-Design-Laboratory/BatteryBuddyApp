@@ -1,15 +1,15 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 // context
 import withDeviceManager from "./core/devicemanager";
 // canvas
 import BaseLayout from "./canvas/layouts/baselayout";
-import PageProvider from "./canvas/pages";
+// import PageProvider from "./canvas/pages";
 import ConnectWizard from "./canvas/connectwizard";
-import SideBar from "./canvas/sidebar";
+// import SideBar from "./canvas/sidebar";
 import Footer from "./canvas/footer";
 import NavBar from "./canvas/navbar";
-import Notify from "./canvas/notify";
+// import Notify from "./canvas/notify";
 
 class BatteryBuddyApp extends React.Component {
   componentDidMount() {

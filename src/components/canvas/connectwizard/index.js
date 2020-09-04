@@ -14,87 +14,90 @@ import withCanvas from "../withCanvas";
 import { linkMode } from "../../constants/typedef";
 import { CanBusIcon, CloudIcon } from "../../assets";
 
-const useStyles = makeStyles(
-  (theme) => ({
-    root: {
-      width: (props) => props.dense && "100%",
-      height: (props) => props.dense && "100%",
-    },
-    dialog: {
-      width: (props) => (props.dense ? "100%" : 600),
-      height: (props) => (props.dense ? "100%" : 350),
-      display: "flex",
-      // alignContent: "center",
-      flexDirection: "column",
-      alignItems: "stretch",
-      justifyContent: "center",
-    },
-    title: {
-      padding: theme.spacing(3, 2),
-    },
-    contentWrap: {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: theme.spacing(2, 4),
-      margin: theme.spacing(4, 0),
-    },
-    button: {
-      width: 128,
-      height: 128,
-      padding: theme.spacing(2),
-      margin: theme.spacing(1, 2),
-      borderRadius: theme.spacing(2),
-    },
-    btncaption: {
-      marginTop: theme.spacing(0.5),
-    },
-    default: {
-      background: theme.palette.L3,
-      color: theme.palette.D3,
-      fill: theme.palette.D3,
-      // transition: "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
-      "&:hover": {
-        background: theme.palette.G1,
-        fill: theme.palette.D2,
-        color: theme.palette.D2,
-        // transition: "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms",
+const useStyles = (dense) =>
+  makeStyles(
+    (theme) => ({
+      root: {
+        width: dense && "100%",
+        height: dense && "100%",
       },
-      disabled: {
-        background: theme.palette.D3,
-        color: theme.palette.D4,
-        fill: theme.palette.D4,
+      dialog: {
+        width: dense ? "100%" : 600,
+        height: dense ? "100%" : 350,
+        background: dense && theme.palette.D2,
+        display: "flex",
+        // alignContent: "center",
+        flexDirection: "column",
+        alignItems: "stretch",
+        justifyContent: "center",
       },
-    },
-    spinnerWrap: {
-      margin: theme.spacing(1),
-      position: "relative",
-    },
-    spinner: {
-      position: "absolute",
-      top: -48,
-      left: -48,
-      color: theme.palette.T1,
-      zIndex: 1,
-    },
-    spinnerIcon: {
-      position: "absolute",
-      width: 96,
-      height: 96,
-      top: -48,
-      left: -48,
-      boxShadow: "none",
-      background: "inherit",
-      fill: theme.palette.T1,
-    },
-  }),
+      title: {
+        padding: theme.spacing(3, 2),
+      },
+      contentWrap: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: theme.spacing(2, 4),
+        margin: theme.spacing(4, 0),
+      },
+      button: {
+        width: 128,
+        height: 128,
+        padding: theme.spacing(2),
+        margin: theme.spacing(1, 2),
+        borderRadius: theme.spacing(2),
+      },
+      btncaption: {
+        marginTop: theme.spacing(1),
+      },
+      default: {
+        background: `linear-gradient(-45deg, ${theme.palette.L1} 30%, ${theme.palette.L2} 100%)`,
+        color: theme.palette.D3,
+        fill: theme.palette.D3,
+        transition: "all 0.2s ease-in",
+        "&:hover": {
+          background: theme.palette.G1,
+          fill: theme.palette.D2,
+          color: theme.palette.D2,
+          transform: "scale(1.05)",
+          transition: "all 0.2s ease-in",
+        },
+        disabled: {
+          background: theme.palette.D3,
+          color: theme.palette.D4,
+          fill: theme.palette.D4,
+        },
+      },
+      spinnerWrap: {
+        margin: theme.spacing(1),
+        position: "relative",
+      },
+      spinner: {
+        position: "absolute",
+        top: -48,
+        left: -48,
+        color: theme.palette.T1,
+        zIndex: 1,
+      },
+      spinnerIcon: {
+        position: "absolute",
+        width: 96,
+        height: 96,
+        top: -48,
+        left: -48,
+        boxShadow: "none",
+        background: "inherit",
+        fill: theme.palette.T1,
+      },
+    }),
 
-  { index: 1 }
-);
+    { index: 1 }
+  );
 
 const ConnectWizard = ({ canvas, connect }) => {
-  const cl = useStyles(canvas);
+  const cl = useStyles(canvas.dense)();
   const [progress, SetProgress] = React.useState(0);
 
   const handleConnect = (mode) => {
@@ -120,8 +123,7 @@ const ConnectWizard = ({ canvas, connect }) => {
 };
 
 const ConnectOption = ({ canvas, connect }) => {
-  const cl = useStyles(canvas);
-
+  const cl = useStyles(canvas.dense)();
   return (
     <React.Fragment>
       <Typography variant="h6" align="center" classes={{ root: cl.title }}>
@@ -135,7 +137,7 @@ const ConnectOption = ({ canvas, connect }) => {
           className={cl.disabled}
           onClick={() => connect(linkMode.CLOUD)}
         >
-          <CloudIcon size={56} />
+          <CloudIcon size={48} />
           <Typography variant="caption">connect via</Typography>
           <Typography variant="body1">
             <strong>CLOUD</strong>
@@ -147,7 +149,7 @@ const ConnectOption = ({ canvas, connect }) => {
           className={cl.default}
           onClick={() => connect(linkMode.CANBUS)}
         >
-          <CanBusIcon size={56} />
+          <CanBusIcon size={48} />
           <Typography variant="caption" classes={{ root: cl.btncaption }}>
             connect via
           </Typography>
@@ -161,7 +163,7 @@ const ConnectOption = ({ canvas, connect }) => {
 };
 
 const ConnectProgress = ({ canvas, mode }) => {
-  const cl = useStyles(canvas);
+  const cl = useStyles(canvas.dense)();
   const spinnerSize = 96;
   const iconSize = 48;
 
