@@ -14,9 +14,11 @@ const useStyles = (wizard) =>
         display: wizard && "flex",
         alignItems: wizard && "center",
         overflowY: "auto",
+        padding: theme.spacing(0, 1.5),
       },
       content: {
         height: "100%",
+        "& > *": {},
       },
     }),
     { index: 1 }

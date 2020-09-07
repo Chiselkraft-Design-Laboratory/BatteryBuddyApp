@@ -5,7 +5,7 @@ import withCanvas from "../withCanvas";
 import NavGroup from "./navgroup";
 import NavLink from "./navlink";
 import { BrandIcon } from "../../assets";
-import { sidebarWidth } from "../../constants/preferences";
+import { sidebarOptions } from "../../constants/preferences";
 
 const useStyles = (dense) =>
   makeStyles(
@@ -24,7 +24,7 @@ const useStyles = (dense) =>
       brand: {
         flexShrink: 1,
         padding: theme.spacing(1, 2, 1, 0),
-        minWidth: dense && sidebarWidth,
+        minWidth: !dense && sidebarOptions.width,
       },
     }),
     { index: 1 }

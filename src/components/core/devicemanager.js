@@ -3,7 +3,7 @@ import { linkMode } from "../constants/typedef";
 
 export class DeviceManager extends React.Component {
   state = {
-    linked: linkMode.NONE,
+    linked: linkMode.CANBUS, // default
   };
 
   conncect = (mode) => {
