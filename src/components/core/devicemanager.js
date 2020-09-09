@@ -3,30 +3,37 @@ import { linkMode } from "../constants/typedef";
 
 export class DeviceManager extends React.Component {
   state = {
-    linked: linkMode.NONE,
+    linked: linkMode.NONE, // default
   };
 
   conncect = (mode) => {
-    this.setState({
-      linked: linkMode.CANBUS,
-    });
+    // replace with routines
+    setTimeout(() => {
+      this.setState({
+        linked: mode,
+      });
+    }, 6000);
   };
 
   disconncect = (mode) => {
+    // replace with routines
     this.setState({
       linked: linkMode.NONE,
     });
   };
 
   probe = (mode) => {
+    // replace with routines
     return true;
   };
 
   read = () => {
+    // replace with routines
     return null;
   };
 
   write = () => {
+    // replace with routines
     return null;
   };
 }
