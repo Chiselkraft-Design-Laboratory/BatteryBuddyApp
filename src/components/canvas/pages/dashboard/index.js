@@ -1,22 +1,19 @@
 import React from "react";
-import { makeStyles, Paper, Grid } from "@material-ui/core";
-import withCanvas from "../../withCanvas";
 
-const useStyles = makeStyles(
-  (theme) => ({
-    root: {},
-  }),
-  { index: 1 }
-);
+import CellVoltageMetrics from "./metrics/cellvoltageMetrics";
+import CurrentMetrics from "./metrics/currentMterics";
+import TemperatureMetrics from "./metrics/temperatureMetrics";
+import SoCMetrics from "./metrics/socMetics";
 
-const DashboardPage = ({ canvas }) => {
-  const cl = useStyles();
-
+const DashboardPage = () => {
   return (
-    <Grid item xs classes={{ root: cl.root }}>
-      <Paper>Dashboard Page</Paper>
-    </Grid>
+    <React.Fragment>
+      <CellVoltageMetrics />
+      <CurrentMetrics />
+      <TemperatureMetrics />
+      <SoCMetrics />
+    </React.Fragment>
   );
 };
 
-export default withCanvas(DashboardPage);
+export default DashboardPage;

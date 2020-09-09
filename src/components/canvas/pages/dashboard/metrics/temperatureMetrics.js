@@ -1,6 +1,7 @@
 import React from "react";
 // import { makeStyles } from "@material-ui/core";
-import DefaultTile from "../../helpers/defaultTile";
+
+import DefaultTile from "../../../helpers/defaultTile";
 
 // const useStyles = makeStyles(
 //   (theme) => ({
@@ -9,14 +10,14 @@ import DefaultTile from "../../helpers/defaultTile";
 //   { index: 1 }
 // );
 
-const SettingsPage = () => {
+const TemperatureMetrics = () => {
   // const cl = useStyles();
 
   return (
-    <DefaultTile wide title={"Settings"}>
-      content
+    <DefaultTile title="Temperature" caption="metrics">
+      graph here
     </DefaultTile>
   );
 };
 
-export default SettingsPage;
+export default TemperatureMetrics;

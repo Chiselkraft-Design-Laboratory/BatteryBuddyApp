@@ -1,14 +1,20 @@
 import React from "react";
-import { makeStyles, Paper, Grid } from "@material-ui/core";
+import { makeStyles, Paper, Grid, Typography } from "@material-ui/core";
+
 import withCanvas from "../withCanvas";
-import { sidebarWidth } from "../../constants/preferences";
+import { sidebarOptions } from "../../constants/preferences";
 
 const useStyles = makeStyles(
   (theme) => ({
     root: {
-      minWidth: sidebarWidth,
+      minWidth: sidebarOptions.width,
+      padding: theme.spacing(1.5),
     },
-    paper: {},
+    wrapper: {
+      padding: theme.spacing(2, 3),
+      height: "100%",
+      overflowY: "auto",
+    },
   }),
   { index: 1 }
 );
@@ -17,8 +23,10 @@ const SideBar = ({ canvas }) => {
   const cl = useStyles();
 
   return (
-    <Grid item classes={{ root: cl.root }}>
-      <Paper classes={{ root: cl.paper }}>SideBar</Paper>
+    <Grid item xs={canvas.dense ? 12 : undefined} classes={{ root: cl.root }}>
+      <Paper elevation={6} component="section" classes={{ root: cl.wrapper }}>
+        <Typography variant="h6">Sidebar</Typography>
+      </Paper>
     </Grid>
   );
 };

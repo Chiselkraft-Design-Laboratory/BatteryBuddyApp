@@ -4,53 +4,63 @@ import {
   makeStyles,
   BottomNavigationAction,
   Typography,
+  Link as SimpleLink,
 } from "@material-ui/core";
 
-const useStyles = makeStyles(
-  (theme) => ({
-    root: {
-      padding: (props) => props.dense && theme.spacing(2, 4),
-      borderRadius: theme.spacing(4),
-      transition: "all .5s ease-in-out",
-      textDecoration: "none",
-      color: theme.palette.D4,
-      fill: theme.palette.D4,
-      "&:hover": {
-        color: theme.palette.T1,
-        fill: theme.palette.T1,
-        transition: "all .5s ease-in-out",
+const useStyles = (extended) =>
+  makeStyles(
+    (theme) => ({
+      root: {
+        transition: "all 0.4s ease-in",
+        textDecoration: "none",
+        color: theme.palette.D4,
+        fill: theme.palette.D4,
+        "&:hover": {
+          color: theme.palette.T1,
+          fill: theme.palette.T1,
+          transition: "all 0.4s ease-in",
+        },
+        "&$selected": {
+          color: theme.palette.L1,
+          fill: theme.palette.L1,
+          pointerEvents: "none",
+        },
+        "& > span": {
+          flexDirection: !extended && "row",
+        },
       },
-      "&$selected": {
-        color: theme.palette.L1,
-        fill: theme.palette.L1,
+      label: {
+        padding: !extended && theme.spacing(0, 1),
+      },
+      selected: {},
+      disabled: {
+        color: theme.palette.D3,
+        fill: theme.palette.D3,
         pointerEvents: "none",
       },
-      "& > span": {
-        flexDirection: (props) => !props.dense && "row",
+      regular: {
+        flexDirection: "row",
       },
-    },
-    label: {
-      padding: (props) => !props.dense && theme.spacing(0, 1),
-    },
-    selected: {},
-    disabled: {
-      color: theme.palette.D3,
-      fill: theme.palette.D3,
-      pointerEvents: "none",
-    },
-    regular: {
-      flexDirection: "row",
-    },
-  }),
-  { index: 1 }
-);
+    }),
+    { index: 1 }
+  );
 
-const NavLink = ({ icon, label, url, disable, extended, simple }) => {
-  const cl = useStyles({ dense: extended });
+const NavLink = ({ icon, label, url, disable, extended, simple, newtab }) => {
+  const cl = useStyles(extended)();
   const isActive = url === useLocation().pathname;
   return (
     <React.Fragment>
-      {icon ? (
+      {simple ? (
+        <SimpleLink
+          underline="none"
+          href={url}
+          className={cl.root}
+          target={newtab && "_blank"}
+        >
+          {icon && <div className={cl.icon}>{icon}</div>}
+          {label && <Typography variant="body1">{label}</Typography>}
+        </SimpleLink>
+      ) : (
         <BottomNavigationAction
           component={Link}
           to={url}
@@ -67,10 +77,6 @@ const NavLink = ({ icon, label, url, disable, extended, simple }) => {
           }}
           className={disable && cl.disabled}
         />
-      ) : (
-        <Link to={url} className={cl.root}>
-          <Typography variant="body1">{label}</Typography>
-        </Link>
       )}
     </React.Fragment>
   );
