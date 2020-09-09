@@ -1,22 +1,23 @@
 import React from "react";
-import { makeStyles, Paper, Grid } from "@material-ui/core";
-import withCanvas from "../../withCanvas";
+// import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles(
-  (theme) => ({
-    root: {},
-  }),
-  { index: 1 }
-);
+import DefaultTile from "../../helpers/defaultTile";
 
-const DiagnosticsPage = ({ canvas }) => {
-  const cl = useStyles();
+// const useStyles = makeStyles(
+//   (theme) => ({
+//     root: {},
+//   }),
+//   { index: 1 }
+// );
+
+const DiagnosticsPage = () => {
+  // const cl = useStyles();
 
   return (
-    <Grid item xs classes={{ root: cl.root }}>
-      <Paper>Diagnostics Page</Paper>;
-    </Grid>
+    <DefaultTile wide title={"Diagnostics"}>
+      content
+    </DefaultTile>
   );
 };
 
-export default withCanvas(DiagnosticsPage);
+export default DiagnosticsPage;

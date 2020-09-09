@@ -5,31 +5,33 @@ import withCanvas from "../withCanvas";
 import NavGroup from "./navgroup";
 import NavLink from "./navlink";
 import { BrandIcon } from "../../assets";
-import { sidebarWidth } from "../../constants/preferences";
+import { sidebarOptions } from "../../constants/preferences";
 
-const useStyles = makeStyles(
-  (theme) => ({
-    root: {
-      background: (props) => props.dense && theme.palette.D1,
-    },
-    expand: {
-      flexGrow: 1,
-    },
-    fit: {
-      flexShrink: 1,
-    },
-    brand: {
-      flexShrink: 1,
-      padding: theme.spacing(1, 2, 1, 0),
-      minWidth: (props) => !props.dense && sidebarWidth,
-    },
-  }),
-  { index: 1 }
-);
+const useStyles = (dense) =>
+  makeStyles(
+    (theme) => ({
+      root: {},
+      extended: {
+        justifyContent: "space-around",
+        justifyItems: "center",
+      },
+      expand: {
+        flexGrow: 1,
+      },
+      fit: {
+        flexShrink: 1,
+      },
+      brand: {
+        flexShrink: 1,
+        padding: theme.spacing(1, 2, 1, 0),
+        minWidth: !dense && sidebarOptions.width,
+      },
+    }),
+    { index: 1 }
+  );
 
 const NavBar = ({ showlinks, canvas }) => {
-  const cl = useStyles(canvas);
-  console.log("navbar", { showlinks, canvas });
+  const cl = useStyles(canvas.dense)();
   return (
     <React.Fragment>
       <Toolbar classes={{ root: cl.root }}>
@@ -41,11 +43,11 @@ const NavBar = ({ showlinks, canvas }) => {
         ) : null}
         <div className={cl.expand} />
         <Box classes={{ root: cl.fit }}>
-          <NavLink label="Help" url="" />
+          <NavLink simple label="Help" url="#" />
         </Box>
       </Toolbar>
       {canvas.dense && showlinks ? (
-        <Toolbar disableGutters classes={{ root: cl.root }}>
+        <Toolbar disableGutters classes={{ root: cl.extended }}>
           <NavGroup extended />
         </Toolbar>
       ) : null}

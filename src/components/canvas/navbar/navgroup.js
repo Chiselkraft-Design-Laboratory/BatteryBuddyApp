@@ -16,32 +16,32 @@ let NavGroup = ({ extended }) => {
       {extended && (
         <NavLink
           extended={extended}
-          icon={<BatteryIcon size={extended ? 32 : 28} />}
+          icon={<BatteryIcon size={extended ? 28 : undefined} />}
           label="info"
           url="#info"
         />
       )}
       <NavLink
         extended={extended}
-        icon={<DashboardIcon size={extended ? 32 : 28} />}
+        icon={<DashboardIcon size={extended ? 28 : undefined} />}
         label="Home"
         url={UrlPath.home}
       />
       <NavLink
         extended={extended}
-        icon={<AnalyticsIcon size={extended ? 32 : 28} />}
+        icon={<AnalyticsIcon size={extended ? 28 : undefined} />}
         label="Analytics"
         url={UrlPath.analytics}
       />
       <NavLink
         extended={extended}
-        icon={<DiagnosticsIcon size={extended ? 32 : 28} />}
+        icon={<DiagnosticsIcon size={extended ? 28 : undefined} />}
         label="Diagnostics"
         url={UrlPath.diagnostics}
       />
       <NavLink
         extended={extended}
-        icon={<SettingsIcon size={extended ? 32 : 28} />}
+        icon={<SettingsIcon size={extended ? 28 : undefined} />}
         label="Settings"
         url={UrlPath.settings}
       />
