@@ -48,7 +48,7 @@ const CurrentMetrics = ({ feed }) => {
         fill={[
           {
             match: {
-              id: "current",
+              id: "Current",
             },
             id: "G2",
           },

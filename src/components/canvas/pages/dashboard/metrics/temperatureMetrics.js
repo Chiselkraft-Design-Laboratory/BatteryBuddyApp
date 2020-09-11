@@ -11,7 +11,7 @@ const TemperatureMetrics = ({ feed }) => {
     <DefaultTile title="Temperature" caption="metrics">
       <ResponsiveLine
         data={feed}
-        xScale={{ type: "time", format: "native", reverse: "true" }}
+        xScale={{ type: "time", format: "native" }}
         yScale={{ type: "linear", min: 0, max: 70 }}
         axisTop={null}
         axisRight={null}
