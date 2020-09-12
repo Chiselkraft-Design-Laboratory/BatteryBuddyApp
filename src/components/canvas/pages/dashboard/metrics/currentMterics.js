@@ -1,18 +1,8 @@
 import React from "react";
-// import { makeStyles } from "@material-ui/core";
-
 import DefaultTile from "../../../helpers/defaultTile";
 
-// const useStyles = makeStyles(
-//   (theme) => ({
-//     root: {},
-//   }),
-//   { index: 1 }
-// );
-
-const CurrentMetrics = () => {
-  // const cl = useStyles();
-
+const CurrentMetrics = ({ feed }) => {
+  console.log("Current", feed);
   return (
     <DefaultTile title="current" caption="metrics">
       graph here
