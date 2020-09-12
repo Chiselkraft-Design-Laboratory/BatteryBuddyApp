@@ -1,7 +1,7 @@
 export const UiBreakpoint = "sm";
 
 export const sidebarOptions = {
-  width: 290,
+  width: 340,
 };
 
 export const connectWizardOptions = {

@@ -24,8 +24,8 @@ export const spec = {
   serial: "XYZQ N458 69468092",
   mfd: "2020-06-24",
 
-  capacity: "3200",
-  voltage: "24",
+  capacity: "3200AH",
+  voltage: "48V",
 
   cellMake: "LICHEN",
   cellChemistry: "Li-Polymer",
