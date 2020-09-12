@@ -1,17 +1,8 @@
 import React from "react";
-// import { makeStyles } from "@material-ui/core";
-
 import DefaultTile from "../../../helpers/defaultTile";
 
-// const useStyles = makeStyles(
-//   (theme) => ({
-//     root: {},
-//   }),
-//   { index: 1 }
-// );
-
-const SoCMetrics = () => {
-  // const cl = useStyles();
+const SoCMetrics = ({ feed }) => {
+  console.log("SoC", feed);
 
   return (
     <DefaultTile wide title={"SoC vs Time"} caption="metrics">

@@ -5,8 +5,8 @@ export const sidebarOptions = {
 };
 
 export const connectWizardOptions = {
-  enableCANBUS: true,
   enableCLOUD: false,
+  enableCANBUS: true,
   spinnerSize: 128,
   spinnerThickness: 0.6,
   spinnerIconSize: 40,
@@ -14,4 +14,11 @@ export const connectWizardOptions = {
 
 export const pageOptions = {
   minTileHeight: 280,
+};
+
+export const metricsOptions = {
+  updateInterval: 400,
+  currentMtericsBuffer: 20,
+  temperatureMetricsBuffer: 30,
+  SoCMetricsBuffer: 40,
 };
