@@ -1,9 +1,23 @@
 import React from "react";
+import logToMetrics from "./parseMetrics";
 import { linkMode } from "../constants/typedef";
+import * as dummy from "../dummies/dataStream";
+import { metricsOptions } from "../constants/preferences";
 
 export class DeviceManager extends React.Component {
   state = {
-    linked: linkMode.NONE, // default
+    linked: linkMode.NONE,
+    spec: dummy.spec,
+    log: {
+      timestamp: 0,
+      cellVoltage: [],
+      packVoltage: 0,
+      packCurrent: 0,
+      packTemperature: 0,
+      SoC: 0,
+      SoH: 0,
+    },
+    metrics: logToMetrics(),
   };
 
   conncect = (mode) => {
@@ -12,7 +26,7 @@ export class DeviceManager extends React.Component {
       this.setState({
         linked: mode,
       });
-    }, 6000);
+    }, 3000);
   };
 
   disconncect = (mode) => {
@@ -23,8 +37,17 @@ export class DeviceManager extends React.Component {
   };
 
   probe = (mode) => {
-    // replace with routines
-    return true;
+    // pass dummy datastream
+    const prevmetrics = this.state.metrics;
+
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    const newlog = dummy.nextLog(); // feed data here
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+    this.setState({
+      log: newlog,
+      metrics: logToMetrics(prevmetrics, newlog),
+    });
   };
 
   read = () => {
@@ -50,6 +73,16 @@ const DeviceManagerContext = React.createContext({
 });
 
 export class DeviceManagerProvider extends DeviceManager {
+  componentDidMount() {
+    this.interval = setInterval(
+      () => this.probe(),
+      metricsOptions.updateInterval
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
   render() {
     const { children } = this.props;
     return (
