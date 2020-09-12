@@ -6,7 +6,7 @@ import { metricsOptions } from "../constants/preferences";
 
 export class DeviceManager extends React.Component {
   state = {
-    linked: linkMode.NONE,
+    linked: linkMode.CANBUS,
     spec: dummy.spec,
     log: {
       timestamp: 0,
@@ -38,7 +38,6 @@ export class DeviceManager extends React.Component {
 
   probe = (mode) => {
     // pass dummy datastream
-    console.log("probing");
     const prevmetrics = this.state.metrics;
 
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
