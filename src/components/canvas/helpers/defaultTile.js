@@ -19,7 +19,7 @@ const useStyles = (dense) =>
       },
       content: {
         transition: "all 0.4s ease-in",
-        minHeight: pageOptions.minTileHeight,
+        height: pageOptions.minTileHeight,
       },
     }),
     { index: 1 }
