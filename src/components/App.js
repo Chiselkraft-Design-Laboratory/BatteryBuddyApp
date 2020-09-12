@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-
 // context
 import withDeviceManager from "./core/devicemanager";
 // canvas
@@ -12,13 +11,9 @@ import NavBar from "./canvas/navbar";
 // import Notify from "./canvas/notify";
 
 class BatteryBuddyApp extends React.Component {
-  componentDidMount() {
-    if (!this.props.device.linked) {
-      // this.props.device.connect();
-    }
-  }
   render() {
     const { device } = this.props;
+
     return (
       <BaseLayout
         navigation={<NavBar showlinks={device.linked} />}
