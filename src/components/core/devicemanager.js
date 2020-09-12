@@ -6,7 +6,7 @@ import { metricsOptions } from "../constants/preferences";
 
 export class DeviceManager extends React.Component {
   state = {
-    linked: linkMode.CANBUS,
+    linked: linkMode.NONE,
     spec: dummy.spec,
     log: {
       timestamp: 0,
