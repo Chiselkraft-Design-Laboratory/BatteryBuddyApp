@@ -5,8 +5,6 @@ import DefaultTile from "../../../helpers/defaultTile";
 import * as palette from "../../../../themeworks/darkspaceUI/swatch";
 
 const SoCMetrics = ({ feed }) => {
-  // console.log("SoC", feed);
-
   return (
     <DefaultTile wide title={"SoC vs Time"} caption="metrics">
       <ResponsiveLine

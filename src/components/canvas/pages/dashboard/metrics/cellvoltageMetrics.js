@@ -5,7 +5,6 @@ import * as palette from "../../../../themeworks/darkspaceUI/swatch";
 import DefaultTile from "../../../helpers/defaultTile";
 
 const CellVoltageMetrics = ({ feed }) => {
-  console.log("feed", feed);
   const graphProps = {
     axisTop: null,
     axisRight: null,
