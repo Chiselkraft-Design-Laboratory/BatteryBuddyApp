@@ -74,15 +74,27 @@ const DeviceManagerContext = React.createContext({
 
 export class DeviceManagerProvider extends DeviceManager {
   componentDidMount() {
-    this.interval = setInterval(
-      () => this.probe(),
-      metricsOptions.updateInterval
-    );
+    if (this.state.linked) {
+      this.interval = setInterval(
+        () => this.probe(),
+        metricsOptions.updateInterval
+      );
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.linked && !this.interval) {
+      this.interval = setInterval(
+        () => this.probe(),
+        metricsOptions.updateInterval
+      );
+    }
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
+
   render() {
     const { children } = this.props;
     return (

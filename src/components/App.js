@@ -22,7 +22,11 @@ class BatteryBuddyApp extends React.Component {
       >
         {device.linked ? (
           <React.Fragment>
-            <SideBar />
+            <SideBar
+              spec={device.spec}
+              feed={device.log}
+              disconnect={device.disconnect}
+            />
             <Suspense fallback={<div>Loading...</div>}>
               <PageProvider />
             </Suspense>
