@@ -13,12 +13,16 @@ const useStyles = (wizard) =>
         flexGrow: 1,
         display: wizard && "flex",
         alignItems: wizard && "center",
-        overflowY: "auto",
         padding: theme.spacing(0, 1.5),
+        height: "100%",
+        overflow: "hidden",
       },
       content: {
         height: "100%",
-        "& > *": {},
+        "& > *": {
+          height: "100%",
+          overflowY: "auto",
+        },
       },
     }),
     { index: 1 }
