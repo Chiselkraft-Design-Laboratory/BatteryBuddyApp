@@ -38,7 +38,6 @@ export class DeviceManager extends React.Component {
 
   probe = (mode) => {
     // pass dummy datastream
-    console.log("probing");
     const prevmetrics = this.state.metrics;
 
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
