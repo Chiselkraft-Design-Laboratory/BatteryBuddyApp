@@ -3,6 +3,10 @@ import { makeStyles, Typography, Grid, Badge } from "@material-ui/core";
 
 const useStyles = makeStyles(
   (theme) => ({
+    "@keyframes blink": {
+      from: { opacity: 1 },
+      to: { opacity: 0 },
+    },
     root: {
       display: "flex",
       width: "100%",
@@ -13,6 +17,11 @@ const useStyles = makeStyles(
     },
     badge: {
       backgroundColor: theme.palette.T1,
+      animationName: "$blink",
+      animationDuration: "0.3s",
+      animationIterationCount: "infinite",
+      animationDirection: "alternate",
+      animationTimingFunction: "ease-in-out",
     },
   }),
   { index: 1 }

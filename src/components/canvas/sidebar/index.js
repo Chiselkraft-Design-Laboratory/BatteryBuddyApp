@@ -30,7 +30,6 @@ const useStyles = makeStyles(
 
 const SideBar = ({ canvas, spec, feed, disconnect }) => {
   const cl = useStyles();
-  console.log("sidebar", { spec: spec, feed: feed });
   return (
     <Grid item xs={canvas.dense ? 12 : undefined} classes={{ root: cl.root }}>
       <Paper elevation={6} component="section" classes={{ root: cl.wrapper }}>
