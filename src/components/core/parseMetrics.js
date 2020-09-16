@@ -7,6 +7,11 @@ const logToMetrics = (prev, log) => {
   if (prev !== undefined) {
     return {
       cellVoltage: parseBarMetrics(log.cellVoltage),
+      packVoltage: parseTimeMetrics(
+        prev.packVoltage,
+        log.timestamp,
+        log.packVoltage
+      ),
       packCurrent: parseTimeMetrics(
         prev.packCurrent,
         log.timestamp,
@@ -22,9 +27,10 @@ const logToMetrics = (prev, log) => {
   } else {
     return {
       cellVoltage: [{ x: "", y: null }],
+      packVoltage: initialTimeMetrics(options.currentMtericsBuffer),
       packCurrent: initialTimeMetrics(options.currentMtericsBuffer),
-      packTemperature: initialTimeMetrics(options.temperatureMetricsBuffer),
-      SoC: initialTimeMetrics(options.SoCMetricsBuffer),
+      packTemperature: initialTimeMetrics(options.currentMtericsBuffer),
+      SoC: initialTimeMetrics(options.currentMtericsBuffer),
     };
   }
 };
