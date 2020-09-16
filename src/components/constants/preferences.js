@@ -14,6 +14,7 @@ export const connectWizardOptions = {
 
 export const pageOptions = {
   minTileHeight: 280,
+  analyticsMetricsHeight: 330,
 };
 
 export const metricsOptions = {
