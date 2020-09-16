@@ -1,12 +1,12 @@
 import React from "react";
 import { makeStyles, Typography, Grid, Badge } from "@material-ui/core";
-
+import withCanvas from "../withCanvas";
 const useStyles = makeStyles(
   (theme) => ({
     root: {
       display: "flex",
       width: "100%",
-      padding: theme.spacing(2, 3),
+      padding: theme.spacing(1, 2.5),
       background: theme.palette.D3,
       marginBottom: "1px",
     },
@@ -14,8 +14,8 @@ const useStyles = makeStyles(
   { index: 1 }
 );
 
-const SideBarFeed = ({ caption, value, suffix, alert }) => {
-  const cl = useStyles();
+const SideBarFeed = ({ canvas, caption, value, suffix, alert }) => {
+  const cl = useStyles(canvas.dense);
   return (
     <Grid item className={cl.root}>
       <Grid container direction="row" wrap="nowrap">
@@ -36,4 +36,4 @@ const SideBarFeed = ({ caption, value, suffix, alert }) => {
   );
 };
 
-export default SideBarFeed;
+export default withCanvas(SideBarFeed);

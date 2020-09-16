@@ -7,6 +7,10 @@ import SettingsIcon from "./settingsicon";
 import CanBusIcon from "./canbusicon";
 import CloudIcon from "./cloudicon";
 import ExitIcon from "./exiticon";
+import StopIcon from "./stopicon";
+import SplitViewIcon from "./splitviewicon";
+import MergeViewIcon from "./mergeviewicon";
+import SaveIcon from "./saveicon";
 
 export {
   BrandIcon,
@@ -18,4 +22,8 @@ export {
   CanBusIcon,
   CloudIcon,
   ExitIcon,
+  StopIcon,
+  SplitViewIcon,
+  MergeViewIcon,
+  SaveIcon,
 };
