@@ -18,6 +18,9 @@ export class DeviceManager extends React.Component {
       SoH: 0,
     },
     metrics: logToMetrics(),
+
+    enableLog: false,
+    dataLog: [],
   };
 
   conncect = (mode) => {
@@ -36,28 +39,49 @@ export class DeviceManager extends React.Component {
     });
   };
 
+  toggleLogMode = () => {
+    this.setState({ enableLog: !this.state.enableLog, dataLog: [] });
+  };
+
+  exportLog = () => {
+    var content = JSON.stringify(this.state.dataLog);
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var currentDate = date + "/" + month + "/" + year;
+
+    var name =
+      this.state.spec.make +
+      "_" +
+      this.state.spec.serial +
+      "_log_" +
+      currentDate;
+    var atag = document.createElement("a");
+    var file = new Blob([content], { type: "text/plain" });
+    atag.href = URL.createObjectURL(file);
+    atag.download = name;
+    atag.click();
+  };
+
   probe = (mode) => {
     // pass dummy datastream
     const prevmetrics = this.state.metrics;
+    const tempdatalog = this.state.dataLog;
 
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     const newlog = dummy.nextLog(); // feed data here
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+    // log data if needed
+    if (this.state.enableLog) {
+      tempdatalog.push(newlog);
+    }
+
     this.setState({
       log: newlog,
       metrics: logToMetrics(prevmetrics, newlog),
+      dataLog: tempdatalog,
     });
-  };
-
-  read = () => {
-    // replace with routines
-    return null;
-  };
-
-  write = () => {
-    // replace with routines
-    return null;
   };
 }
 
@@ -68,8 +92,8 @@ const DeviceManagerContext = React.createContext({
   connect: (linked) => {},
   disconnect: (linked) => {},
   probe: () => {},
-  read: () => {},
-  write: () => {},
+  toggleLogMode: () => {},
+  exportLog: () => {},
 });
 
 export class DeviceManagerProvider extends DeviceManager {
@@ -104,8 +128,8 @@ export class DeviceManagerProvider extends DeviceManager {
           connect: this.conncect,
           disconnect: this.disconncect,
           probe: this.probe,
-          read: this.read,
-          write: this.write,
+          toggleLogMode: this.toggleLogMode,
+          exportLog: this.exportLog,
         }}
       >
         {children}
