@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import { makeStyles, Grid, Box, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles(

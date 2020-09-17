@@ -27,10 +27,10 @@ const logToMetrics = (prev, log) => {
   } else {
     return {
       cellVoltage: [{ x: "", y: null }],
-      packVoltage: initialTimeMetrics(options.currentMtericsBuffer),
-      packCurrent: initialTimeMetrics(options.currentMtericsBuffer),
-      packTemperature: initialTimeMetrics(options.currentMtericsBuffer),
-      SoC: initialTimeMetrics(options.currentMtericsBuffer),
+      packVoltage: initialTimeMetrics(options.metricsBuffer),
+      packCurrent: initialTimeMetrics(options.metricsBuffer),
+      packTemperature: initialTimeMetrics(options.metricsBuffer),
+      SoC: initialTimeMetrics(options.metricsBuffer),
     };
   }
 };
