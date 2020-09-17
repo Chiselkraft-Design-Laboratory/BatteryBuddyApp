@@ -19,7 +19,5 @@ export const pageOptions = {
 
 export const metricsOptions = {
   updateInterval: 400,
-  currentMtericsBuffer: 20,
-  temperatureMetricsBuffer: 30,
-  SoCMetricsBuffer: 40,
+  metricsBuffer: 24,
 };

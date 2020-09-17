@@ -6,7 +6,7 @@ import * as palette from "../../../../themeworks/darkspaceUI/swatch";
 
 const SoCMetrics = ({ feed }) => {
   return (
-    <DefaultTile wide title={"SoC vs Time"} caption="metrics">
+    <DefaultTile wide title={"SoC"} caption="metrics">
       <ResponsiveLine
         data={feed}
         xScale={{ type: "time", format: "native" }}
@@ -16,7 +16,7 @@ const SoCMetrics = ({ feed }) => {
         axisLeft={{
           legend: "SoC",
           legendPosition: "end",
-          legendOffset: -40,
+          legendOffset: -44,
           tickValues: 6,
         }}
         axisBottom={{
@@ -35,13 +35,13 @@ const SoCMetrics = ({ feed }) => {
         motionDamping={50}
         isInteractive={false}
         enableSlices={false}
-        useMesh={true}
+        useMesh={false}
         enableArea={true}
         colors={palette.tone.T3}
         defs={[
           linearGradientDef("G4", [
-            { offset: 0, color: palette.tone.T3, opacity: 0.6 },
-            { offset: 100, color: palette.dark.X2 },
+            { offset: 0, color: palette.tone.T3, opacity: 0.9 },
+            { offset: 95, color: palette.tone.T3, opacity: 0 },
           ]),
         ]}
         fill={[
@@ -61,7 +61,13 @@ const SoCMetrics = ({ feed }) => {
             },
             ticks: { text: { fill: palette.dark.X4, fontSize: 14 } },
           },
-          grid: { line: { stroke: palette.dark.X3, strokeDasharray: "1 24" } },
+          grid: {
+            line: {
+              stroke: palette.dark.X3,
+              strokeWidth: 2,
+              strokeDasharray: "2 24",
+            },
+          },
         }}
       />
     </DefaultTile>

@@ -11,7 +11,7 @@ import AnalyticsFooter from "./analyticsfooter";
 const AnalyticsPage = ({ device }) => {
   const live = device.metrics;
   const feed = [
-    { color: palette.dark.X4, id: "SoC", data: live.SoC },
+    { color: palette.lite.X1, id: "SoC", data: live.SoC },
     { color: palette.tone.T5, id: "Temperature", data: live.packTemperature },
     { color: palette.tone.T4, id: "Current", data: live.packCurrent },
     { color: palette.tone.T2, id: "Voltage", data: live.packVoltage },

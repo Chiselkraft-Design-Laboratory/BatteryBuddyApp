@@ -10,13 +10,13 @@ const TemperatureMetrics = ({ feed }) => {
       <ResponsiveLine
         data={feed}
         xScale={{ type: "time", format: "native" }}
-        yScale={{ type: "linear", min: 0, max: 70 }}
+        yScale={{ type: "linear", min: 10, max: 60 }}
         axisTop={null}
         axisRight={null}
         axisLeft={{
           legend: "Pack Temperature",
           legendPosition: "end",
-          legendOffset: -40,
+          legendOffset: -44,
           tickValues: 6,
         }}
         axisBottom={{
@@ -35,13 +35,13 @@ const TemperatureMetrics = ({ feed }) => {
         motionDamping={50}
         isInteractive={false}
         enableSlices={false}
-        useMesh={true}
+        useMesh={false}
         enableArea={true}
         colors={palette.tone.T5}
         defs={[
           linearGradientDef("G3", [
-            { offset: 0, color: palette.tone.T5, opacity: 0.6 },
-            { offset: 100, color: palette.dark.X2 },
+            { offset: 0, color: palette.tone.T5, opacity: 0.9 },
+            { offset: 95, color: palette.tone.T5, opacity: 0 },
           ]),
         ]}
         fill={[
@@ -61,7 +61,13 @@ const TemperatureMetrics = ({ feed }) => {
             },
             ticks: { text: { fill: palette.dark.X4, fontSize: 14 } },
           },
-          grid: { line: { stroke: palette.dark.X3, strokeDasharray: "1 24" } },
+          grid: {
+            line: {
+              stroke: palette.dark.X3,
+              strokeWidth: 2,
+              strokeDasharray: "2 32",
+            },
+          },
         }}
       />
     </DefaultTile>
