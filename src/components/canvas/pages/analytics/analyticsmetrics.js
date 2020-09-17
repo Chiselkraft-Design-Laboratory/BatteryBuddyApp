@@ -21,8 +21,8 @@ const AnalyticsMetrics = ({ split, feed }) => {
     <Grid item xs={12} md={split ? 6 : 12} classes={{ root: cl.root }}>
       <ResponsiveLine
         data={feed}
-        xScale={{ type: "time", format: "native", reverse: "true" }}
-        yScale={{ type: "linear", min: -100, max: 100 }}
+        xScale={{ type: "time", format: "native" }}
+        yScale={{ type: "linear", min: -50, max: 100 }}
         axisTop={null}
         axisRight={null}
         axisLeft={{
@@ -42,15 +42,13 @@ const AnalyticsMetrics = ({ split, feed }) => {
             justify: false,
             translateX: 0,
             translateY: 50,
-            itemsSpacing: 16,
+            itemsSpacing: 0,
             itemDirection: "left-to-right",
-            itemWidth: 120,
+            itemWidth: 90,
             itemHeight: 20,
-            itemOpacity: 0.75,
-            itemTextColor: palette.dark.X4,
+            itemTextColor: palette.lite.X1,
             symbolSize: 12,
             symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
           },
         ]}
         margin={{ top: 30, right: 10, bottom: 60, left: 50 }}
@@ -66,7 +64,7 @@ const AnalyticsMetrics = ({ split, feed }) => {
         enableArea={false}
         colors={{ datum: "color" }}
         defs={[
-          linearGradientDef("G2", [
+          linearGradientDef("G5", [
             { offset: 0, color: palette.tone.T4, opacity: 0.6 },
             { offset: 100, color: palette.dark.X2 },
           ]),
@@ -88,7 +86,13 @@ const AnalyticsMetrics = ({ split, feed }) => {
               fill: palette.lite.X3,
             },
           },
-          grid: { line: { stroke: palette.dark.X3, strokeDasharray: "2 2" } },
+          grid: {
+            line: {
+              stroke: palette.dark.X3,
+              strokeWidth: 2,
+              strokeDasharray: "2 2",
+            },
+          },
         }}
       />
     </Grid>
