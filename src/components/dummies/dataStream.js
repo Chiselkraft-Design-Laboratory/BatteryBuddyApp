@@ -1,5 +1,7 @@
+import range from "lodash/range";
+
 // range control
-const cellCount = 20;
+const cellCount = 16;
 const minCellVolt = 3.3;
 const maxCellVolt = 3.8;
 
@@ -45,6 +47,56 @@ export const nextLog = () => {
     SoC: randomize(minSoC, maxSoC, 3),
     SoH: randomize(minSoH, maxSoH, 3),
   };
+};
+
+export const nextDiagnostics = (type) => {
+  let result = [];
+
+  range(16).forEach((index) => {
+    result.push({ ["parameter" + (index + 1)]: true });
+  });
+
+  if (type === undefined || type > 2 || type < 0) {
+    type = parseInt(randomize(0, 2, 1));
+  }
+  console.log("type", type);
+  switch (type) {
+    case 1:
+      range(4).forEach(() => {
+        const rand = parseInt(randomize(0, 15, 2));
+        result[rand] = { ["parameter" + (rand + 1)]: false };
+      });
+      return {
+        health: "moderate",
+        index: randomize(54, 65, 2),
+        cycles: parseInt(randomize(500, 700, 3)),
+        error: parseInt(randomize(0, 3, 1)),
+        warning: parseInt(randomize(1, 4, 1)),
+        data: result,
+      };
+    case 2:
+      range(8).forEach(() => {
+        const rand = parseInt(randomize(0, 15, 2));
+        result[rand] = { ["parameter" + (rand + 1)]: false };
+      });
+      return {
+        health: "critical",
+        index: randomize(20, 38, 2),
+        cycles: parseInt(randomize(1800, 2200, 4)),
+        error: parseInt(randomize(4, 8, 1)),
+        warning: parseInt(randomize(2, 6, 1)),
+        data: result,
+      };
+    default:
+      return {
+        health: "Excellent",
+        index: randomize(90, 100, 3),
+        cycles: parseInt(randomize(80, 150, 3)),
+        error: 0,
+        warning: 0,
+        data: result,
+      };
+  }
 };
 
 function cellvoltage() {
