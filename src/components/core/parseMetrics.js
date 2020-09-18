@@ -39,7 +39,7 @@ function parseBarMetrics(array) {
   let metrics = [];
   if (array) {
     array.forEach((value, index) => {
-      metrics.push({ x: String(index + 1), y: value });
+      metrics.push({ x: String(index + 1), y: value/1000 });
     });
   } else {
     metrics = [{ x: 0, y: 0 }];

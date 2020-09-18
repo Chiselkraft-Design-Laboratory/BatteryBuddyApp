@@ -151,26 +151,24 @@ export class DeviceManager extends React.Component {
 
   disconncect = (mode) => {
     if (this.state.linked === linkMode.CANBUS) {
-      port
-        .disconnect()
+     flcan.stop()
+     .then(()=>{
+     
+   flcan.disconnect()
         .then(() => {
           this._write(
             "[!] Disconnected from " + port.device_.productName + "\n"
           );
-          // this.innerHTML = "Connect"
+        
           this.setState({ linked: linkMode.NONE });
         })
         .catch(
-          this._write(
-            "[!] Error while disconnecting from " +
-              port.devie_.productName +
-              "\n"
-          )
+        console.log('error in disconnect')
         );
+        })
     }
 
-    // only for dummy data
-    // this.setState({ linked: linkMode.NONE });
+    
   };
 
   toggleLogMode = () => {
@@ -375,7 +373,7 @@ export class DeviceManagerProvider extends DeviceManager {
       this.packet_tx.data = null;
     };
 
-    flcan.Port.stop = function () {
+    flcan.stop = function () {
       return this.sendCommand(flcan.opcodes.FLCAN_CMD_STOP).then(
         (this._stop = true)
       );
@@ -389,7 +387,6 @@ export class DeviceManagerProvider extends DeviceManager {
         this.device_
           .transferIn(endpointNumber, 12)
           .then((buffer) => {
-            // console.log('state.packet',this.state.packet_rx.metadata )
             var data = { ...this.state.packet_rx };
             data.metadata = buffer.data;
             console.log(
