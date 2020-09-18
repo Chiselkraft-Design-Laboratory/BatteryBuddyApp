@@ -19,6 +19,8 @@ export class DeviceManager extends React.Component {
       packTemperature: 0,
       SoC: 0,
       SoH: 0,
+      zones: 7,
+      zoneTemperatures: [],
     },
     metrics: logToMetrics(),
 
@@ -54,6 +56,8 @@ export class DeviceManager extends React.Component {
       packTemperature: (parseInt(this.state.tempratures) + 600) / 10,
       SoC: parseInt(this.state.currents.SOC) + 5,
       SoH: this.state.currents.SOH,
+      zones: 7,
+      zonetemperatures: this.temperatures,
     };
     let prev = this.state.metrics;
 
@@ -64,6 +68,7 @@ export class DeviceManager extends React.Component {
   }
 
   conncect = (mode) => {
+    console.log("zone", this.state.zonetemperatures);
     if (this.state.linked === 0) {
       console.log("here on clickbus", port);
 

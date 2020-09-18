@@ -23,6 +23,13 @@ const logToMetrics = (prev, log) => {
         log.packTemperature
       ),
       SoC: parseTimeMetrics(prev.SoC, log.timestamp, log.SoC),
+      zoneTemperatures: parseArrTimeMetrics(
+        prev,
+        "zone",
+        7,
+        log.timestamp,
+        log.zoneTemperatures
+      ),
     };
   } else {
     return {
@@ -31,6 +38,7 @@ const logToMetrics = (prev, log) => {
       packCurrent: initialTimeMetrics(options.metricsBuffer),
       packTemperature: initialTimeMetrics(options.metricsBuffer),
       SoC: initialTimeMetrics(options.metricsBuffer),
+      zoneTemperatures: initialArrTimeMetrics("zone", 7, options.metricsBuffer),
     };
   }
 };
@@ -64,6 +72,25 @@ function initialTimeMetrics(bufferSize) {
     dummy.push({ x: time.timeMillisecond.offset(t, i * 500), y: null });
   });
   return dummy;
+}
+
+function parseArrTimeMetrics(prev, suffix, size, timestamp, value) {
+  let arr = [];
+  range(size).forEach((index) => {
+    arr.push({
+      id: suffix + (index + 1),
+      data: parseTimeMetrics(prev, timestamp, value[index]),
+    });
+  });
+  return arr;
+}
+
+function initialArrTimeMetrics(suffix, size, buffer) {
+  let arr = [];
+  range(size).forEach((index) => {
+    arr.push({ id: suffix + (index + 1), data: initialTimeMetrics(buffer) });
+  });
+  return arr;
 }
 
 export default logToMetrics;

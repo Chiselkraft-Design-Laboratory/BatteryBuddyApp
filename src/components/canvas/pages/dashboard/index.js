@@ -12,9 +12,7 @@ const DashboardPage = ({ device }) => {
     <React.Fragment>
       <CellVoltageMetrics feed={live.cellVoltage} />
       <CurrentMetrics feed={[{ id: "Current", data: live.packCurrent }]} />
-      <TemperatureMetrics
-        feed={[{ id: "Temperature", data: live.packTemperature }]}
-      />
+      <TemperatureMetrics feed={live.zoneTemperatures} />
       <SoCMetrics feed={[{ id: "SoC", data: live.SoC }]} />
     </React.Fragment>
   );
