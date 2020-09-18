@@ -3,7 +3,7 @@ import * as time from "d3-time";
 import { metricsOptions as options } from "../constants/preferences";
 
 const logToMetrics = (prev, log) => {
-  // console.log("log", { prev, log });
+  console.log("log", { prev, log });
   if (prev !== undefined) {
     return {
       cellVoltage: parseBarMetrics(log.cellVoltage),
@@ -24,7 +24,7 @@ const logToMetrics = (prev, log) => {
       ),
       SoC: parseTimeMetrics(prev.SoC, log.timestamp, log.SoC),
       zoneTemperatures: parseArrTimeMetrics(
-        prev,
+        prev.zoneTemperatures,
         "zone",
         7,
         log.timestamp,
@@ -57,6 +57,8 @@ function parseBarMetrics(array) {
 }
 
 function parseTimeMetrics(prev, timestamp, value) {
+
+  // console.log('parseTime',prev,timestamp,value)
   let metrics = [];
   if (prev && timestamp && value) {
     metrics = prev.slice(1);
@@ -76,12 +78,23 @@ function initialTimeMetrics(bufferSize) {
 
 function parseArrTimeMetrics(prev, suffix, size, timestamp, value) {
   let arr = [];
+  console.log('prev data ',prev,suffix)
+
+
   range(size).forEach((index) => {
+  console.log('prev data tempZone',index,prev[index],)
+
     arr.push({
-      id: suffix + (index + 1),
-      data: parseTimeMetrics(prev, timestamp, value[index]),
-    });
+      id: (suffix) + (index + 1),
+      data: parseTimeMetrics(prev[index].data, timestamp, Math.abs(value[index]/10)+getRandomInt(10))
+
+
+    },);
+   
+    console.log('prev data tempZone arr',arr)
+
   });
+
   return arr;
 }
 
@@ -90,7 +103,11 @@ function initialArrTimeMetrics(suffix, size, buffer) {
   range(size).forEach((index) => {
     arr.push({ id: suffix + (index + 1), data: initialTimeMetrics(buffer) });
   });
+  console.log('zone arr',arr)
   return arr;
+}
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }
 
 export default logToMetrics;

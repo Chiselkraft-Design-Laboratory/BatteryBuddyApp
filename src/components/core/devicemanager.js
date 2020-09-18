@@ -57,7 +57,7 @@ export class DeviceManager extends React.Component {
       SoC: parseInt(this.state.currents.SOC) + 5,
       SoH: this.state.currents.SOH,
       zones: 7,
-      zonetemperatures: this.temperatures,
+      zoneTemperatures: this.state.tempratures,
     };
     let prev = this.state.metrics;
 
@@ -68,7 +68,7 @@ export class DeviceManager extends React.Component {
   }
 
   conncect = (mode) => {
-    console.log("zone", this.state.zonetemperatures);
+    console.log("zone", this.state.zoneTemperatures);
     if (this.state.linked === 0) {
       console.log("here on clickbus", port);
 
@@ -547,7 +547,7 @@ export class DeviceManagerProvider extends DeviceManager {
             s.temperatures.push(data.getInt16(5 + i * 2, true).toString());
           }
           console.log("parsed2", JSON.stringify(s));
-          this.setState({ tempratures: s.temperatures[0] }, () => {
+          this.setState({ tempratures: s.temperatures}, () => {
             this.next();
 
             // console.log("parsed2", JSON.stringify(this.state.tempratures.temperatures[0]));
