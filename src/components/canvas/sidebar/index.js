@@ -36,8 +36,8 @@ const SideBar = ({ canvas, spec, feed, disconnect }) => {
         <SideBarHeader make={spec.make} model={spec.model} />
         <SideBarFeed caption="Health" value={feed.SoH} suffix="%" />
         <SideBarFeed caption="Charge" value={feed.SoC} suffix="%" />
-        <SideBarFeed caption="Current" value={feed.packCurrent} suffix="A" />
-        <SideBarFeed caption="Voltage" value={feed.packVoltage} suffix="V" />
+        <SideBarFeed caption="Current" value={parseFloat(feed.packCurrent)/1000} suffix="A" />
+        <SideBarFeed caption="Voltage" value={parseFloat(feed.packVoltage)/1000} suffix="V" />
         <SideBarFeed
           caption="Temperature"
           value={feed.packTemperature}

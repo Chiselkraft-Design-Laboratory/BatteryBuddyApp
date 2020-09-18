@@ -78,20 +78,20 @@ function initialTimeMetrics(bufferSize) {
 
 function parseArrTimeMetrics(prev, suffix, size, timestamp, value) {
   let arr = [];
-  console.log('prev data ',prev,suffix)
 
 
   range(size).forEach((index) => {
-  console.log('prev data tempZone',index,prev[index],)
 
     arr.push({
       id: (suffix) + (index + 1),
       data: parseTimeMetrics(prev[index].data, timestamp, Math.abs(value[index]/10)+getRandomInt(10))
 
 
-    },);
+    },
+    
+    );
+
    
-    console.log('prev data tempZone arr',arr)
 
   });
 

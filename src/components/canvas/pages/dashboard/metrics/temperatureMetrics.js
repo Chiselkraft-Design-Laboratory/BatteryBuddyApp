@@ -33,10 +33,10 @@ const TemperatureMetrics = ({ feed }) => {
         animate={false}
         motionStiffness={120}
         motionDamping={50}
-        isInteractive={false}
+        isInteractive={true}
         enableSlices={false}
         useMesh={false}
-        enableArea={true}
+        enableArea={false}
         colors={palette.tone.T5}
         defs={[
           linearGradientDef("G3", [

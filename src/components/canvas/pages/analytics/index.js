@@ -17,6 +17,10 @@ const AnalyticsPage = ({ device }) => {
     { color: palette.tone.T4, id: "Current", data: live.packCurrent },
     { color: palette.tone.T2, id: "Voltage", data: live.packVoltage },
   ];
+    // live.zoneTemperatures.map((value)=>{
+  //   return value.color=palette.lite.X1
+  // })
+  // feed =feed.concat(live.zoneTemperatures)
   const [split, setSplit] = React.useState(false);
 
   // functions

@@ -177,8 +177,12 @@ export class DeviceManager extends React.Component {
   };
 
   toggleLogMode = () => {
-    this.setState({ enableLog: !this.state.enableLog, dataLog: [] });
+    this.setState({ enableLog: !this.state.enableLog, dataLog: [] },()=>(this.state.enableLog)?this.log():null);
   };
+  log()
+  {
+    // alert('yupp baby')
+  }
 
   exportLog = () => {
     var content = JSON.stringify(this.state.dataLog);
@@ -434,6 +438,9 @@ export class DeviceManagerProvider extends DeviceManager {
           flcan.sendCommand(flcan.opcodes.FLCAN_CMD_START);
         })
         .then(() => {
+          flcan.sync(0x23);
+        })
+        .then(() => {
           readLoop();
         });
     };
@@ -527,14 +534,11 @@ export class DeviceManagerProvider extends DeviceManager {
             },
             () => {
               this.next();
-              console.log("object", this.state.voltages);
+              console.log("object volatges", this.state.voltages);
             }
           );
 
-          // this.setState({voltages:s},()=>{
-          // console.log('parsed1',JSON.stringify(this.state.voltages));
-
-          // })
+        
 
           break;
         }
@@ -550,7 +554,6 @@ export class DeviceManagerProvider extends DeviceManager {
           this.setState({ tempratures: s.temperatures}, () => {
             this.next();
 
-            // console.log("parsed2", JSON.stringify(this.state.tempratures.temperatures[0]));
           });
           break;
         }
@@ -562,12 +565,12 @@ export class DeviceManagerProvider extends DeviceManager {
           s.SOC = data.getFloat32(9, true);
           s.SOH = data.getFloat32(13, true);
           s.stackVoltage = data.getUint16(17, true);
-          // console.log('parsed3',JSON.stringify(s));
+          console.log('parsed3',JSON.stringify(s));
           this.setState({ currents: s }, () => {
             this.next();
             console.log("parsed3", JSON.stringify(this.state.currents));
           });
-          // console.log();
+         
           break;
         }
 
