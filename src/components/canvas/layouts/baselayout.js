@@ -20,7 +20,7 @@ const useStyles = (wizard) =>
       content: {
         height: "100%",
         "& > *": {
-          height: "100%",
+          // height: "100%",
           overflowY: "auto",
         },
       },

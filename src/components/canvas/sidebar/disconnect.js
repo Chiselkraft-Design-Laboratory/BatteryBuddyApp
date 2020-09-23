@@ -15,6 +15,7 @@ const useStyles = makeStyles(
       background: theme.palette.T5,
       borderRadius: theme.spacing(0.5),
       "&:hover": {
+        background: theme.palette.T5,
         opacity: 0.8,
       },
     },

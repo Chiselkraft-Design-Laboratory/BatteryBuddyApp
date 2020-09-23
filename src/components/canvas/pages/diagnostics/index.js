@@ -1,12 +1,25 @@
 import React from "react";
 import withDeviceManager from "../../../core/devicemanager";
-import { Button } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import DiagnosticsTile from "./diagnosticstile";
 import DiagnosticsSummary from "./diagnosticssummary";
 import DiagnosticsReport from "./diagnosticsreport";
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    padding: theme.spacing(1.5, 4),
+    borderRadius: theme.spacing(0.5),
+    background: theme.palette.T4,
+    color: theme.palette.D2,
+    "&:hover": {
+      background: theme.palette.T4,
+      opacity: 0.8,
+    },
+  },
+}));
+
 const DiagnosticsPage = ({ device }) => {
-  // const cl = useStyles();
+  const cl = useStyles();
 
   const { report } = device;
 
@@ -36,7 +49,9 @@ const DiagnosticsPage = ({ device }) => {
       <DiagnosticsReport
         data={device.report.data}
         fallback={
-          <Button onClick={device.runDiagnostics}>run diagnostics</Button>
+          <Button classes={{ root: cl.button }} onClick={device.runDiagnostics}>
+            run diagnostics
+          </Button>
         }
       />
     </DiagnosticsTile>

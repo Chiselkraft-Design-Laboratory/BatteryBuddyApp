@@ -5,6 +5,7 @@ const useStyles = makeStyles(
   (theme) => ({
     root: {
       minHeight: 440,
+      padding: theme.spacing(3),
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
