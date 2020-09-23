@@ -21,6 +21,9 @@ export class DeviceManager extends React.Component {
 
     enableLog: false,
     dataLog: [],
+
+    report: {},
+    settings: {},
   };
 
   conncect = (mode) => {
@@ -63,6 +66,13 @@ export class DeviceManager extends React.Component {
     atag.click();
   };
 
+  runDiagnostics = () => {
+    // dummy
+    this.setState({
+      report: dummy.nextDiagnostics(),
+    });
+  };
+
   probe = (mode) => {
     // pass dummy datastream
     const prevmetrics = this.state.metrics;
@@ -94,6 +104,7 @@ const DeviceManagerContext = React.createContext({
   probe: () => {},
   toggleLogMode: () => {},
   exportLog: () => {},
+  runDiagnostics: () => {},
 });
 
 export class DeviceManagerProvider extends DeviceManager {
@@ -130,6 +141,7 @@ export class DeviceManagerProvider extends DeviceManager {
           probe: this.probe,
           toggleLogMode: this.toggleLogMode,
           exportLog: this.exportLog,
+          runDiagnostics: this.runDiagnostics,
         }}
       >
         {children}
