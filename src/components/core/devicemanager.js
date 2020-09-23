@@ -6,7 +6,7 @@ import { metricsOptions } from "../constants/preferences";
 
 export class DeviceManager extends React.Component {
   state = {
-    linked: linkMode.NONE,
+    linked: linkMode.CANBUS,
     spec: dummy.spec,
     log: {
       timestamp: 0,
@@ -65,6 +65,25 @@ export class DeviceManager extends React.Component {
     atag.download = name;
     atag.click();
   };
+  exportReport = () => {
+    var content = JSON.stringify(this.state.report);
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var currentDate = date + "/" + month + "/" + year;
+
+    var name =
+      this.state.spec.make +
+      "_" +
+      this.state.spec.serial +
+      "_diagnosticsreport_" +
+      currentDate;
+    var atag = document.createElement("a");
+    var file = new Blob([content], { type: "text/plain" });
+    atag.href = URL.createObjectURL(file);
+    atag.download = name;
+    atag.click();
+  };
 
   runDiagnostics = () => {
     // dummy
@@ -105,6 +124,7 @@ const DeviceManagerContext = React.createContext({
   toggleLogMode: () => {},
   exportLog: () => {},
   runDiagnostics: () => {},
+  exportReport: () => {},
 });
 
 export class DeviceManagerProvider extends DeviceManager {
@@ -142,6 +162,7 @@ export class DeviceManagerProvider extends DeviceManager {
           toggleLogMode: this.toggleLogMode,
           exportLog: this.exportLog,
           runDiagnostics: this.runDiagnostics,
+          exportReport: this.exportReport,
         }}
       >
         {children}
