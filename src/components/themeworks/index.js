@@ -17,6 +17,16 @@ theme.overrides = {
       html: {
         WebkitFontSmoothing: "auto",
       },
+      "*::-webkit-scrollbar": {
+        width: "0.4em",
+      },
+      "*::-webkit-scrollbar-track": {
+        "-webkit-box-shadow": `inset 0 0 3px rgba(0,0,0,0.4)`,
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: "rgba(0,0,0,.1)",
+        outline: `1px solid ${theme.palette.D3}`,
+      },
     },
   },
 
