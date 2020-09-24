@@ -28,12 +28,15 @@ const AnalyticsMetrics = ({ split, feed }) => {
         axisLeft={{
           tickValues: 6,
         }}
+        
         axisBottom={{
           format: "%M:%S",
           tickValues: "every 2 seconds",
           legend: "time",
           legendPosition: "end",
-          legendOffset: 46,
+          legendOffset: 46,     
+          tickValues: 4,
+          
         }}
         legends={[
           {
@@ -49,11 +52,13 @@ const AnalyticsMetrics = ({ split, feed }) => {
             itemTextColor: palette.lite.X1,
             symbolSize: 12,
             symbolShape: "circle",
+            
           },
         ]}
         margin={{ top: 30, right: 10, bottom: 60, left: 50 }}
         enablePoints={false}
-        enableGridX={true}
+        enableGridX={false}
+        enableGridY={false}
         curve="cardinal"
         animate={false}
         motionStiffness={120}

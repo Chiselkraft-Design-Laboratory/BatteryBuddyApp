@@ -4,9 +4,18 @@ import CellVoltageMetrics from "./metrics/cellvoltageMetrics";
 import CurrentMetrics from "./metrics/currentMterics";
 import TemperatureMetrics from "./metrics/temperatureMetrics";
 import SoCMetrics from "./metrics/socMetics";
+import {color} from '../../../constants/preferences'
 
 const DashboardPage = ({ device }) => {
   const live = device.metrics;
+console.log('cell',live.cellVoltage)
+
+live.zoneTemperatures.map((val,index)=>
+  {
+
+  val.color=color[index]
+   
+  })
 
   return (
     <React.Fragment>

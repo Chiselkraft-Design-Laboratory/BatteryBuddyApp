@@ -3,7 +3,7 @@ import * as time from "d3-time";
 import logToMetrics from "./parseMetrics";
 import { linkMode } from "../constants/typedef";
 import * as dummy from "../dummies/dataStream";
-import { metricsOptions } from "../constants/preferences";
+import { metricsOptions,firstMenu, thirdMenu,fourthMenu } from "../constants/preferences";
 
 var port;
 var flcan = {};
@@ -21,12 +21,19 @@ export class DeviceManager extends React.Component {
       SoH: 0,
       zones: 7,
       zoneTemperatures: [],
+      voltages:[]
     },
     metrics: logToMetrics(),
 
     enableLog: false,
     dataLog: [],
-
+    firstMenu:firstMenu,
+    secondMenuData:['select Metrics'],
+    analyticsData:['packCurrent','SoC'],
+    tempZoneData:thirdMenu,
+    tempData:[0],
+    cellindex:[0],
+    cellsData:fourthMenu,
     report: {},
     // IOT states >>>>>>>>>>>>>>>>>>>>>>>
     connectedButton: "",
@@ -39,8 +46,78 @@ export class DeviceManager extends React.Component {
     voltages: "",
     tempratures: "",
     currents: "",
+    Lltte_Endian:true,
+    identity:false
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   };
+
+
+
+
+exportMenuItem=(val1,val2)=>
+{
+
+var data =[...this.state.analyticsData]
+var TempData=[...this.state.tempData]
+
+console.log('eee',val2)
+if(val2==='firstMenu')
+{
+ let id=this.firstMenu(val1);
+
+var firstMenu=[...this.state.firstMenu]
+  firstMenu.splice(val1,1)
+  console.log('eee 1',data,id)
+
+data.push(id);
+data.shift()
+this.setState({analyticsData:data,secondMenuData:firstMenu})
+
+}
+else if(val2==='secondMenuData')
+{
+
+ let id=this.secondMenu(val1)
+data.shift()
+data.push(id);
+
+this.setState({analyticsData:data},()=>
+ console.log('eeee 2',this.state.analyticsData,)
+)
+}
+else if(val2==='tempZoneData')
+{
+var tempData=[...this.state.tempData];
+tempData.push(val1);
+tempData.shift();
+this.setState({tempData:tempData})
+
+}
+else if(val2==='cellsData')
+{
+var cellindex=[...this.state.cellindex];
+cellindex.push(val1);
+cellindex.shift();
+this.setState({cellindex:cellindex})
+
+}
+//cellsData
+}
+firstMenu(val1)
+{
+var firstMenu=[...this.state.firstMenu]
+return  firstMenu[val1]
+
+}
+secondMenu(val1)
+{
+
+ var secondMenuData=[...this.state.secondMenuData]
+
+
+return secondMenuData[val1]
+
+}
 
   async next() {
     // let next = dataStream();
@@ -58,12 +135,24 @@ export class DeviceManager extends React.Component {
       SoH: this.state.currents.SOH,
       zones: 7,
       zoneTemperatures: this.state.tempratures,
+      voltages:this.state.voltages.cellVoltages,
     };
     let prev = this.state.metrics;
+    const tempdatalog = this.state.dataLog;
+    // // log data if needed
+   
+
+   
+    if (this.state.enableLog) {
+      tempdatalog.push(log);
+    }
 
     this.setState({
       log: log,
       metrics: logToMetrics(prev, log),
+      dataLog: tempdatalog,
+
+
     });
   }
 
@@ -93,9 +182,8 @@ export class DeviceManager extends React.Component {
                 console.log("porttted", port);
                 port.onReceive = (data) => {
 
-                  console.log('ttt',data)
                   try {
-                    var canid = data.metadata.getUint32(4, true); //?little endian
+                    var canid = data.metadata.getUint32(4, this.state.Lltte_Endian); //?little endian
                   } catch (err) {
                     return;
                   }
@@ -104,20 +192,20 @@ export class DeviceManager extends React.Component {
                     if ((canid & 0x00ffff) === 0xfffc) {
                       console.log("Heartbeat!");
                     } else {
-                      console.log("canId");
+                      console.log("canId",canid);
                       console.log(canid.toString(16));
                     }
                     return;
                   }
                   var recvdata = data.data;
-                  console.log("recvd", recvdata.getUint8(0));
+                  // console.log("recvd", recvdata.getUint8(0));
 
                   try {
                   
 
                     flcan.parseData(recvdata.getUint8(0), recvdata);
                   } catch (err) {
-                    console.log(err);
+                    console.log(canid.toString(16), recvdata, ":", err);
                   }
                 };
 
@@ -213,6 +301,9 @@ export class DeviceManager extends React.Component {
     // const prevmetrics = this.state.metrics;
     // const tempdatalog = this.state.dataLog;
     // // log data if needed
+
+
+   
     // if (this.state.enableLog) {
     //   tempdatalog.push(newlog);
     // }
@@ -369,12 +460,12 @@ export class DeviceManagerProvider extends DeviceManager {
       }
     };
 
-    flcan.Port.clearRxPacket = function () {
+    flcan.clearRxPacket = function () {
       this.packet_rx.metadata = null;
       this.packet_rx.data = null;
     };
 
-    flcan.Port.clearTxPacket = function () {
+    flcan.clearTxPacket = function () {
       this.packet_tx.metadata = null;
       this.packet_tx.data = null;
     };
@@ -413,7 +504,6 @@ export class DeviceManagerProvider extends DeviceManager {
           .then((buffer) => {
             console.log("got data");
             var data = { ...this.state.packet_rx };
-            console.log('ttt 1',buffer.data)
 
             data.data = buffer.data;
 
@@ -434,12 +524,19 @@ export class DeviceManagerProvider extends DeviceManager {
         .then(() => {
           flcan.sendCommand(flcan.opcodes.FLCAN_CMD_START);
         })
-        .then(() => {
-          flcan.sync(0x23);
-        })
+        // .then(() => {
+        //   flcan.sync(0x23);
+        // })
         .then(() => {
           readLoop();
-        });
+
+        })
+        .then(() => {
+          console.log("ide");
+          flcan.identify(0x21);
+
+        })
+        ;
     };
 
     flcan.selectProtocol = function () {
@@ -471,6 +568,7 @@ export class DeviceManagerProvider extends DeviceManager {
 
     flcan.identify = function (addr) {
       //serial number etc
+      console.log('identity',this.sendCommand(0x11, new Uint8Array([addr])))
       return this.sendCommand(0x11, new Uint8Array([addr]));
     };
 
@@ -513,19 +611,34 @@ export class DeviceManagerProvider extends DeviceManager {
 
     flcan.parseData = (gf, data) => {
 
-      console.log('gf',gf)
+      console.log('identity',gf)
+
+    if(gf===8)
+    {
       this.setState({
-        linked: 1,
+        linked: 1,identity:true
+      },()=>{
+      console.log('identity true')
+
       });
+    }
+
+else if(this.state.identity)
+{
+
       var s = {};
       var i = 0;
       switch (gf) {
         case 1: {
+          if (this.state.bms_info.id === undefined) 
+          return;
           s = { timestamp: 0, cellVoltages: [] };
-          s.timestamp = data.getUint32(1, true);
-          for (i = 0; i < 14; i++) {
-            s.cellVoltages.push(data.getUint16(5 + i * 2, true));
+          s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
+          for (i = 0; i < 13; i++) {
+            s.cellVoltages.push(data.getUint16(5 + i * 2, !this.state.Lltte_Endian));
           }
+          console.log("parsed", s);
+
 
           this.setState(
             {
@@ -533,7 +646,6 @@ export class DeviceManagerProvider extends DeviceManager {
             },
             () => {
               this.next();
-              console.log("object volatges", this.state.voltages);
             }
           );
 
@@ -543,11 +655,13 @@ export class DeviceManagerProvider extends DeviceManager {
         }
 
         case 2: {
+          if (this.state.bms_info.id === undefined) 
+          return;
           // temperature
           s = { timestamp: 0, temperatures: [] };
-          s.timestamp = data.getUint32(1, true);
-          for (i = 0; i < 7; i++) {
-            s.temperatures.push(data.getInt16(5 + i * 2, true).toString());
+          s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
+          for (i = 0; i < 6; i++) {
+            s.temperatures.push(data.getInt16(5 + i * 2, !this.state.Lltte_Endian).toString());
           }
           console.log("parsed2", JSON.stringify(s));
           this.setState({ tempratures: s.temperatures}, () => {
@@ -559,11 +673,13 @@ export class DeviceManagerProvider extends DeviceManager {
 
         case 3: {
           //misc
-          s.timestamp = data.getUint32(1, true);
-          s.isenseCurrent = data.getInt32(5, true);
-          s.SOC = data.getFloat32(9, true);
-          s.SOH = data.getFloat32(13, true);
-          s.stackVoltage = data.getUint16(17, true);
+          if (this.state.bms_info.id === undefined) 
+          return;
+          s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
+          s.isenseCurrent = data.getInt32(5, !this.state.Lltte_Endian);
+          // s.SOC = data.getFloat32(9, !this.state.Lltte_Endian);
+          // s.SOH = data.getFloat32(13, !this.state.Lltte_Endian);
+          // s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian);
           console.log('parsed3',JSON.stringify(s));
           this.setState({ currents: s }, () => {
             this.next();
@@ -590,7 +706,7 @@ export class DeviceManagerProvider extends DeviceManager {
         }
         case 7: {
           //fault frame
-          // console.log('parsing',data)
+          console.log('parsing 7',data.getUint8(5).toString(2))
           console.log(data.getUint8(5).toString(2));
           break;
         }
@@ -603,14 +719,16 @@ export class DeviceManagerProvider extends DeviceManager {
 				uint8_t str_series;
 				uint8_t str_parallel;
 				uint16_t design_cap;
-			*/
+      */
           var bms_info = {};
           bms_info.id = new TextDecoder().decode(data["buffer"].slice(5, 25));
-          bms_info.version = data.getUint8(26);
-          bms_info.warranty = data.getUint8(27);
-          bms_info.series = data.getUint8(28);
-          bms_info.parallel = data.getUint8(29);
-          this.setState({ bms_info: bms_info });
+          bms_info.version = data.getUint8(25);
+          bms_info.warranty = data.getUint8(26);
+          bms_info.series = data.getUint8(27);
+          bms_info.parallel = data.getUint8(28);
+
+
+          this.setState({ bms_info: bms_info },()=>{console.log('parsed',this.state.bms_info)});
           // bms_info.des_cap = data.getUint16(30, true);
           break;
         }
@@ -618,7 +736,13 @@ export class DeviceManagerProvider extends DeviceManager {
           break;
         }
       }
-    };
+    }
+    else
+    {
+      console.log('identity false')
+      flcan.identify(0x21);
+    }
+    }
     // only for dummy data
     // if (this.state.linked) {
     //   this.interval = setInterval(
@@ -626,15 +750,17 @@ export class DeviceManagerProvider extends DeviceManager {
     //     metricsOptions.updateInterval
     //   );
     // }
+    
+  
   }
 
   componentDidUpdate() {
-    if (this.state.linked && !this.interval) {
-      this.interval = setInterval(
-        () => this.probe(),
-        metricsOptions.updateInterval
-      );
-    }
+    // if (this.state.linked && !this.interval) {
+    //   this.interval = setInterval(
+    //     () => this.probe(),
+    //     metricsOptions.updateInterval
+    //   );
+    // }
   }
 
   componentWillUnmount() {
@@ -655,6 +781,8 @@ export class DeviceManagerProvider extends DeviceManager {
           toggleLogMode: this.toggleLogMode,
           exportLog: this.exportLog,
           runDiagnostics: this.runDiagnostics,
+        
+          exportMenuItem:this.exportMenuItem
         }}
       >
         {children}

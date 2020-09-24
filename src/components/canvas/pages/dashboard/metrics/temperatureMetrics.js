@@ -5,6 +5,8 @@ import DefaultTile from "../../../helpers/defaultTile";
 import * as palette from "../../../../themeworks/darkspaceUI/swatch";
 
 const TemperatureMetrics = ({ feed }) => {
+
+console.log('temo',feed)
   return (
     <DefaultTile title="Temperature" caption="metrics">
       <ResponsiveLine
@@ -37,7 +39,7 @@ const TemperatureMetrics = ({ feed }) => {
         enableSlices={false}
         useMesh={false}
         enableArea={false}
-        colors={palette.tone.T5}
+        // colors={palette.tone.T5}
         defs={[
           linearGradientDef("G3", [
             { offset: 0, color: palette.tone.T5, opacity: 0.9 },

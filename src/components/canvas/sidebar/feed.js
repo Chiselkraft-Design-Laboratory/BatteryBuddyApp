@@ -9,7 +9,17 @@ const useStyles = makeStyles(
       padding: theme.spacing(1, 2.5),
       background: theme.palette.D3,
       marginBottom: "1px",
+    
     },
+    caption:
+    {
+      fontSize:'0.95rem',
+      fontWeight:400
+    },
+    wrap:
+    {
+      alignItems:'center'
+    }
   }),
   { index: 1 }
 );
@@ -18,9 +28,9 @@ const SideBarFeed = ({ canvas, caption, value, suffix, alert }) => {
   const cl = useStyles(canvas.dense);
   return (
     <Grid item className={cl.root}>
-      <Grid container direction="row" wrap="nowrap">
+      <Grid container direction="row" wrap="nowrap" classes={{root:cl.wrap}}>
         <Grid item xs>
-          <Typography variant="h7">{caption}</Typography>
+          <Typography variant="body1" classes={{root:cl.caption}} >{caption}</Typography>
         </Grid>
         <Grid item>
           <Typography variant="h6">

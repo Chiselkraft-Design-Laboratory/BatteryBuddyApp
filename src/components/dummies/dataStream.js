@@ -21,7 +21,7 @@ const maxSoH = 68.0;
 // ---------------------------
 
 export const spec = {
-  make: "Napino",
+  make: "Vecmocon",
   model: "X Series 458n",
   serial: "XYZQ N458 69468092",
   mfd: "2020-06-24",

@@ -29,13 +29,15 @@ const useStyles = makeStyles(
 
 const SideBarHeader = ({ make, model, linktype }) => {
   const cl = useStyles();
+
+ var link='CanBus'
   return (
     <Grid item className={cl.root}>
       <Grid container direction="row" wrap="nowrap">
         <Grid item xs>
           <Typography variant="h4">{make}</Typography>
-          <Typography variant="subtitle1">{model}</Typography>
-          <Typography variant="caption">{linktype}</Typography>
+          <Typography variant="subtitle2">{model}</Typography>
+          <Typography variant="body2">{link}</Typography>
         </Grid>
         <Grid item>
           <Badge
