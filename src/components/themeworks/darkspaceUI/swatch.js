@@ -14,8 +14,8 @@ export const lite = {
 export const tone = {
   T1: "#00EABD", //sea green crayola
   T2: "#9FCE3E", //yellow green
-  T3: "#52F06A", //spring green
-  T4: "#FFDF31", //yellow pantone
+  T3: "#5DD975", //spring green
+  T4: "#FAD951", //yellow pantone
   T5: "#FF5349", //orange red crayola
 };
 

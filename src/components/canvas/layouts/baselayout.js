@@ -3,7 +3,7 @@ import { makeStyles, Grid } from "@material-ui/core";
 
 import withCanvas from "../withCanvas";
 
-const useStyles = ({ wizard, dense }) =>
+const useStyles = (wizard) =>
   makeStyles(
     (theme) => ({
       root: {
@@ -14,14 +14,14 @@ const useStyles = ({ wizard, dense }) =>
         display: wizard && "flex",
         alignItems: wizard && "center",
         padding: theme.spacing(0, 1.5),
-        height: dense && "100%",
-        overflow: dense && "hidden",
+        height: "100%",
+        overflow: "hidden",
       },
       content: {
         height: "100%",
         "& > *": {
-          height: dense && "100%",
-          overflowY: dense && "auto",
+          // height: "100%",
+          overflowY: "auto",
         },
       },
     }),
@@ -29,7 +29,7 @@ const useStyles = ({ wizard, dense }) =>
   );
 
 const BaseLayout = ({ canvas, navigation, children, footer, wizard }) => {
-  const cl = useStyles(wizard, canvas.dense)();
+  const cl = useStyles(wizard)();
   return (
     <Grid
       container
