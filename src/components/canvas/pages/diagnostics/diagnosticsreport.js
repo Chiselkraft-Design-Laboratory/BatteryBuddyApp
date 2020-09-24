@@ -1,5 +1,12 @@
 import React from "react";
-import { Grid, List, ListItem, makeStyles } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@material-ui/core";
 
 const useStyles = makeStyles(
   (theme) => ({
@@ -12,7 +19,16 @@ const useStyles = makeStyles(
       color: theme.palette.L1,
     },
     list: {
-      width: "100%",
+      minWidth: "100%",
+      minHeight: 400,
+    },
+    fail: {
+      color: theme.palette.T5,
+      fill: theme.palette.T5,
+      borderBottom: "none",
+    },
+    pass: {
+      borderBottom: "none",
     },
   }),
   { index: 1 }
@@ -24,10 +40,28 @@ const DiagnosticsReport = ({ data, fallback }) => {
   return (
     <Grid item xs={12} md classes={{ root: cl.root }}>
       {data ? (
-        <List classes={{ root: cl.list }}>
-          {console.log("data", data)}
-          {JSON.stringify(data)}
-        </List>
+        <Table>
+          <TableBody>
+            {data.map((field, index) => (
+              <TableRow key={index}>
+                <TableCell
+                  className={
+                    field[Object.keys(field)] !== 0 ? cl.fail : cl.pass
+                  }
+                >
+                  {Object.keys(field)}
+                </TableCell>
+                <TableCell
+                  className={
+                    field[Object.keys(field)] !== 0 ? cl.fail : cl.pass
+                  }
+                >
+                  {field[Object.keys(field)] == 0 ? "PASS" : "FAIL"}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       ) : (
         fallback
       )}
@@ -36,7 +70,7 @@ const DiagnosticsReport = ({ data, fallback }) => {
 };
 
 const ReportList = (list) => {
-  return <ListItem button>{Object.keys(list)}hello</ListItem>;
+  // return <ListItem button>{Object.keys(list)}hello</ListItem>;
 };
 
 export default React.memo(DiagnosticsReport);

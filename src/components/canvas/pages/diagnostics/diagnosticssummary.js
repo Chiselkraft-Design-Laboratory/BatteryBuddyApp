@@ -84,7 +84,7 @@ const DiagnosticsSummary = ({ summary, accent, onRetry, onSave }) => {
                 </Typography>
               </Grid>
             </Grid>
-
+            <div className={cl.expand} />
             <Grid container direction="column">
               <Button classes={{ root: cl.btnretry }} onClick={onRetry}>
                 Retry Diagnostics
