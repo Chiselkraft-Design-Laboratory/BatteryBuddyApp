@@ -50,21 +50,30 @@ export const nextLog = () => {
 };
 
 export const nextDiagnostics = (type) => {
-  let result = [];
+  let report = [];
 
-  range(16).forEach((index) => {
-    result.push({ ["parameter" + (index + 1)]: true });
-  });
+  report.push({ CELLS_ADC: 0 });
+  report.push({ THERM_ADC: 0 });
+  report.push({ SHUNT_ADC: 0 });
+  report.push({ STATUS_FUSE: 0 });
+  report.push({ MOSFET_CHARGE: 0 });
+  report.push({ SHUNT_CONN: 0 });
+  report.push({ CELLS_CONN: 0 });
+  report.push({ THERM_CONN: 0 });
+  report.push({ CELL_FAULT_FUNC: 0 });
+  report.push({ THERM_FAULT_FUNC: 0 });
+  report.push({ SHUNT_FAULT_FUNC: 0 });
+  report.push({ CELL_FAULT_FUNC: 0 });
 
   if (type === undefined || type > 2 || type < 0) {
     type = parseInt(randomize(0, 2, 1));
   }
-  console.log("type", type);
+
   switch (type) {
     case 1:
       range(4).forEach(() => {
-        const rand = parseInt(randomize(0, 15, 2));
-        result[rand] = { ["parameter" + (rand + 1)]: false };
+        const rand = parseInt(randomize(0, 11, 2));
+        report[rand] = { [Object.keys(report[rand])[0]]: true };
       });
       return {
         health: "moderate",
@@ -72,12 +81,12 @@ export const nextDiagnostics = (type) => {
         cycles: parseInt(randomize(500, 700, 3)),
         error: parseInt(randomize(0, 3, 1)),
         warning: parseInt(randomize(1, 4, 1)),
-        data: result,
+        data: report,
       };
     case 2:
       range(8).forEach(() => {
-        const rand = parseInt(randomize(0, 15, 2));
-        result[rand] = { ["parameter" + (rand + 1)]: false };
+        const rand = parseInt(randomize(0, 11, 2));
+        report[rand] = { [Object.keys(report[rand])[0]]: true };
       });
       return {
         health: "critical",
@@ -85,7 +94,7 @@ export const nextDiagnostics = (type) => {
         cycles: parseInt(randomize(1800, 2200, 4)),
         error: parseInt(randomize(4, 8, 1)),
         warning: parseInt(randomize(2, 6, 1)),
-        data: result,
+        data: report,
       };
     default:
       return {
@@ -94,7 +103,7 @@ export const nextDiagnostics = (type) => {
         cycles: parseInt(randomize(80, 150, 3)),
         error: 0,
         warning: 0,
-        data: result,
+        data: report,
       };
   }
 };

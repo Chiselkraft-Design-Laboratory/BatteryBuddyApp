@@ -3,7 +3,12 @@ import * as time from "d3-time";
 import logToMetrics from "./parseMetrics";
 import { linkMode } from "../constants/typedef";
 import * as dummy from "../dummies/dataStream";
-import { metricsOptions,firstMenu, thirdMenu,fourthMenu } from "../constants/preferences";
+import {
+  metricsOptions,
+  firstMenu,
+  thirdMenu,
+  fourthMenu,
+} from "../constants/preferences";
 
 var port;
 var flcan = {};
@@ -21,19 +26,19 @@ export class DeviceManager extends React.Component {
       SoH: 0,
       zones: 7,
       zoneTemperatures: [],
-      voltages:[]
+      voltages: [],
     },
     metrics: logToMetrics(),
 
     enableLog: false,
     dataLog: [],
-    firstMenu:firstMenu,
-    secondMenuData:['select Metrics'],
-    analyticsData:['packCurrent','SoC'],
-    tempZoneData:thirdMenu,
-    tempData:[0],
-    cellindex:[0],
-    cellsData:fourthMenu,
+    firstMenu: firstMenu,
+    secondMenuData: ["select Metrics"],
+    analyticsData: ["packCurrent", "SoC"],
+    tempZoneData: thirdMenu,
+    tempData: [0],
+    cellindex: [0],
+    cellsData: fourthMenu,
     report: {},
     // IOT states >>>>>>>>>>>>>>>>>>>>>>>
     connectedButton: "",
@@ -46,78 +51,56 @@ export class DeviceManager extends React.Component {
     voltages: "",
     tempratures: "",
     currents: "",
-    Lltte_Endian:true,
-    identity:false
+    Lltte_Endian: true,
+    identity: false,
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   };
 
+  exportMenuItem = (val1, val2) => {
+    var data = [...this.state.analyticsData];
+    var TempData = [...this.state.tempData];
 
+    console.log("eee", val2);
+    if (val2 === "firstMenu") {
+      let id = this.firstMenu(val1);
 
+      var firstMenu = [...this.state.firstMenu];
+      firstMenu.splice(val1, 1);
+      console.log("eee 1", data, id);
 
-exportMenuItem=(val1,val2)=>
-{
+      data.push(id);
+      data.shift();
+      this.setState({ analyticsData: data, secondMenuData: firstMenu });
+    } else if (val2 === "secondMenuData") {
+      let id = this.secondMenu(val1);
+      data.shift();
+      data.push(id);
 
-var data =[...this.state.analyticsData]
-var TempData=[...this.state.tempData]
+      this.setState({ analyticsData: data }, () =>
+        console.log("eeee 2", this.state.analyticsData)
+      );
+    } else if (val2 === "tempZoneData") {
+      var tempData = [...this.state.tempData];
+      tempData.push(val1);
+      tempData.shift();
+      this.setState({ tempData: tempData });
+    } else if (val2 === "cellsData") {
+      var cellindex = [...this.state.cellindex];
+      cellindex.push(val1);
+      cellindex.shift();
+      this.setState({ cellindex: cellindex });
+    }
+    //cellsData
+  };
+  firstMenu(val1) {
+    var firstMenu = [...this.state.firstMenu];
+    return firstMenu[val1];
+  }
+  secondMenu(val1) {
+    var secondMenuData = [...this.state.secondMenuData];
 
-console.log('eee',val2)
-if(val2==='firstMenu')
-{
- let id=this.firstMenu(val1);
-
-var firstMenu=[...this.state.firstMenu]
-  firstMenu.splice(val1,1)
-  console.log('eee 1',data,id)
-
-data.push(id);
-data.shift()
-this.setState({analyticsData:data,secondMenuData:firstMenu})
-
-}
-else if(val2==='secondMenuData')
-{
-
- let id=this.secondMenu(val1)
-data.shift()
-data.push(id);
-
-this.setState({analyticsData:data},()=>
- console.log('eeee 2',this.state.analyticsData,)
-)
-}
-else if(val2==='tempZoneData')
-{
-var tempData=[...this.state.tempData];
-tempData.push(val1);
-tempData.shift();
-this.setState({tempData:tempData})
-
-}
-else if(val2==='cellsData')
-{
-var cellindex=[...this.state.cellindex];
-cellindex.push(val1);
-cellindex.shift();
-this.setState({cellindex:cellindex})
-
-}
-//cellsData
-}
-firstMenu(val1)
-{
-var firstMenu=[...this.state.firstMenu]
-return  firstMenu[val1]
-
-}
-secondMenu(val1)
-{
-
- var secondMenuData=[...this.state.secondMenuData]
-
-
-return secondMenuData[val1]
-
-}
+    return secondMenuData[val1];
+  }
 
   async next() {
     // let next = dataStream();
@@ -135,14 +118,12 @@ return secondMenuData[val1]
       SoH: this.state.currents.SOH,
       zones: 7,
       zoneTemperatures: this.state.tempratures,
-      voltages:this.state.voltages.cellVoltages,
+      voltages: this.state.voltages.cellVoltages,
     };
     let prev = this.state.metrics;
     const tempdatalog = this.state.dataLog;
     // // log data if needed
-   
 
-   
     if (this.state.enableLog) {
       tempdatalog.push(log);
     }
@@ -151,8 +132,6 @@ return secondMenuData[val1]
       log: log,
       metrics: logToMetrics(prev, log),
       dataLog: tempdatalog,
-
-
     });
   }
 
@@ -181,18 +160,20 @@ return secondMenuData[val1]
               flcan.connect().then(() => {
                 console.log("porttted", port);
                 port.onReceive = (data) => {
-
                   try {
-                    var canid = data.metadata.getUint32(4, this.state.Lltte_Endian); //?little endian
+                    var canid = data.metadata.getUint32(
+                      4,
+                      this.state.Lltte_Endian
+                    ); //?little endian
                   } catch (err) {
                     return;
                   }
-            
+
                   if ((canid & 0x00ffff) !== 0xff33) {
                     if ((canid & 0x00ffff) === 0xfffc) {
                       console.log("Heartbeat!");
                     } else {
-                      console.log("canId",canid);
+                      console.log("canId", canid);
                       console.log(canid.toString(16));
                     }
                     return;
@@ -201,8 +182,6 @@ return secondMenuData[val1]
                   // console.log("recvd", recvdata.getUint8(0));
 
                   try {
-                  
-
                     flcan.parseData(recvdata.getUint8(0), recvdata);
                   } catch (err) {
                     console.log(canid.toString(16), recvdata, ":", err);
@@ -241,31 +220,27 @@ return secondMenuData[val1]
 
   disconncect = (mode) => {
     if (this.state.linked === linkMode.CANBUS) {
-     flcan.stop()
-     .then(()=>{
-     
-   flcan.disconnect()
-        .then(() => {
-          this._write(
-            "[!] Disconnected from " + port.device_.productName + "\n"
-          );
-        
-          this.setState({ linked: linkMode.NONE });
-        })
-        .catch(
-        console.log('error in disconnect')
-        );
-        })
-    }
+      flcan.stop().then(() => {
+        flcan
+          .disconnect()
+          .then(() => {
+            this._write(
+              "[!] Disconnected from " + port.device_.productName + "\n"
+            );
 
-    
+            this.setState({ linked: linkMode.NONE });
+          })
+          .catch(console.log("error in disconnect"));
+      });
+    }
   };
 
   toggleLogMode = () => {
-    this.setState({ enableLog: !this.state.enableLog, dataLog: [] },()=>(this.state.enableLog)?this.log():null);
+    this.setState({ enableLog: !this.state.enableLog, dataLog: [] }, () =>
+      this.state.enableLog ? this.log() : null
+    );
   };
-  log()
-  {
+  log() {
     // alert('yupp baby')
   }
 
@@ -288,6 +263,32 @@ return secondMenuData[val1]
     atag.download = name;
     atag.click();
   };
+  exportReport = () => {
+    var content = JSON.stringify(this.state.report);
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var currentDate = date + "/" + month + "/" + year;
+
+    var name =
+      this.state.spec.make +
+      "_" +
+      this.state.spec.serial +
+      "_diagnosticsreport_" +
+      currentDate;
+    var atag = document.createElement("a");
+    var file = new Blob([content], { type: "text/plain" });
+    atag.href = URL.createObjectURL(file);
+    atag.download = name;
+    atag.click();
+  };
+
+  runDiagnostics = () => {
+    // dummy
+    this.setState({
+      report: dummy.nextDiagnostics(),
+    });
+  };
 
   runDiagnostics = () => {
     // dummy
@@ -301,9 +302,6 @@ return secondMenuData[val1]
     // const prevmetrics = this.state.metrics;
     // const tempdatalog = this.state.dataLog;
     // // log data if needed
-
-
-   
     // if (this.state.enableLog) {
     //   tempdatalog.push(newlog);
     // }
@@ -328,6 +326,7 @@ const DeviceManagerContext = React.createContext({
   toggleLogMode: () => {},
   exportLog: () => {},
   runDiagnostics: () => {},
+  exportReport: () => {},
 });
 
 export class DeviceManagerProvider extends DeviceManager {
@@ -479,18 +478,15 @@ export class DeviceManagerProvider extends DeviceManager {
     flcan.start = () => {
       let readLoop = () => {
         const {
-          endpointNumber} = this.state.device.configuration.interfaces[0].alternate.endpoints[0];
+          endpointNumber,
+        } = this.state.device.configuration.interfaces[0].alternate.endpoints[0];
         this.device_
           .transferIn(endpointNumber, 12)
           .then((buffer) => {
-
             var data = { ...this.state.packet_rx };
             data.metadata = buffer.data;
-            
-         
-            this.setState({ packet_rx: data }, () => {
-           
-            });
+
+            this.setState({ packet_rx: data }, () => {});
           })
           .catch((error) => {
             port.onReceiveError(error);
@@ -508,7 +504,6 @@ export class DeviceManagerProvider extends DeviceManager {
             data.data = buffer.data;
 
             this.setState({ packet_rx: data }, () => {
-
               port.onReceive(this.state.packet_rx);
             });
 
@@ -519,24 +514,23 @@ export class DeviceManagerProvider extends DeviceManager {
           });
       };
 
-      return flcan
-        .selectProtocol()
-        .then(() => {
-          flcan.sendCommand(flcan.opcodes.FLCAN_CMD_START);
-        })
-        // .then(() => {
-        //   flcan.sync(0x23);
-        // })
-        .then(() => {
-          readLoop();
-
-        })
-        .then(() => {
-          console.log("ide");
-          flcan.identify(0x21);
-
-        })
-        ;
+      return (
+        flcan
+          .selectProtocol()
+          .then(() => {
+            flcan.sendCommand(flcan.opcodes.FLCAN_CMD_START);
+          })
+          // .then(() => {
+          //   flcan.sync(0x23);
+          // })
+          .then(() => {
+            readLoop();
+          })
+          .then(() => {
+            console.log("ide");
+            flcan.identify(0x21);
+          })
+      );
     };
 
     flcan.selectProtocol = function () {
@@ -568,7 +562,7 @@ export class DeviceManagerProvider extends DeviceManager {
 
     flcan.identify = function (addr) {
       //serial number etc
-      console.log('identity',this.sendCommand(0x11, new Uint8Array([addr])))
+      console.log("identity", this.sendCommand(0x11, new Uint8Array([addr])));
       return this.sendCommand(0x11, new Uint8Array([addr]));
     };
 
@@ -610,109 +604,103 @@ export class DeviceManagerProvider extends DeviceManager {
     };
 
     flcan.parseData = (gf, data) => {
+      console.log("identity", gf);
 
-      console.log('identity',gf)
-
-    if(gf===8)
-    {
-      this.setState({
-        linked: 1,identity:true
-      },()=>{
-      console.log('identity true')
-
-      });
-    }
-
-else if(this.state.identity)
-{
-
-      var s = {};
-      var i = 0;
-      switch (gf) {
-        case 1: {
-          if (this.state.bms_info.id === undefined) 
-          return;
-          s = { timestamp: 0, cellVoltages: [] };
-          s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
-          for (i = 0; i < 13; i++) {
-            s.cellVoltages.push(data.getUint16(5 + i * 2, !this.state.Lltte_Endian));
+      if (gf === 8) {
+        this.setState(
+          {
+            linked: 1,
+            identity: true,
+          },
+          () => {
+            console.log("identity true");
           }
-          console.log("parsed", s);
-
-
-          this.setState(
-            {
-              voltages: s,
-            },
-            () => {
-              this.next();
+        );
+      } else if (this.state.identity) {
+        var s = {};
+        var i = 0;
+        switch (gf) {
+          case 1: {
+            if (this.state.bms_info.id === undefined) return;
+            s = { timestamp: 0, cellVoltages: [] };
+            s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
+            for (i = 0; i < 13; i++) {
+              s.cellVoltages.push(
+                data.getUint16(5 + i * 2, !this.state.Lltte_Endian)
+              );
             }
-          );
+            console.log("parsed", s);
 
-        
+            this.setState(
+              {
+                voltages: s,
+              },
+              () => {
+                this.next();
+              }
+            );
 
-          break;
-        }
-
-        case 2: {
-          if (this.state.bms_info.id === undefined) 
-          return;
-          // temperature
-          s = { timestamp: 0, temperatures: [] };
-          s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
-          for (i = 0; i < 6; i++) {
-            s.temperatures.push(data.getInt16(5 + i * 2, !this.state.Lltte_Endian).toString());
+            break;
           }
-          console.log("parsed2", JSON.stringify(s));
-          this.setState({ tempratures: s.temperatures}, () => {
-            this.next();
 
-          });
-          break;
-        }
+          case 2: {
+            if (this.state.bms_info.id === undefined) return;
+            // temperature
+            s = { timestamp: 0, temperatures: [] };
+            s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
+            for (i = 0; i < 6; i++) {
+              s.temperatures.push(
+                data.getInt16(5 + i * 2, !this.state.Lltte_Endian).toString()
+              );
+            }
+            console.log("parsed2", JSON.stringify(s));
+            this.setState({ tempratures: s.temperatures }, () => {
+              this.next();
+            });
+            break;
+          }
 
-        case 3: {
-          //misc
-          if (this.state.bms_info.id === undefined) 
-          return;
-          s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
-          s.isenseCurrent = data.getInt32(5, !this.state.Lltte_Endian);
-          // s.SOC = data.getFloat32(9, !this.state.Lltte_Endian);
-          // s.SOH = data.getFloat32(13, !this.state.Lltte_Endian);
-          // s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian);
-          console.log('parsed3',JSON.stringify(s));
-          this.setState({ currents: s }, () => {
-            this.next();
-            console.log("parsed3", JSON.stringify(this.state.currents));
-          });
-         
-          break;
-        }
+          case 3: {
+            //misc
+            if (this.state.bms_info.id === undefined) return;
+            s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
+            s.isenseCurrent = data.getInt32(5, !this.state.Lltte_Endian);
+            // s.SOC = data.getFloat32(9, !this.state.Lltte_Endian);
+            // s.SOH = data.getFloat32(13, !this.state.Lltte_Endian);
+            // s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian);
+            console.log("parsed3", JSON.stringify(s));
+            this.setState({ currents: s }, () => {
+              this.next();
+              console.log("parsed3", JSON.stringify(this.state.currents));
+            });
 
-        case 4: {
-          //stats
-          break;
-        }
+            break;
+          }
 
-        case 5: {
-          //capacity
-          break;
-        }
+          case 4: {
+            //stats
+            break;
+          }
 
-        case 6: {
-          //
+          case 5: {
+            //capacity
+            break;
+          }
 
-          break;
-        }
-        case 7: {
-          //fault frame
-          console.log('parsing 7',data.getUint8(5).toString(2))
-          console.log(data.getUint8(5).toString(2));
-          break;
-        }
+          case 6: {
+            //
 
-        case 8: {
-          /*
+            break;
+          }
+          case 7: {
+            //fault frame
+            console.log("parsing 7", data.getUint8(5).toString(2));
+            console.log(data.getUint8(5).toString(2));
+            break;
+          }
+
+          case 8: {
+            /*
 				 uint8_t batt_id[20];
 				uint8_t bms_ver;
 				uint8_t warranty;
@@ -720,29 +708,28 @@ else if(this.state.identity)
 				uint8_t str_parallel;
 				uint16_t design_cap;
       */
-          var bms_info = {};
-          bms_info.id = new TextDecoder().decode(data["buffer"].slice(5, 25));
-          bms_info.version = data.getUint8(25);
-          bms_info.warranty = data.getUint8(26);
-          bms_info.series = data.getUint8(27);
-          bms_info.parallel = data.getUint8(28);
+            var bms_info = {};
+            bms_info.id = new TextDecoder().decode(data["buffer"].slice(5, 25));
+            bms_info.version = data.getUint8(25);
+            bms_info.warranty = data.getUint8(26);
+            bms_info.series = data.getUint8(27);
+            bms_info.parallel = data.getUint8(28);
 
-
-          this.setState({ bms_info: bms_info },()=>{console.log('parsed',this.state.bms_info)});
-          // bms_info.des_cap = data.getUint16(30, true);
-          break;
+            this.setState({ bms_info: bms_info }, () => {
+              console.log("parsed", this.state.bms_info);
+            });
+            // bms_info.des_cap = data.getUint16(30, true);
+            break;
+          }
+          default: {
+            break;
+          }
         }
-        default: {
-          break;
-        }
+      } else {
+        console.log("identity false");
+        flcan.identify(0x21);
       }
-    }
-    else
-    {
-      console.log('identity false')
-      flcan.identify(0x21);
-    }
-    }
+    };
     // only for dummy data
     // if (this.state.linked) {
     //   this.interval = setInterval(
@@ -750,8 +737,6 @@ else if(this.state.identity)
     //     metricsOptions.updateInterval
     //   );
     // }
-    
-  
   }
 
   componentDidUpdate() {
@@ -781,8 +766,7 @@ else if(this.state.identity)
           toggleLogMode: this.toggleLogMode,
           exportLog: this.exportLog,
           runDiagnostics: this.runDiagnostics,
-        
-          exportMenuItem:this.exportMenuItem
+          exportReport: this.exportReport,
         }}
       >
         {children}
