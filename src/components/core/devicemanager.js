@@ -92,14 +92,14 @@ export class DeviceManager extends React.Component {
               flcan.connect().then(() => {
                 console.log("porttted", port);
                 port.onReceive = (data) => {
+
+                  console.log('ttt',data)
                   try {
-                    // console.log("canId");
                     var canid = data.metadata.getUint32(4, true); //?little endian
                   } catch (err) {
                     return;
                   }
-                  // console.log('dataaa',((canid & 0x00ffff) != 0xff33) );
-                  // return;
+            
                   if ((canid & 0x00ffff) !== 0xff33) {
                     if ((canid & 0x00ffff) === 0xfffc) {
                       console.log("Heartbeat!");
@@ -113,10 +113,7 @@ export class DeviceManager extends React.Component {
                   console.log("recvd", recvdata.getUint8(0));
 
                   try {
-                    // console.log("canId reecuvdata",recvdata);
-
-                    // var timestamp = data.metadata.getUint32(0, true); //?little endian
-                    // var dlc = data.metadata.getUint8(8);
+                  
 
                     flcan.parseData(recvdata.getUint8(0), recvdata);
                   } catch (err) {
@@ -391,20 +388,17 @@ export class DeviceManagerProvider extends DeviceManager {
     flcan.start = () => {
       let readLoop = () => {
         const {
-          endpointNumber,
-        } = this.state.device.configuration.interfaces[0].alternate.endpoints[0];
+          endpointNumber} = this.state.device.configuration.interfaces[0].alternate.endpoints[0];
         this.device_
           .transferIn(endpointNumber, 12)
           .then((buffer) => {
+
             var data = { ...this.state.packet_rx };
             data.metadata = buffer.data;
-            console.log(
-              "metadata",
-              data.metadata.getUint32(4, true).toString(16),
-              data
-            );
+            
+         
             this.setState({ packet_rx: data }, () => {
-              // console.log('packet rx metadata ',this.state.packet_rx)
+           
             });
           })
           .catch((error) => {
@@ -418,10 +412,13 @@ export class DeviceManagerProvider extends DeviceManager {
           })
           .then((buffer) => {
             console.log("got data");
-            // console.log('state.packet in else',this.state.packet_rx.metadata )
             var data = { ...this.state.packet_rx };
+            console.log('ttt 1',buffer.data)
+
             data.data = buffer.data;
+
             this.setState({ packet_rx: data }, () => {
+
               port.onReceive(this.state.packet_rx);
             });
 
@@ -515,6 +512,8 @@ export class DeviceManagerProvider extends DeviceManager {
     };
 
     flcan.parseData = (gf, data) => {
+
+      console.log('gf',gf)
       this.setState({
         linked: 1,
       });

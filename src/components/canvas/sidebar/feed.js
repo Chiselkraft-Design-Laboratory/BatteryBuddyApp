@@ -20,7 +20,7 @@ const SideBarFeed = ({ canvas, caption, value, suffix, alert }) => {
     <Grid item className={cl.root}>
       <Grid container direction="row" wrap="nowrap">
         <Grid item xs>
-          <Typography variant="h6">{caption}</Typography>
+          <Typography variant="h7">{caption}</Typography>
         </Grid>
         <Grid item>
           <Typography variant="h6">
