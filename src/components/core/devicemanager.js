@@ -4,7 +4,7 @@ import logToMetrics from "./parseMetrics";
 import { linkMode } from "../constants/typedef";
 import * as dummy from "../dummies/dataStream";
 import {
-  // metricsOptions,
+  metricsOptions,
   firstMenu,
   thirdMenu,
   fourthMenu,
@@ -56,7 +56,7 @@ export class DeviceManager extends React.Component {
     // IOT states >>>>>>>>>>>>>>>>>>>>>>>
     connectedButton: "",
     packet_rx: { metadata: "" },
-    device: "",
+    selectedDevice: {},
     bms_info: {},
     productName: "",
     manufacturerName: "",
@@ -64,14 +64,14 @@ export class DeviceManager extends React.Component {
     voltages: "",
     tempratures: "",
     currents: "",
-    Lltte_Endian: false,
+    Lltte_Endian: true,
     identity: false,
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   };
 
   exportMenuItem = (val1, val2) => {
     var data = [...this.state.analyticsData];
-    // var TempData = [...this.state.tempData];
+    var TempData = [...this.state.tempData];
 
     console.log("eee", val2);
     if (val2 === "firstMenu") {
@@ -120,6 +120,7 @@ export class DeviceManager extends React.Component {
 
     // if(gf===8)
     // {
+    // }
     this.setState(
       {
         linked: 1,
@@ -129,7 +130,6 @@ export class DeviceManager extends React.Component {
         console.log("identity true");
       }
     );
-    // }
 
     // else if(this.state.identity)
     // {
@@ -138,9 +138,6 @@ export class DeviceManager extends React.Component {
     var i = 0;
     switch (gf) {
       case 1: {
-        if (this.state.bms_info === null) {
-          return;
-        }
         s = { timestamp: 0, cellVoltages: [] };
         s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
         for (i = 0; i < this.state.bms_info.series; i++) {
@@ -148,7 +145,7 @@ export class DeviceManager extends React.Component {
             data.getUint16(5 + i * 2, !this.state.Lltte_Endian)
           );
         }
-        console.log("parsed", s);
+        console.log("parsed", data);
 
         this.setState(
           {
@@ -192,11 +189,12 @@ export class DeviceManager extends React.Component {
         if (this.state.bms_info === null) {
           return;
         }
-        s.timestamp = data.getUint32(1, !this.state.Lltte_Endian);
-        s.isenseCurrent = data.getInt32(5, !this.state.Lltte_Endian);
+        //1
+        s.timestamp = data.getUint32(1, !this.state.Lltte_Endian); // 4
+        s.isenseCurrent = data.getInt32(5, !this.state.Lltte_Endian); //4
         s.SOC = data.getFloat32(9, !this.state.Lltte_Endian);
         s.SOH = data.getFloat32(13, !this.state.Lltte_Endian);
-        s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian);
+        s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian); //2
         console.log("parsed3", JSON.stringify(s));
         this.setState({ currents: s }, () => {
           this.next();
@@ -226,8 +224,7 @@ export class DeviceManager extends React.Component {
         if (this.state.bms_info === null) {
           return;
         }
-        console.log("parsing 7", data.getUint8(5).toString(2));
-        console.log(data.getUint8(5).toString(2));
+        console.log("parsing 7", data);
         break;
       }
 
@@ -256,11 +253,12 @@ export class DeviceManager extends React.Component {
       default: {
         break;
       }
+      // }
     }
     // else
     // {
     //   console.log('identity false')
-    //   flcan.identify(0x21);
+    // this.identity(0x23)
     // }
   };
 
@@ -291,6 +289,7 @@ export class DeviceManager extends React.Component {
   };
 
   readLoop = () => {
+    console.log("loop ");
     const {
       endpointNumber,
     } = this.state.selectedDevice.configuration.interfaces[0].alternate.endpoints[0];
@@ -304,6 +303,7 @@ export class DeviceManager extends React.Component {
         this.setState({ packet_rx: data }, () => {});
       })
       .catch((error) => {
+        //TODO: kardo
         // port.onReceiveError(error);
       })
       .then(() => {
@@ -331,7 +331,9 @@ export class DeviceManager extends React.Component {
       })
       .catch((error) => {
         // port.onReceiveError(error);
+        console.log(this.state.packet_rx.metadata);
         console.log(error);
+        this.readLoop();
       });
   };
 
@@ -342,28 +344,32 @@ export class DeviceManager extends React.Component {
   };
 
   startTransfer() {
-    return this.selectProtocol()
-      .then(() => {
-        this.sendCommand(opCodes.FLCAN_CMD_START);
-      })
-      .then(() => {
-        this.sync(0x23);
-      })
-      .then(() => {
-        if (!this.state.disconnect) {
-          this.readLoop();
-        } else {
-          console.log("disconnected");
-        }
-      })
-      .then(() => {
-        console.log("identity calling");
-        setInterval(() => {
-          this.identify(0x23);
-        }, 1000);
-      });
+    return (
+      this.selectProtocol()
+        .then(() => {
+          console.log("start command");
+          this.sendCommand(opCodes.FLCAN_CMD_START);
+        })
+        // .then(() => {
+        // this.sync(0x23);
+        // })
+        .then(() => {
+          if (!this.state.disconnect) {
+            this.readLoop();
+          } else {
+            console.log("disconnected");
+          }
+        })
+        .then(() => {
+          console.log("identity calling");
+          setInterval(() => {
+            this.identity(0x23);
+          }, 1000);
+          //
+        })
+    );
   }
-  identify = (addr) => {
+  identity = (addr) => {
     //serial number etc
     // console.log('identity',this.sendCommand(0x11, new Uint8Array([addr])))
     return this.sendCommand(0x11, new Uint8Array([addr]));
@@ -373,7 +379,7 @@ export class DeviceManager extends React.Component {
     // port.onReceive = (data) => {
 
     try {
-      var canid = data.metadata.getUint32(4, !this.state.Lltte_Endian); //?little endian
+      var canid = data.metadata.getUint32(4, true); //?little endian
     } catch (err) {
       return;
     }
@@ -433,7 +439,7 @@ export class DeviceManager extends React.Component {
         },
         data.buffer
       );
-      // console.log("ttt");
+      console.log("ttt");
     } else {
       console.log(data);
       throw new TypeError("Invalid Argument. Not of type Int or ArrayBuffer");
@@ -455,13 +461,14 @@ export class DeviceManager extends React.Component {
   }
 
   async requestPort() {
-    // var device;
+    var device;
 
     navigator.usb
       .requestDevice({ filters: [] })
       .then((selectedDevice) => {
-        // var device = selectedDevice;
+        device = selectedDevice;
         this.setState({ selectedDevice: selectedDevice }, () => {
+          console.log("selectedDevice", this.state.selectedDevice);
           this.ConnectToDevice();
         });
         // Begin a session.
@@ -477,10 +484,14 @@ export class DeviceManager extends React.Component {
     if (this.state.selectedDevice.configuration === null)
       await this.state.selectedDevice.selectConfiguration(1);
     await this.state.selectedDevice.claimInterface(0).then(() => {
-      console.log("claimed interface");
-      this.authenticate().then(() => {
-        this.startTransfer();
-      });
+      // console.log('claimed interface')
+      this.canIotStop()
+        .then(() => {
+          this.authenticate();
+        })
+        .then(() => {
+          this.startTransfer();
+        });
     });
   }
 
@@ -504,7 +515,9 @@ export class DeviceManager extends React.Component {
       SoH: this.state.currents.SOH,
       zones: 7,
       zoneTemperatures: this.state.tempratures,
-      voltages: this.state.voltages.cellVoltages,
+      voltages: this.state.voltages.cellVoltages
+        ? this.state.voltages.cellVoltages
+        : [],
     };
     let prev = this.state.metrics;
     const tempdatalog = this.state.dataLog;
@@ -558,32 +571,6 @@ export class DeviceManager extends React.Component {
     atag.download = name;
     atag.click();
   };
-  exportReport = () => {
-    var content = JSON.stringify(this.state.report);
-    var date = new Date().getDate(); //Current Date
-    var month = new Date().getMonth() + 1; //Current Month
-    var year = new Date().getFullYear(); //Current Year
-    var currentDate = date + "/" + month + "/" + year;
-
-    var name =
-      this.state.spec.make +
-      "_" +
-      this.state.spec.serial +
-      "_diagnosticsreport_" +
-      currentDate;
-    var atag = document.createElement("a");
-    var file = new Blob([content], { type: "text/plain" });
-    atag.href = URL.createObjectURL(file);
-    atag.download = name;
-    atag.click();
-  };
-
-  runDiagnostics = () => {
-    // dummy
-    this.setState({
-      report: dummy.nextDiagnostics(),
-    });
-  };
 
   runDiagnostics = () => {
     // dummy
@@ -621,7 +608,6 @@ const DeviceManagerContext = React.createContext({
   toggleLogMode: () => {},
   exportLog: () => {},
   runDiagnostics: () => {},
-  exportReport: () => {},
 });
 
 export class DeviceManagerProvider extends DeviceManager {
@@ -654,7 +640,8 @@ export class DeviceManagerProvider extends DeviceManager {
           toggleLogMode: this.toggleLogMode,
           exportLog: this.exportLog,
           runDiagnostics: this.runDiagnostics,
-          exportReport: this.exportReport,
+
+          exportMenuItem: this.exportMenuItem,
         }}
       >
         {children}

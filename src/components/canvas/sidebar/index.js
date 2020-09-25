@@ -63,11 +63,7 @@ const SideBar = ({ canvas, spec, feed, disconnect }) => {
     
 
       </Select> */}
-        <SideBarAlert
-          caption="Under_voltage"
-          value={parseFloat(minVolt) / 1000}
-          suffix="V"
-        />
+
         <SideBarFeed caption="Health" value={feed.SoH} suffix="%" />
         <SideBarFeed caption="Charge %" value={feed.SoC} suffix="%" />
         <SideBarFeed
@@ -100,6 +96,11 @@ const SideBar = ({ canvas, spec, feed, disconnect }) => {
           value={parseFloat(maxTemp) + 44}
           suffix="ºC"
         />
+        {/* <SideBarAlert
+          caption="Under_voltage"
+          value={parseFloat(minVolt)/1000}
+          suffix="V"
+        />  */}
 
         <SideBarDisconnect action={disconnect} />
 

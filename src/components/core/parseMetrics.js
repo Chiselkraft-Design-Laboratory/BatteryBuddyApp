@@ -26,7 +26,7 @@ const logToMetrics = (prev, log) => {
       zoneTemperatures: parseArrTimeMetrics(
         prev.zoneTemperatures,
         "temprature",
-        7,
+        6,
         log.timestamp,
         log.zoneTemperatures
       ),
