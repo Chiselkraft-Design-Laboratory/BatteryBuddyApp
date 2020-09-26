@@ -1,8 +1,6 @@
-import React,{useState} from "react";
+import React from "react";
 import { makeStyles, Box, Select, MenuItem, Button } from "@material-ui/core";
 import { StopIcon, SaveIcon } from "../../../assets";
-
-
 
 const useStyles = (logging) =>
   makeStyles(
@@ -51,94 +49,88 @@ const useStyles = (logging) =>
     { index: 1 }
   );
 
-
-const AnalyticsFooter = ({ logging, toggleLog, saveLog,firstMenu,secondMenuData,exportMenuItem,tempZoneData,cellsData}) => {
+const AnalyticsFooter = ({
+  logging,
+  toggleLog,
+  saveLog,
+  firstMenu,
+  secondMenuData,
+  exportMenuItem,
+  tempZoneData,
+  cellsData,
+}) => {
   const cl = useStyles(logging)();
-  const [disable, setDisable] = useState(true);
- 
+  // const [disable, setDisable] = React.useState(true);
 
- 
-
- 
   return (
     <Box classes={{ root: cl.root }}>
       <Select
         disableUnderline
         defaultValue={0}
-      placeholder={'select metrics'}
+        placeholder={"select metrics"}
         classes={{ root: cl.Select, input: cl.selectInput }}
       >
-
-
-   {firstMenu.map((value,index)=>{
-      return  <MenuItem 
-   
-
-
-      // onClick={(event) => selected(event, index)}
-      onClick={(event) => exportMenuItem(index,'firstMenu' )}
-
-    
-      value={index}>{value}</MenuItem>
-        
-})}       
-
+        {firstMenu.map((value, index) => {
+          return (
+            <MenuItem
+              // onClick={(event) => selected(event, index)}
+              onClick={(event) => exportMenuItem(index, "firstMenu")}
+              value={index}
+            >
+              {value}
+            </MenuItem>
+          );
+        })}
       </Select>
       <Select
         disableUnderline
         defaultValue={0}
-        
         classes={{ root: cl.Select, input: cl.selectInput }}
       >
-   {secondMenuData.map((value,index)=>{
-      return  <MenuItem 
-     
-
-      onClick={(event) => exportMenuItem(index,'secondMenuData' )}
-    
-      value={index}>{value}</MenuItem>
-        
-})}   
-
-      </Select> 
-      <Select
-        disableUnderline
-        defaultValue={0}
-      placeholder={'select metrics'}
-        classes={{ root: cl.Select, input: cl.selectInput }}
-      >
-
-
-{tempZoneData.map((value,index)=>{
-      return  <MenuItem 
-  
-
-      onClick={(event) => exportMenuItem(index,'tempZoneData')}
-    
-      value={index}>{value}</MenuItem>
-        
-})}       
-
+        {secondMenuData.map((value, index) => {
+          return (
+            <MenuItem
+              onClick={(event) => exportMenuItem(index, "secondMenuData")}
+              value={index}
+            >
+              {value}
+            </MenuItem>
+          );
+        })}
       </Select>
       <Select
         disableUnderline
         defaultValue={0}
-      placeholder={'select metrics'}
+        placeholder={"select metrics"}
         classes={{ root: cl.Select, input: cl.selectInput }}
       >
-
-
-    {cellsData.map((value,index)=>{
-      return  <MenuItem 
-   
-
-      onClick={(event) => exportMenuItem(index,'cellsData')}
-
-    
-      value={index}>{value}</MenuItem>
-        
-})}       
-
+        {tempZoneData.map((value, index) => {
+          return (
+            <MenuItem
+              onClick={(event) => exportMenuItem(index, "tempZoneData")}
+              value={index}
+            >
+              {value}
+            </MenuItem>
+          );
+        })}
+      </Select>
+      <Select
+        disableUnderline
+        defaultValue={0}
+        placeholder={"select metrics"}
+        classes={{ root: cl.Select, input: cl.selectInput }}
+      >
+        {cellsData.map((value, index) => {
+          return (
+            <MenuItem
+              onClick={(event) => exportMenuItem(index, "cellsData")}
+              value={index}
+            >
+              {value}
+            </MenuItem>
+          );
+        })}
       </Select>
       <div className={cl.expand} />
       {logging && (

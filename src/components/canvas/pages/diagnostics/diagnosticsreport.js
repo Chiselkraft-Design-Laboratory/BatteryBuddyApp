@@ -56,7 +56,7 @@ const DiagnosticsReport = ({ data, fallback }) => {
                     field[Object.keys(field)] !== 0 ? cl.fail : cl.pass
                   }
                 >
-                  {field[Object.keys(field)] == 0 ? "PASS" : "FAIL"}
+                  {field[Object.keys(field)] === 0 ? "PASS" : "FAIL"}
                 </TableCell>
               </TableRow>
             ))}
@@ -67,10 +67,6 @@ const DiagnosticsReport = ({ data, fallback }) => {
       )}
     </Grid>
   );
-};
-
-const ReportList = (list) => {
-  // return <ListItem button>{Object.keys(list)}hello</ListItem>;
 };
 
 export default React.memo(DiagnosticsReport);
