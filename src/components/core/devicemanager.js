@@ -6,6 +6,8 @@ import { metricsOptions } from "../constants/preferences";
 
 export class DeviceManager extends React.Component {
   state = {
+    activeChannel: 0,
+    listOfChannels: [],
     linked: linkMode.CANBUS,
     spec: dummy.spec,
     log: {
@@ -24,6 +26,18 @@ export class DeviceManager extends React.Component {
 
     report: {},
     settings: {},
+  };
+
+  // multi device suppport
+  populateChannels = () => {
+    this.setState({
+      listOfChannels: ["Battery X", "Battery Y", "Battery Z", "Battery ∞"],
+    });
+  };
+  setActiveChannel = (index) => {
+    this.setState({
+      activeChannel: index,
+    });
   };
 
   conncect = (mode) => {
@@ -118,6 +132,7 @@ export class DeviceManager extends React.Component {
 
 const DeviceManagerContext = React.createContext({
   linked: linkMode.NONE,
+  setActiveChannel: () => {},
   connect: (linked) => {},
   disconnect: (linked) => {},
   probe: () => {},
@@ -129,6 +144,7 @@ const DeviceManagerContext = React.createContext({
 
 export class DeviceManagerProvider extends DeviceManager {
   componentDidMount() {
+    this.populateChannels();
     if (this.state.linked) {
       this.interval = setInterval(
         () => this.probe(),
@@ -156,6 +172,7 @@ export class DeviceManagerProvider extends DeviceManager {
       <DeviceManagerContext.Provider
         value={{
           ...this.state,
+          setActiveChannel: this.setActiveChannel,
           connect: this.conncect,
           disconnect: this.disconncect,
           probe: this.probe,
