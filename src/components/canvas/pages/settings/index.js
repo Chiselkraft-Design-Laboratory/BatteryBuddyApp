@@ -1,7 +1,7 @@
 import React from "react";
 // import { makeStyles } from "@material-ui/core";
-import DefaultTile from "../../helpers/defaultTile";
-
+import withDeviceManager from "../../../core/devicemanager";
+import SettingsDisclaimer from "./disclaimer";
 // const useStyles = makeStyles(
 //   (theme) => ({
 //     root: {},
@@ -9,14 +9,13 @@ import DefaultTile from "../../helpers/defaultTile";
 //   { index: 1 }
 // );
 
-const SettingsPage = () => {
+const SettingsPage = ({ device }) => {
   // const cl = useStyles();
-
-  return (
-    <DefaultTile wide title={"Settings"}>
-      content
-    </DefaultTile>
+  const { settings } = device;
+  console.log("device", device.settings);
+  return settings.acceptDisclaimer ? null : (
+    <SettingsDisclaimer onAccept={device.approveDisclaimer} />
   );
 };
 
-export default SettingsPage;
+export default withDeviceManager(SettingsPage);

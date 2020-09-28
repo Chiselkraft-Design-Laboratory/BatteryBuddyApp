@@ -25,7 +25,19 @@ export class DeviceManager extends React.Component {
     dataLog: [],
 
     report: {},
-    settings: {},
+    settings: {
+      acceptDisclaimer: false,
+      UVcutoff: 0,
+      UVrelease: 0,
+      OVcutoff: 0,
+      OVrelease: 0,
+      TLcutoff: 0,
+      TLrelease: 0,
+      THcutoff: 0,
+      THrelease: 0,
+      CTcutoff: 0,
+      CTrelease: 0,
+    },
   };
 
   // multi device suppport
@@ -37,6 +49,15 @@ export class DeviceManager extends React.Component {
   setActiveChannel = (index) => {
     this.setState({
       activeChannel: index,
+    });
+  };
+
+  // settings page
+  approveDisclaimer = (approve) => {
+    this.setState({
+      settings: {
+        acceptDisclaimer: approve,
+      },
     });
   };
 
@@ -140,6 +161,7 @@ const DeviceManagerContext = React.createContext({
   exportLog: () => {},
   runDiagnostics: () => {},
   exportReport: () => {},
+  approveDisclaimer: () => {},
 });
 
 export class DeviceManagerProvider extends DeviceManager {
@@ -180,6 +202,7 @@ export class DeviceManagerProvider extends DeviceManager {
           exportLog: this.exportLog,
           runDiagnostics: this.runDiagnostics,
           exportReport: this.exportReport,
+          approveDisclaimer: this.approveDisclaimer,
         }}
       >
         {children}
