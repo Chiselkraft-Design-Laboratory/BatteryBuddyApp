@@ -88,12 +88,12 @@ const SideBar = ({ canvas, spec, feed, disconnect }) => {
         />
         <SideBarFeed
           caption="Temperature_min"
-          value={parseFloat(minTemp) + 425}
+          value={parseFloat(minTemp)/10 }
           suffix="ºC"
         />
         <SideBarFeed
           caption="Temperature_max"
-          value={parseFloat(maxTemp) + 44}
+          value={parseFloat(maxTemp)/10}
           suffix="ºC"
         />
         {/* <SideBarAlert
