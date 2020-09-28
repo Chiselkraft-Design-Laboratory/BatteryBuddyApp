@@ -29,15 +29,15 @@ export class DeviceManager extends React.Component {
   state = {
     activeChannel: 0,
     listOfChannels: [],
-    linked: linkMode.CANBUS,
+    linked: linkMode.NONE,
     spec: dummy.spec,
     log: {
       timestamp: 0,
       cellVoltage: [],
-      packVoltage: 0,
-      packCurrent: 0,
+      PackVoltage: 0,
+      PackCurrent: 0,
       packTemperature: 0,
-      SoC: 0,
+      SOC: 0,
       SoH: 0,
       zones: 7,
       zoneTemperatures: [],
@@ -48,8 +48,8 @@ export class DeviceManager extends React.Component {
     enableLog: false,
     dataLog: [],
     firstMenu: firstMenu,
-    secondMenuData: ["select Metrics"],
-    analyticsData: ["packCurrent", "SoC"],
+    secondMenuData: ["Select Metrics"],
+    analyticsData: ["PackCurrent", "SOC"],
     tempZoneData: thirdMenu,
     tempData: [0],
     cellindex: [0],
@@ -68,6 +68,7 @@ export class DeviceManager extends React.Component {
     currents: "",
     Lltte_Endian: true,
     identity: false,
+    disconnect:false
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   };
   populateChannels = () => {
@@ -84,13 +85,13 @@ export class DeviceManager extends React.Component {
     var data = [...this.state.analyticsData];
     var TempData = [...this.state.tempData];
 
-    console.log("eee", val2);
+    // console.log("eee", val2);
     if (val2 === "firstMenu") {
       let id = this.firstMenu(val1);
 
       var firstMenu = [...this.state.firstMenu];
       firstMenu.splice(val1, 1);
-      console.log("eee 1", data, id);
+      // console.log("eee 1", data, id);
 
       data.push(id);
       data.shift();
@@ -100,9 +101,7 @@ export class DeviceManager extends React.Component {
       data.shift();
       data.push(id);
 
-      this.setState({ analyticsData: data }, () =>
-        console.log("eeee 2", this.state.analyticsData)
-      );
+      this.setState({ analyticsData: data })
     } else if (val2 === "tempZoneData") {
       var tempData = [...this.state.tempData];
       tempData.push(val1);
@@ -127,20 +126,19 @@ export class DeviceManager extends React.Component {
   }
 
   parseData = (gf, data) => {
-    console.log("identity", gf);
 
     // if(gf===8)
     // {
     // }
+    if(!this.state.disconnect)
+    {
     this.setState(
       {
         linked: 1,
         identity: true,
-      },
-      () => {
-        console.log("identity true");
       }
     );
+    }
 
     // else if(this.state.identity)
     // {
@@ -183,7 +181,7 @@ export class DeviceManager extends React.Component {
             data.getInt16(5 + i * 2, !this.state.Lltte_Endian).toString()
           );
         }
-        console.log("parsed2", JSON.stringify(s));
+        // console.log("parsed2", JSON.stringify(s));
         // let date = new Date();
         // date = time.timeSecond.offset(date);
         // var temp=zoneTemp(this.state.ZoneTempPrev,date,s.temperatures)
@@ -206,10 +204,10 @@ export class DeviceManager extends React.Component {
         s.SOC = data.getFloat32(9, !this.state.Lltte_Endian);
         s.SOH = data.getFloat32(13, !this.state.Lltte_Endian);
         s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian); //2
-        console.log("parsed3", JSON.stringify(s));
+        // console.log("parsed3", JSON.stringify(s));
         this.setState({ currents: s }, () => {
           this.next();
-          console.log("parsed3", JSON.stringify(this.state.currents));
+          // console.log("parsed3", JSON.stringify(this.state.currents));
         });
 
         break;
@@ -235,7 +233,7 @@ export class DeviceManager extends React.Component {
         if (this.state.bms_info === null) {
           return;
         }
-        console.log("parsing 7", data);
+        // console.log("parsing 7", data);
         break;
       }
 
@@ -256,7 +254,7 @@ export class DeviceManager extends React.Component {
         bms_info.parallel = data.getUint8(28);
 
         this.setState({ bms_info: bms_info }, () => {
-          console.log("parsed", this.state.bms_info);
+          // console.log("parsed", this.state.bms_info);
         });
         // bms_info.des_cap = data.getUint16(30, true);
         break;
@@ -274,7 +272,7 @@ export class DeviceManager extends React.Component {
   };
 
   onCollapse = (collapsed) => {
-    console.log(collapsed);
+    // console.log(collapsed);
     this.setState({ collapsed });
   };
 
@@ -291,12 +289,13 @@ export class DeviceManager extends React.Component {
   bmsSleep = (addr) => {
     //Make Bms in sleep mode
     // bms sleep
-    console.log("soo jaa chitye", this.state.disconnect);
+
     return this.sendCommand(0x12, new Uint8Array([addr]));
   };
 
   canIotStop = () => {
-    return this.sendCommand(opCodes.FLCAN_CMD_STOP).then();
+    return this.sendCommand(opCodes.FLCAN_CMD_STOP)
+    // .then(()=>{alert('ttt')});
   };
 
   readLoop = () => {
@@ -324,27 +323,26 @@ export class DeviceManager extends React.Component {
         );
       })
       .then((buffer) => {
-        console.log("got data");
+        // console.log("got data");
         var data = { ...this.state.packet_rx };
 
         data.data = buffer.data;
 
         this.setState({ packet_rx: data }, () => {
-          console.log("this.state.packet_rx", this.state.packet_rx);
+          // console.log("this.state.packet_rx", this.state.packet_rx);
           this.onRecieve(this.state.packet_rx);
         });
 
         if (!this.state.disconnect) {
           this.readLoop();
         } else {
-          console.log("disconnected");
+          // console.log("disconnected");
         }
       })
       .catch((error) => {
         // port.onReceiveError(error);
-        console.log(this.state.packet_rx.metadata);
-        console.log(error);
-        this.readLoop();
+        // console.log(this.state.packet_rx.metadata);
+        // console.log(error);
       });
   };
 
@@ -358,7 +356,7 @@ export class DeviceManager extends React.Component {
     return (
       this.selectProtocol()
         .then(() => {
-          console.log("start command");
+          // console.log("start command");
           this.sendCommand(opCodes.FLCAN_CMD_START);
         })
         // .then(() => {
@@ -368,11 +366,11 @@ export class DeviceManager extends React.Component {
           if (!this.state.disconnect) {
             this.readLoop();
           } else {
-            console.log("disconnected");
+            // console.log("disconnected");
           }
         })
         .then(() => {
-          console.log("identity calling");
+          // console.log("identity calling");
           setInterval(() => {
             this.identity(0x23);
           }, 1000);
@@ -397,10 +395,10 @@ export class DeviceManager extends React.Component {
 
     if ((canid & 0x00ffff) !== 0xff33) {
       if ((canid & 0x00ffff) === 0xfffc) {
-        console.log("Heartbeat!");
+        // console.log("Heartbeat!");
       } else {
-        console.log("canId", canid);
-        console.log(canid.toString(16));
+        // console.log("canId", canid);
+        // console.log(canid.toString(16));
       }
       return;
     }
@@ -410,12 +408,12 @@ export class DeviceManager extends React.Component {
     try {
       this.parseData(recvdata.getUint8(0), recvdata);
     } catch (err) {
-      console.log(canid.toString(16), recvdata, ":", err);
+      // console.log(canid.toString(16), recvdata, ":", err);
     }
   }
 
   sendCommand = (opcode, data) => {
-    console.log("send command", data, this.state.selectedDevice);
+    // console.log("send command", data, this.state.selectedDevice);
     if (data === undefined) {
       // No DATA stage
       return this.state.selectedDevice.controlTransferOut({
@@ -428,7 +426,7 @@ export class DeviceManager extends React.Component {
     } else if (Number.isInteger(data)) {
       // command is expecting DATA stage
 
-      console.log(data, " integer condn in command function");
+      // console.log(data, " integer condn in command function");
       return this.state.selectedDevice.controlTransferIn(
         {
           requestType: "class",
@@ -450,9 +448,9 @@ export class DeviceManager extends React.Component {
         },
         data.buffer
       );
-      console.log("ttt");
+      // console.log("ttt");
     } else {
-      console.log(data);
+      // console.log(data);
       throw new TypeError("Invalid Argument. Not of type Int or ArrayBuffer");
     }
   };
@@ -462,7 +460,7 @@ export class DeviceManager extends React.Component {
   };
 
   authenticate() {
-    console.log("authenticate function");
+    // console.log("authenticate function");
 
     return this.sendCommand(opCodes.FLCAN_CMD_GET_CHG, 4)
       .then((token) => this.onAuthTokenFetched(token.data))
@@ -479,14 +477,14 @@ export class DeviceManager extends React.Component {
       .then((selectedDevice) => {
         device = selectedDevice;
         this.setState({ selectedDevice: selectedDevice }, () => {
-          console.log("selectedDevice", this.state.selectedDevice);
+          // console.log("selectedDevice", this.state.selectedDevice);
           this.ConnectToDevice();
         });
         // Begin a session.
       })
 
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   }
 
@@ -506,9 +504,9 @@ export class DeviceManager extends React.Component {
     });
   }
 
-  Disconnect() {
-    this.setState({ disconnect: true }, () => [this.bmsSleep()]);
-  }
+  // disconnect() {
+  //   alert('yyyy')
+  // }
 
   async next() {
     // let next = dataStream();
@@ -519,10 +517,10 @@ export class DeviceManager extends React.Component {
     let log = {
       timestamp: date,
       cellVoltage: this.state.voltages.cellVoltages,
-      packVoltage: this.state.currents.stackVoltage,
-      packCurrent: this.state.currents.isenseCurrent,
+      PackVoltage: this.state.currents.stackVoltage,
+      PackCurrent: this.state.currents.isenseCurrent,
       packTemperature: (parseInt(this.state.tempratures) + 600) / 10,
-      SoC: parseInt(this.state.currents.SOC) ,
+      SOC: parseInt(this.state.currents.SOC) ,
       SoH: this.state.currents.SOH,
       zones: 7,
       zoneTemperatures: this.state.tempratures,
@@ -546,13 +544,21 @@ export class DeviceManager extends React.Component {
   }
 
   conncect = (mode) => {
-    console.log("zone", this.state.zoneTemperatures);
+    // console.log("zone", this.state.zoneTemperatures);
     if (this.state.linked === 0) {
-      this.requestPort();
-    }
+this.setState({disconnect:false},()=>{
+  this.requestPort();
+
+})    }
   };
 
-  disconncect = (mode) => {};
+  disconncect = (mode) => {
+    this.bmsSleep();
+    this.canIotStop();
+    this.setState({disconnect:true,linked:linkMode.NONE})
+
+
+  };
 
   toggleLogMode = () => {
     this.setState({ enableLog: !this.state.enableLog, dataLog: [] }, () =>

@@ -10,6 +10,8 @@ import { color } from "../../../constants/preferences";
 const AnalyticsPage = ({ device }) => {
   // feed prep
   const live = device.metrics;
+  // console.log('obj',device)
+
   var feed1 = [];
   var feed2 = [];
   var feed3 = [];
@@ -21,7 +23,7 @@ const AnalyticsPage = ({ device }) => {
     var obj = {};
     obj.color = color[3];
 
-    obj.id = `Cell${parseInt(device.cellindex) + 1}`;
+    obj.id = `Cell_${parseInt(device.cellindex) + 1}`;
     obj.data = live.voltages[device.cellindex].data;
 
     feedVoltageData.push(obj);
@@ -31,7 +33,7 @@ const AnalyticsPage = ({ device }) => {
     var obj = {};
     obj.color = color[2];
 
-    obj.id = `Temprature${parseInt(device.tempData) + 1}`;
+    obj.id = `Temprature_${parseInt(device.tempData) + 1}`;
     obj.data = live.zoneTemperatures[device.tempData].data;
 
     feedTempData.push(obj);
@@ -42,6 +44,8 @@ const AnalyticsPage = ({ device }) => {
   var feedAnalytics = device.analyticsData.reduce((acc, value, index) => {
     var obj = {};
     obj.color = color[index];
+    console.log('obj',value)
+
     obj.id = value;
     obj.data = live[`${value}`];
     acc.push(obj);

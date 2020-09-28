@@ -25,13 +25,13 @@ export const metricsOptions = {
   metricsBuffer: 20,
 };
 export const firstMenu=
-['packVoltage','packCurrent','SoC']
+['PackVoltage','PackCurrent','SoC']
 
 
 export const thirdMenu=
-['Temprature1','Temprature2','Temprature3','Temprature4','Temprature5','Temprature6','Temprature7']
+['Temprature_1','Temprature_2','Temprature_3','Temprature_4','Temprature_5','Temprature_6','Temprature+7']
 export const fourthMenu=
-['Cell1','Cell2','Cell3','Cell4','Cell6','Cell6','Cell7','Cell8','Cell9','Cell10','Cell11','Cell12','Cell13','Cell14']
+['Cell_1','Cell_2','Cell_3','Cell_4','Cell_5','Cell_6','Cell_7','Cel_8','Cell_9','Cell_10','Cell_11','Cell_12','Cell_13','Cell+14']
 
 export const batteryAdress=[0x20,0x21,0x22,0x23]
 

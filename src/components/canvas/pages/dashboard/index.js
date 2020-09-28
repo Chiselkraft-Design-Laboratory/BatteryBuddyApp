@@ -8,7 +8,7 @@ import { color } from "../../../constants/preferences";
 
 const DashboardPage = ({ device }) => {
   const live = device.metrics;
-  console.log("cell", live);
+  // console.log("cell", live);
 
   live.zoneTemperatures.map((val, index) => {
     val.color = color[index];
@@ -16,10 +16,10 @@ const DashboardPage = ({ device }) => {
 
   return (
     <React.Fragment>
-      <CellVoltageMetrics feed={live.cellVoltage} />
-      <CurrentMetrics feed={[{ id: "Current", data: live.packCurrent }]} />
+     <CellVoltageMetrics feed={live.cellVoltage} />
+      <CurrentMetrics feed={[{ id: "Current", data: live.PackCurrent }]} />
       <TemperatureMetrics feed={live.zoneTemperatures} />
-      <SoCMetrics feed={[{ id: "SoC", data: live.SoC }]} />
+      <SoCMetrics feed={[{ id: "SoC", data: live.SOC }]} /> 
     </React.Fragment>
   );
 };

@@ -7,22 +7,22 @@ const logToMetrics = (prev, log) => {
   if (prev !== undefined) {
     return {
       cellVoltage: parseBarMetrics(log.cellVoltage),
-      packVoltage: parseTimeMetrics1(
-        prev.packVoltage,
+      PackVoltage: parseTimeMetrics1(
+        prev.PackVoltage,
         log.timestamp,
-        log.packVoltage
+        log.PackVoltage
       ),
-      packCurrent: parseTimeMetrics(
-        prev.packCurrent,
+      PackCurrent: parseTimeMetrics(
+        prev.PackCurrent,
         log.timestamp,
-        parseFloat(log.packCurrent)/1000
+        parseFloat(log.PackCurrent)/1000
       ),
       packTemperature: parseTimeMetrics(
         prev.packTemperature,
         log.timestamp,
         log.packTemperature
       ),
-      SoC: parseTimeMetrics(prev.SoC, log.timestamp, log.SoC),
+      SOC: parseTimeMetrics(prev.SOC, log.timestamp, log.SOC),
       zoneTemperatures: parseArrTimeMetrics(
         prev.zoneTemperatures,
         "temprature",
@@ -42,10 +42,10 @@ const logToMetrics = (prev, log) => {
   } else {
     return {
       cellVoltage: [{ x: "", y: null }],
-      packVoltage: initialTimeMetrics(options.metricsBuffer),
-      packCurrent: initialTimeMetrics(options.metricsBuffer),
-      packTemperature: initialTimeMetrics(options.metricsBuffer),
-      SoC: initialTimeMetrics(options.metricsBuffer),
+      PackVoltage: initialTimeMetrics(options.metricsBuffer),
+      PackCurrent: initialTimeMetrics(options.metricsBuffer),
+      ackTemperature: initialTimeMetrics(options.metricsBuffer),
+      SOC: initialTimeMetrics(options.metricsBuffer),
       zoneTemperatures: initialArrTimeMetrics("temprature", 7, options.metricsBuffer),
       voltages: initialArrTimeMetrics("cell", 14, options.metricsBuffer),
 

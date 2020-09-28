@@ -65,15 +65,15 @@ const SideBar = ({ canvas, spec, feed, disconnect }) => {
       </Select> */}
 
         <SideBarFeed caption="Health" value={feed.SoH} suffix="%" />
-        <SideBarFeed caption="Charge %" value={feed.SoC} suffix="%" />
+        <SideBarFeed caption="Charge %" value={feed.SOC} suffix="%" />
         <SideBarFeed
           caption="Current"
-          value={parseFloat(feed.packCurrent) / 1000}
+          value={parseFloat(feed.PackCurrent) / 1000}
           suffix="A"
         />
         <SideBarFeed
           caption="PackVoltage"
-          value={parseFloat(feed.packVoltage) / 1000}
+          value={parseFloat(feed.PackVoltage) / 1000}
           suffix="V"
         />
         <SideBarFeed
