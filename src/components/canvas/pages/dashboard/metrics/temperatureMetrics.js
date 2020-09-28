@@ -6,7 +6,7 @@ import * as palette from "../../../../themeworks/darkspaceUI/swatch";
 
 const TemperatureMetrics = ({ feed }) => {
 
-console.log('temo',feed)
+// console.log('temo',feed)
   return (
     <DefaultTile title="Temperature" caption="metrics">
       <ResponsiveLine

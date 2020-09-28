@@ -299,7 +299,7 @@ export class DeviceManager extends React.Component {
   };
 
   readLoop = () => {
-    console.log("loop ");
+    // console.log("loop ");
     const {
       endpointNumber,
     } = this.state.selectedDevice.configuration.interfaces[0].alternate.endpoints[0];
