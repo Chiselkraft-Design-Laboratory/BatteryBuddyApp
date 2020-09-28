@@ -156,7 +156,7 @@ export class DeviceManager extends React.Component {
             data.getUint16(5 + i * 2, !this.state.Lltte_Endian)
           );
         }
-        console.log("parsed", data);
+      
 
         this.setState(
           {
@@ -522,7 +522,7 @@ export class DeviceManager extends React.Component {
       packVoltage: this.state.currents.stackVoltage,
       packCurrent: this.state.currents.isenseCurrent,
       packTemperature: (parseInt(this.state.tempratures) + 600) / 10,
-      SoC: parseInt(this.state.currents.SOC) + 5,
+      SoC: parseInt(this.state.currents.SOC) ,
       SoH: this.state.currents.SOH,
       zones: 7,
       zoneTemperatures: this.state.tempratures,
