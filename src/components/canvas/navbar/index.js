@@ -6,6 +6,7 @@ import NavGroup from "./navgroup";
 import NavLink from "./navlink";
 import { BrandIcon } from "../../assets";
 import { sidebarOptions } from "../../constants/preferences";
+import NavSelect from "./navselect";
 
 const useStyles = (dense) =>
   makeStyles(
@@ -42,6 +43,7 @@ const NavBar = ({ showlinks, canvas }) => {
           <Box classes={{ root: cl.fit }}>{<NavGroup />}</Box>
         ) : null}
         <div className={cl.expand} />
+        <NavSelect />
         <Box classes={{ root: cl.fit }}>
           <NavLink simple label="Help" url="#" />
         </Box>
