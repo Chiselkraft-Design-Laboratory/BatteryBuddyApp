@@ -15,7 +15,7 @@ const logToMetrics = (prev, log) => {
       packCurrent: parseTimeMetrics(
         prev.packCurrent,
         log.timestamp,
-        log.packCurrent
+        parseFloat(log.packCurrent)/1000
       ),
       packTemperature: parseTimeMetrics(
         prev.packTemperature,
@@ -103,8 +103,7 @@ function parseArrTimeMetrics(prev, suffix, size, timestamp, value) {
 
     arr.push({
       id: (suffix) + (index + 1),
-      data: parseTimeMetrics(prev[index].data, timestamp, Math.abs(value[index]/10)+getRandomInt(10))
-
+      data: parseTimeMetrics(prev[index].data, timestamp, Math.abs(value[index]/10))
 
     },
     
