@@ -27,7 +27,9 @@ const opCodes = Object.freeze({
 
 export class DeviceManager extends React.Component {
   state = {
-    linked: linkMode.NONE,
+    activeChannel: 0,
+    listOfChannels: [],
+    linked: linkMode.CANBUS,
     spec: dummy.spec,
     log: {
       timestamp: 0,
@@ -68,7 +70,16 @@ export class DeviceManager extends React.Component {
     identity: false,
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   };
-
+  populateChannels = () => {
+    this.setState({
+      listOfChannels: ["Battery X", "Battery Y", "Battery Z", "Battery ∞"],
+    });
+  };
+  setActiveChannel = (index) => {
+    this.setState({
+      activeChannel: index,
+    });
+  };
   exportMenuItem = (val1, val2) => {
     var data = [...this.state.analyticsData];
     var TempData = [...this.state.tempData];

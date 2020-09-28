@@ -11,6 +11,7 @@ import StopIcon from "./stopicon";
 import SplitViewIcon from "./splitviewicon";
 import MergeViewIcon from "./mergeviewicon";
 import SaveIcon from "./saveicon";
+import DropDownIcon from "./dropdownicon";
 
 export {
   BrandIcon,
@@ -26,4 +27,5 @@ export {
   SplitViewIcon,
   MergeViewIcon,
   SaveIcon,
+  DropDownIcon,
 };
