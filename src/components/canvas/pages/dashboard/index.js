@@ -8,11 +8,11 @@ import { color } from "../../../constants/preferences";
 
 const DashboardPage = ({ device }) => {
   const live = device.metrics;
-  // console.log("cell", live);
 
   live.zoneTemperatures.map((val, index) => {
     val.color = color[index];
   });
+
 
   return (
     <React.Fragment>

@@ -25,7 +25,7 @@ export const metricsOptions = {
   metricsBuffer: 20,
 };
 export const firstMenu=
-['PackVoltage','PackCurrent','SoC']
+['PackVoltage','PackCurrent','SOC']
 
 
 export const thirdMenu=

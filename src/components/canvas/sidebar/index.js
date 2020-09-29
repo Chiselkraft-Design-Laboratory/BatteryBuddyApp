@@ -31,10 +31,14 @@ const useStyles = makeStyles(
 const SideBar = ({ canvas, spec, feed, disconnect }) => {
   const cl = useStyles();
 
+  console.log('side',feed.metrics)
+
   var minTemp = Math.min(...feed.zoneTemperatures);
   var maxTemp = Math.max(...feed.zoneTemperatures);
   var minVolt = Math.min(...feed.voltages);
   var maxVolt = Math.max(...feed.voltages);
+ 
+
 
   return (
     <Grid item xs={canvas.dense ? 12 : undefined} classes={{ root: cl.root }}>

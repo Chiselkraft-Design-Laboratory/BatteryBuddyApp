@@ -1,6 +1,6 @@
 import React from "react";
 import * as time from "d3-time";
-import logToMetrics,{parseBarMetrics,parseTimeMetrics} from "./parseMetrics";
+import logToMetrics,{parseBarMetrics,parseTimeMetrics,parseArrTimeMetrics,parseArrTimeMetrics1} from "./parseMetrics";
 import { linkMode } from "../constants/typedef";
 import * as dummy from "../dummies/dataStream";
 import {
@@ -9,6 +9,7 @@ import {
   thirdMenu,
   fourthMenu,
 } from "../constants/preferences";
+
 
 const opCodes = Object.freeze({
   FLCAN_CMD_FLUSH_HOSTQ: 0x00,
@@ -161,12 +162,14 @@ export class DeviceManager extends React.Component {
             voltages: s,
           },
           () => {
-            // this.next();
+            this.next();
 // console.log('data',this.state.metrics.cellVoltage)
-var cellData=[...this.state.metrics.cellVoltage]
-cellData= parseBarMetrics(this.state.voltages.cellVoltages)
+let date = new Date();
+date = time.timeSecond.offset(date);
+var cellData= parseBarMetrics(this.state.voltages.cellVoltages)
+var volategsData =parseArrTimeMetrics1(this.state.metrics.voltages,"cell",parseInt(this.state.bms_info.series)-1,date,this.state.voltages.cellVoltages)
 
-this.setState({ metrics: { ...this.state.metrics, cellVoltage: cellData} });
+this.setState({ metrics: { ...this.state.metrics, cellVoltage: cellData,voltages:volategsData} });
 
         
          
@@ -189,17 +192,20 @@ this.setState({ metrics: { ...this.state.metrics, cellVoltage: cellData} });
             data.getInt16(5 + i * 2, !this.state.Lltte_Endian).toString()
           );
         }
+      
         // console.log("parsed2", JSON.stringify(s));
-        // let date = new Date();
-        // date = time.timeSecond.offset(date);
-        // var temp=zoneTemp(this.state.ZoneTempPrev,date,s.temperatures)
-        // console.log('xx 2',temp)
+        // let sate = new Date();
+        // sate = time.timeSecond.offset(sate);
+        // var temp=zoneTemp(this.state.ZoneTempPrev,sate,s.temperatures)
+        
         this.setState({ tempratures: s.temperatures }, () => {
-          // this.next();
-          var cellData=[...this.state.metrics.cellVoltage]
-cellData= parseTimeMetrics(this.state.voltages.cellVoltages)
-          parseTimeMetrics()
-          // console.log('xx1',this.state.zoneTemperatures)
+          this.next();
+          let date = new Date();
+          date = time.timeSecond.offset(date);
+          var tempData=[...this.state.metrics.zoneTemperatures]
+tempData= parseArrTimeMetrics(this.state.metrics.zoneTemperatures,'temprature',6,date,this.state.tempratures)
+this.setState({ metrics: { ...this.state.metrics, zoneTemperatures: tempData} });
+
         });
         break;
       }
@@ -216,9 +222,19 @@ cellData= parseTimeMetrics(this.state.voltages.cellVoltages)
         s.SOH = data.getFloat32(13, !this.state.Lltte_Endian);
         s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian); //2
         // console.log("parsed3", JSON.stringify(s));
+       
         this.setState({ currents: s }, () => {
-          // this.next();
-          // console.log("parsed3", JSON.stringify(this.state.currents));
+          this.next();
+
+          let date = new Date();
+          date = time.timeSecond.offset(date);
+         var  currentData= parseTimeMetrics(this.state.metrics.PackCurrent,date,parseFloat(this.state.currents.isenseCurrent)/1000)
+         var  SOCData= parseTimeMetrics(this.state.metrics.SOC,date,parseFloat(this.state.currents.SOC))
+
+
+          console.log('current',this.state.currents)
+
+this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:SOCData} });
         });
 
         break;
@@ -266,6 +282,8 @@ cellData= parseTimeMetrics(this.state.voltages.cellVoltages)
 
         this.setState({ bms_info: bms_info }, () => {
           // console.log("parsed", this.state.bms_info);
+          this.next();
+
         });
         // bms_info.des_cap = data.getUint16(30, true);
         break;
@@ -524,6 +542,7 @@ cellData= parseTimeMetrics(this.state.voltages.cellVoltages)
     // console.log("temprature", this.state);
     let date = new Date();
     date = time.timeSecond.offset(date);
+    
 
     let log = {
       timestamp: date,
@@ -549,7 +568,6 @@ cellData= parseTimeMetrics(this.state.voltages.cellVoltages)
 
     this.setState({
       log: log,
-      metrics: logToMetrics(prev, log),
       dataLog: tempdatalog,
     },()=>{console.log('log',this.state.metrics)});
   }

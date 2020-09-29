@@ -1,18 +1,21 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { linearGradientDef } from "@nivo/core";
 import { ResponsiveLine } from "@nivo/line";
 import DefaultTile from "../../../helpers/defaultTile";
 import * as palette from "../../../../themeworks/darkspaceUI/swatch";
 
 const TemperatureMetrics = ({ feed }) => {
+//   const [Data, setData] = useState(feed);
+//   useEffect( () => {
+// setData(feed)
 
-// console.log('temo',feed)
+//   }, [feed ]);
   return (
     <DefaultTile title="Temperature" caption="metrics">
       <ResponsiveLine
         data={feed}
         xScale={{ type: "time", format: "native" }}
-        yScale={{ type: "linear", min: 10, max: 60 }}
+        yScale={{ type: "linear", min: 0, max: 60 }}
         axisTop={null}
         axisRight={null}
         axisLeft={{

@@ -44,7 +44,6 @@ const AnalyticsPage = ({ device }) => {
   var feedAnalytics = device.analyticsData.reduce((acc, value, index) => {
     var obj = {};
     obj.color = color[index];
-    console.log('obj',value)
 
     obj.id = value;
     obj.data = live[`${value}`];

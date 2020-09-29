@@ -44,9 +44,9 @@ const logToMetrics = (prev, log) => {
       cellVoltage: [{ x: "", y: null }],
       PackVoltage: initialTimeMetrics(options.metricsBuffer),
       PackCurrent: initialTimeMetrics(options.metricsBuffer),
-      ackTemperature: initialTimeMetrics(options.metricsBuffer),
+      PackTemperature: initialTimeMetrics(options.metricsBuffer),
       SOC: initialTimeMetrics(options.metricsBuffer),
-      zoneTemperatures: initialArrTimeMetrics("temprature", 7, options.metricsBuffer),
+      zoneTemperatures: initialArrTimeMetrics("temprature", 6, options.metricsBuffer),
       voltages: initialArrTimeMetrics("cell", 14, options.metricsBuffer),
 
     };
@@ -100,8 +100,7 @@ function initialTimeMetrics(bufferSize) {
   let arr = [];
 
   range(size).forEach((index) => {
-
-    arr.push({12
+    arr.push({
       id: (suffix) + (index + 1),
       data: parseTimeMetrics(prev[index].data, timestamp, Math.abs(value[index]/10))
 
@@ -115,15 +114,14 @@ function initialTimeMetrics(bufferSize) {
 }
 
 
-function parseArrTimeMetrics1(prev, suffix, size, timestamp, value) {
+ export function parseArrTimeMetrics1(prev, suffix, size, timestamp, value) {
   let arr = [];
-console.log('livv',prev)
+
 
   range(size).forEach((index) => {
-
     arr.push({
       id: (suffix) + (index + 1),
-      data: parseTimeMetrics(prev[index].data, timestamp,(value[index]/1000))
+      data: parseTimeMetrics(prev[index].data, timestamp,(value[index])/1000)
 
 
     },
@@ -131,7 +129,6 @@ console.log('livv',prev)
     );
   
   });
-
   return arr;
 }
 

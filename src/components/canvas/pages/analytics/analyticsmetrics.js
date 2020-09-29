@@ -30,7 +30,7 @@ const AnalyticsMetrics = ({ split, feed }) => {
         }}
         axisBottom={{
           format: "%M:%S",
-          // tickValues: "every 2 seconds",
+          tickValues: "every 4 seconds",
           legend: "time",
           legendPosition: "end",
           legendOffset: 46,
