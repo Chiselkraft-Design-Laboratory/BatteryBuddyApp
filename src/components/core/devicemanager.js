@@ -26,18 +26,18 @@ export class DeviceManager extends React.Component {
 
     report: {},
     settings: {
-      acceptDisclaimer: false,
-      UVcutoff: 0,
-      UVrelease: 0,
-      OVcutoff: 0,
-      OVrelease: 0,
-      TLcutoff: 0,
-      TLrelease: 0,
-      THcutoff: 0,
-      THrelease: 0,
-      CTcutoff: 0,
-      CTrelease: 0,
+      UVcutoff: 22,
+      UVrelease: 23.6,
+      OVrelease: 26.2,
+      OVcutoff: 28.4,
+      TLcutoff: 24,
+      TLrelease: 28,
+      THrelease: 52,
+      THcutoff: 55,
+      CTrelease: 44,
+      CTcutoff: 56,
     },
+    showDisclaimer: true,
   };
 
   // multi device suppport
@@ -55,9 +55,7 @@ export class DeviceManager extends React.Component {
   // settings page
   approveDisclaimer = (approve) => {
     this.setState({
-      settings: {
-        acceptDisclaimer: approve,
-      },
+      showDisclaimer: !approve,
     });
   };
 

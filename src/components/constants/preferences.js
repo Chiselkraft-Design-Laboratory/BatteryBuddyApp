@@ -21,3 +21,9 @@ export const metricsOptions = {
   updateInterval: 400,
   metricsBuffer: 24,
 };
+
+export const thresholdLimits = {
+  voltage: [20, 30],
+  current: [30, 80],
+  temperature: [22, 58],
+};
