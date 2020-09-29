@@ -4,42 +4,42 @@ import { metricsOptions as options } from "../constants/preferences";
 
 const logToMetrics = (prev, log) => {
   console.log("log", { prev, log });
-  if (prev !== undefined) {
-    return {
-      cellVoltage: parseBarMetrics(log.cellVoltage),
-      PackVoltage: parseTimeMetrics1(
-        prev.PackVoltage,
-        log.timestamp,
-        log.PackVoltage
-      ),
-      PackCurrent: parseTimeMetrics(
-        prev.PackCurrent,
-        log.timestamp,
-        parseFloat(log.PackCurrent)/1000
-      ),
-      packTemperature: parseTimeMetrics(
-        prev.packTemperature,
-        log.timestamp,
-        log.packTemperature
-      ),
-      SOC: parseTimeMetrics(prev.SOC, log.timestamp, log.SOC),
-      zoneTemperatures: parseArrTimeMetrics(
-        prev.zoneTemperatures,
-        "temprature",
-        6,
-        log.timestamp,
-        log.zoneTemperatures
-      ),
-      voltages:parseArrTimeMetrics1(
-        prev.voltages,
-        "cell",
-        14,
-        log.timestamp,
-        log.voltages
-      ),
+  // if (prev !== undefined) {
+  //   return {
+  //     cellVoltage: parseBarMetrics(log.cellVoltage),
+  //     PackVoltage: parseTimeMetrics1(
+  //       prev.PackVoltage,
+  //       log.timestamp,
+  //       log.PackVoltage
+  //     ),
+  //     PackCurrent: parseTimeMetrics(
+  //       prev.PackCurrent,
+  //       log.timestamp,
+  //       parseFloat(log.PackCurrent)/1000
+  //     ),
+  //     packTemperature: parseTimeMetrics(
+  //       prev.packTemperature,
+  //       log.timestamp,
+  //       log.packTemperature
+  //     ),
+  //     SOC: parseTimeMetrics(prev.SOC, log.timestamp, log.SOC),
+  //     zoneTemperatures: parseArrTimeMetrics(
+  //       prev.zoneTemperatures,
+  //       "temprature",
+  //       6,
+  //       log.timestamp,
+  //       log.zoneTemperatures
+  //     ),
+  //     voltages:parseArrTimeMetrics1(
+  //       prev.voltages,
+  //       "cell",
+  //       14,
+  //       log.timestamp,
+  //       log.voltages
+  //     ),
      
-    };
-  } else {
+  //   };
+  // } else {
     return {
       cellVoltage: [{ x: "", y: null }],
       PackVoltage: initialTimeMetrics(options.metricsBuffer),
@@ -50,10 +50,10 @@ const logToMetrics = (prev, log) => {
       voltages: initialArrTimeMetrics("cell", 14, options.metricsBuffer),
 
     };
-  }
+  // }
 };
 
-function parseBarMetrics(array) {
+export function parseBarMetrics(array) {
   let metrics = [];
   if (array) {
     array.forEach((value, index) => {
@@ -66,7 +66,7 @@ function parseBarMetrics(array) {
   return metrics;
 }
 
-function parseTimeMetrics(prev, timestamp, value) {
+export function parseTimeMetrics(prev, timestamp, value) {
 
   // console.log('parseTime',prev,timestamp,value)
   let metrics = [];
@@ -96,12 +96,12 @@ function initialTimeMetrics(bufferSize) {
   return dummy;
 }
 
-function parseArrTimeMetrics(prev, suffix, size, timestamp, value) {
+ export function parseArrTimeMetrics(prev, suffix, size, timestamp, value) {
   let arr = [];
 
   range(size).forEach((index) => {
 
-    arr.push({
+    arr.push({12
       id: (suffix) + (index + 1),
       data: parseTimeMetrics(prev[index].data, timestamp, Math.abs(value[index]/10))
 

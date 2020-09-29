@@ -1,6 +1,6 @@
 import React from "react";
 import * as time from "d3-time";
-import logToMetrics from "./parseMetrics";
+import logToMetrics,{parseBarMetrics,parseTimeMetrics} from "./parseMetrics";
 import { linkMode } from "../constants/typedef";
 import * as dummy from "../dummies/dataStream";
 import {
@@ -161,7 +161,15 @@ export class DeviceManager extends React.Component {
             voltages: s,
           },
           () => {
-            this.next();
+            // this.next();
+// console.log('data',this.state.metrics.cellVoltage)
+var cellData=[...this.state.metrics.cellVoltage]
+cellData= parseBarMetrics(this.state.voltages.cellVoltages)
+
+this.setState({ metrics: { ...this.state.metrics, cellVoltage: cellData} });
+
+        
+         
           }
         );
 
@@ -187,7 +195,10 @@ export class DeviceManager extends React.Component {
         // var temp=zoneTemp(this.state.ZoneTempPrev,date,s.temperatures)
         // console.log('xx 2',temp)
         this.setState({ tempratures: s.temperatures }, () => {
-          this.next();
+          // this.next();
+          var cellData=[...this.state.metrics.cellVoltage]
+cellData= parseTimeMetrics(this.state.voltages.cellVoltages)
+          parseTimeMetrics()
           // console.log('xx1',this.state.zoneTemperatures)
         });
         break;
@@ -206,7 +217,7 @@ export class DeviceManager extends React.Component {
         s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian); //2
         // console.log("parsed3", JSON.stringify(s));
         this.setState({ currents: s }, () => {
-          this.next();
+          // this.next();
           // console.log("parsed3", JSON.stringify(this.state.currents));
         });
 
@@ -370,7 +381,7 @@ export class DeviceManager extends React.Component {
           }
         })
         .then(() => {
-          // console.log("identity calling");
+          console.log("identity calling");
           setInterval(() => {
             this.identity(0x23);
           }, 1000);
@@ -540,7 +551,7 @@ export class DeviceManager extends React.Component {
       log: log,
       metrics: logToMetrics(prev, log),
       dataLog: tempdatalog,
-    });
+    },()=>{console.log('log',this.state.metrics)});
   }
 
   conncect = (mode) => {
@@ -628,7 +639,10 @@ const DeviceManagerContext = React.createContext({
 });
 
 export class DeviceManagerProvider extends DeviceManager {
-  componentDidMount() {}
+  componentDidMount() {
+
+    this.next()
+  }
 
   componentDidUpdate() {
     // if (this.state.linked && !this.interval) {
