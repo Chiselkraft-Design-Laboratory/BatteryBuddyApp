@@ -44,9 +44,9 @@ const NavBar = ({ showlinks, canvas }) => {
         ) : null}
         <div className={cl.expand} />
         <NavSelect />
-        <Box classes={{ root: cl.fit }}>
+        {/* <Box classes={{ root: cl.fit }}>
           <NavLink simple label="Help" url="#" />
-        </Box>
+        </Box> */}
       </Toolbar>
       {canvas.dense && showlinks ? (
         <Toolbar disableGutters classes={{ root: cl.extended }}>
