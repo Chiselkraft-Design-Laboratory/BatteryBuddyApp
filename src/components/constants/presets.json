@@ -1,0 +1,47 @@
+[
+  {
+    "id": "factory Reset",
+    "preset": {
+      "UVcutoff": 22,
+      "UVrelease": 23.6,
+      "OVrelease": 26.2,
+      "OVcutoff": 28.4,
+      "TLcutoff": 24,
+      "TLrelease": 28,
+      "THrelease": 52,
+      "THcutoff": 55,
+      "CTrelease": 44,
+      "CTcutoff": 56
+    }
+  },
+  {
+    "id": "default Settings",
+    "preset": {
+      "UVcutoff": 20,
+      "UVrelease": 22.6,
+      "OVrelease": 26,
+      "OVcutoff": 28,
+      "TLcutoff": 22,
+      "TLrelease": 28,
+      "THrelease": 50,
+      "THcutoff": 55,
+      "CTrelease": 40,
+      "CTcutoff": 55
+    }
+  },
+  {
+    "id": "Custom 1",
+    "preset": {
+      "UVcutoff": 22,
+      "UVrelease": 23.6,
+      "OVrelease": 26.2,
+      "OVcutoff": 28.4,
+      "TLcutoff": 24,
+      "TLrelease": 32,
+      "THrelease": 46,
+      "THcutoff": 50,
+      "CTrelease": 40,
+      "CTcutoff": 54
+    }
+  }
+]
