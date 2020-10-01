@@ -70,9 +70,11 @@ export function parseTimeMetrics(prev, timestamp, value) {
 
   // console.log('parseTime',prev,timestamp,value)
   let metrics = [];
-  if (prev && timestamp && value) {
+  if (prev && timestamp) {
     metrics = prev.slice(1);
-    metrics.push({ x: time.timeMillisecond(timestamp), y: value });
+    metrics.push({ x: time.timeMillisecond(timestamp), y:value });
+  console.log('parseTime',metrics)
+
   } else return prev;
   return metrics;
 }

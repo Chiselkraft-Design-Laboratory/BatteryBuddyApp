@@ -229,10 +229,12 @@ this.setState({ metrics: { ...this.state.metrics, zoneTemperatures: tempData} })
           let date = new Date();
           date = time.timeSecond.offset(date);
          var  currentData= parseTimeMetrics(this.state.metrics.PackCurrent,date,parseFloat(this.state.currents.isenseCurrent)/1000)
+
+
          var  SOCData= parseTimeMetrics(this.state.metrics.SOC,date,parseFloat(this.state.currents.SOC))
 
 
-          console.log('current',this.state.currents)
+         
 
 this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:SOCData} });
         });
