@@ -69,7 +69,8 @@ export class DeviceManager extends React.Component {
     currents: "",
     Lltte_Endian: true,
     identity: false,
-    disconnect:false
+    disconnect:false,
+    interval:200
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   };
   populateChannels = () => {
@@ -282,7 +283,7 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
         bms_info.series = data.getUint8(27);
         bms_info.parallel = data.getUint8(28);
 
-        this.setState({ bms_info: bms_info }, () => {
+        this.setState({ bms_info: bms_info ,interval:1000}, () => {
           // console.log("parsed", this.state.bms_info);
           this.next();
 
@@ -404,7 +405,7 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
           console.log("identity calling");
           setInterval(() => {
             this.identity(0x23);
-          }, 1000);
+          }, this.state.interval);
           //
         })
     );
