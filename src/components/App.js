@@ -26,6 +26,7 @@ class BatteryBuddyApp extends React.Component {
               spec={device.spec}
               feed={device.log}
               disconnect={device.disconnect}
+              isConnected={device.progress}
             />
             <Suspense fallback={<div>Loading...</div>}>
               <PageProvider />

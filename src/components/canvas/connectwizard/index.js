@@ -1,6 +1,6 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { makeStyles, Paper, Grid } from "@material-ui/core";
-
+import withDeviceManager from '../../core/devicemanager'
 import withCanvas from "../withCanvas";
 import ConnectProgress from "./connectProgress";
 import ConnectDialog from "./connectDialog";
@@ -26,14 +26,24 @@ const useStyles = (dense) =>
     { index: 1 }
   );
 
-const ConnectWizard = ({ canvas, connect }) => {
+const ConnectWizard = ({ canvas, connect,device }) => {
+  console.log('camvas',device.progress)
+  
   const cl = useStyles(canvas.dense)();
   const [progress, SetProgress] = React.useState(0);
 
   const handleConnect = (mode) => {
-    SetProgress(mode);
+  // alert(mode)
+
+    // SetProgress(mode);
     connect(mode);
   };
+    useEffect( () => {
+    SetProgress(device.progress);
+
+
+  }, [device.progress]);
+
 
   return (
     <Grid item classes={{ root: cl.root }}>
@@ -45,11 +55,11 @@ const ConnectWizard = ({ canvas, connect }) => {
         {progress ? (
           <ConnectProgress mode={progress} canvas={canvas} />
         ) : (
-          <ConnectDialog connect={handleConnect} canvas={canvas} />
+          <ConnectDialog connect={handleConnect} canvas={canvas} linked={device.progress} />
         )}
       </Paper>
     </Grid>
   );
 };
 
-export default withCanvas(ConnectWizard);
+export default withDeviceManager (withCanvas(ConnectWizard));

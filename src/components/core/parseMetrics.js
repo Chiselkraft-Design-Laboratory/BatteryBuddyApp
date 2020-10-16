@@ -117,10 +117,9 @@ function initialTimeMetrics(bufferSize) {
 
 
  export function parseArrTimeMetrics1(prev, suffix, size, timestamp, value) {
+
   let arr = [];
-
-
-  range(size).forEach((index) => {
+   range(size).forEach((index) => {
     arr.push({
       id: (suffix) + (index + 1),
       data: parseTimeMetrics(prev[index].data, timestamp,(value[index])/1000)

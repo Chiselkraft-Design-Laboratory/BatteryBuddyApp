@@ -70,7 +70,8 @@ export class DeviceManager extends React.Component {
     Lltte_Endian: true,
     identity: false,
     disconnect:false,
-    interval:200
+    interval:200,
+    progress:0
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   };
   populateChannels = () => {
@@ -132,15 +133,7 @@ export class DeviceManager extends React.Component {
     // if(gf===8)
     // {
     // }
-    if(!this.state.disconnect)
-    {
-    this.setState(
-      {
-        linked: 1,
-        identity: true,
-      }
-    );
-    }
+ 
 
     // else if(this.state.identity)
     // {
@@ -164,13 +157,15 @@ export class DeviceManager extends React.Component {
           },
           () => {
             this.next();
-// console.log('data',this.state.metrics.cellVoltage)
+console.log('prev 1',this.state.voltages)
 let date = new Date();
 date = time.timeSecond.offset(date);
 var cellData= parseBarMetrics(this.state.voltages.cellVoltages)
 var volategsData =parseArrTimeMetrics1(this.state.metrics.voltages,"cell",parseInt(this.state.bms_info.series)-1,date,this.state.voltages.cellVoltages)
-
+  if(!this.state.voltages.cellVoltages.length==0 || !this.state.voltages.cellVoltages==undefined)
+  {
 this.setState({ metrics: { ...this.state.metrics, cellVoltage: cellData,voltages:volategsData} });
+  }
 
         
          
@@ -200,6 +195,8 @@ this.setState({ metrics: { ...this.state.metrics, cellVoltage: cellData,voltages
         // var temp=zoneTemp(this.state.ZoneTempPrev,sate,s.temperatures)
         
         this.setState({ tempratures: s.temperatures }, () => {
+console.log('prev 2',this.state.tempratures)
+
           this.next();
           let date = new Date();
           date = time.timeSecond.offset(date);
@@ -213,6 +210,8 @@ this.setState({ metrics: { ...this.state.metrics, zoneTemperatures: tempData} })
 
       case 3: {
         //misc
+        console.log('prev 3',gf)
+
         if (this.state.bms_info === null) {
           return;
         }
@@ -225,6 +224,8 @@ this.setState({ metrics: { ...this.state.metrics, zoneTemperatures: tempData} })
         // console.log("parsed3", JSON.stringify(s));
        
         this.setState({ currents: s }, () => {
+console.log('prev 3',this.state.currents)
+
           this.next();
 
           let date = new Date();
@@ -275,7 +276,17 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
     uint8_t str_series;
     uint8_t str_parallel;
     uint16_t design_cap;
+    
   */
+ if(!this.state.disconnect)
+ {
+ this.setState(
+   {
+     linked: 1,
+     identity: true,
+   }
+ );
+ }
         var bms_info = {};
         bms_info.id = new TextDecoder().decode(data["buffer"].slice(5, 25));
         bms_info.version = data.getUint8(25);
@@ -284,7 +295,7 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
         bms_info.parallel = data.getUint8(28);
 
         this.setState({ bms_info: bms_info ,interval:1000}, () => {
-          // console.log("parsed", this.state.bms_info);
+          console.log("parsed", this.state.bms_info);
           this.next();
 
         });
@@ -401,13 +412,13 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
             // console.log("disconnected");
           }
         })
-        .then(() => {
-          console.log("identity calling");
-          setInterval(() => {
-            this.identity(0x23);
-          }, this.state.interval);
-          //
-        })
+        // .then(() => {
+        //   console.log("identity calling");
+        //   setInterval(() => {
+        //     this.identity(0x23);
+        //   }, this.state.interval);
+          
+        // })
     );
   }
   identity = (addr) => {
@@ -502,13 +513,23 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
   }
 
   async requestPort() {
+    const filters = [
+      { 'vendorId': 0xB00B, 'productID': 0x1EE5 },
+    ]
+
     var device;
 
     navigator.usb
-      .requestDevice({ filters: [] })
+      .requestDevice({ filters: [ { 'vendorId': 0xC007, 'productID': 0x1EE5 }] })
       .then((selectedDevice) => {
+        navigator.usb.addEventListener('disconnect', selectedDevice => {
+        this.setState({progress:0})
+  });
+     
         device = selectedDevice;
+     
         this.setState({ selectedDevice: selectedDevice }, () => {
+          
           // console.log("selectedDevice", this.state.selectedDevice);
           this.ConnectToDevice();
         });
@@ -516,7 +537,13 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
       })
 
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
+        this.setState(
+          {
+            progress:0,
+            identity: true,
+          }
+        );
       });
   }
 
@@ -577,17 +604,22 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
 
   conncect = (mode) => {
     // console.log("zone", this.state.zoneTemperatures);
+ 
     if (this.state.linked === 0) {
-this.setState({disconnect:false},()=>{
+this.setState({disconnect:false,progress:1},()=>{
   this.requestPort();
 
 })    }
+else{
+  this.setState({linked:0})
+}
   };
 
   disconncect = (mode) => {
+     this.state.selectedDevice.close();
     this.bmsSleep();
     this.canIotStop();
-    this.setState({disconnect:true,linked:linkMode.NONE})
+    this.setState({disconnect:true,linked:linkMode.NONE,progress:0})
 
 
   };
@@ -687,7 +719,7 @@ export class DeviceManagerProvider extends DeviceManager {
         value={{
           ...this.state,
           connect: this.conncect,
-          disconnect: this.disconncect,
+          disconnect:this.state.progress===1?this.disconncect:this.conncect,
           probe: this.probe,
           toggleLogMode: this.toggleLogMode,
           exportLog: this.exportLog,

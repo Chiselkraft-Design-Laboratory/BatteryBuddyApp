@@ -52,7 +52,9 @@ const useStyles = (dense) =>
 
     { index: 1 }
   );
-const ConnectDialog = ({ canvas, connect }) => {
+const ConnectDialog = ({ canvas, connect,linked }) => {
+
+  console.log('camvas',linked)
   const cl = useStyles(canvas.dense)();
   return (
     <React.Fragment>
@@ -79,6 +81,8 @@ const ConnectDialog = ({ canvas, connect }) => {
         {/* canbus button */}
         <Button
           onClick={() => connect(linkMode.CANBUS)}
+          // onClick={() => connect(linked)}
+
           disabled={!connectWizardOptions.enableCANBUS}
           classes={{ root: cl.button }}
           className={

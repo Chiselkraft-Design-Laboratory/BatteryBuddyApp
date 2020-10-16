@@ -28,7 +28,7 @@ const useStyles = makeStyles(
   { index: 1 }
 );
 
-const SideBar = ({ canvas, spec, feed, disconnect }) => {
+const SideBar = ({ canvas, spec, feed, disconnect,isConnected }) => {
   const cl = useStyles();
 
   console.log('side',feed.metrics)
@@ -43,7 +43,7 @@ const SideBar = ({ canvas, spec, feed, disconnect }) => {
   return (
     <Grid item xs={canvas.dense ? 12 : undefined} classes={{ root: cl.root }}>
       <Paper elevation={6} component="section" classes={{ root: cl.wrapper }}>
-        <SideBarHeader make={spec.make} model={spec.model} />
+        <SideBarHeader make={spec.make} model={spec.model} isConnected={isConnected} />
 
         {/* <Select
         disableUnderline
@@ -106,7 +106,7 @@ const SideBar = ({ canvas, spec, feed, disconnect }) => {
           suffix="V"
         />  */}
 
-        <SideBarDisconnect action={disconnect} />
+        <SideBarDisconnect action={disconnect} isConnected={isConnected} />
 
         <div className={cl.grow} />
         <SideBarFooter spec={spec} />
