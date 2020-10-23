@@ -9,13 +9,13 @@ import ThemeWorks from "./components/themeworks";
 import { DeviceManagerProvider } from "./components/core/devicemanager";
 
 ReactDOM.render(
-  <ThemeWorks>
-    <DeviceManagerProvider>
-      <Router>
+  <DeviceManagerProvider>
+    <Router>
+      <ThemeWorks>
         <BatteryBuddyApp />
-      </Router>
-    </DeviceManagerProvider>
-  </ThemeWorks>,
+      </ThemeWorks>
+    </Router>
+  </DeviceManagerProvider>,
   document.getElementById("root")
 );
 

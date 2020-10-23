@@ -5,12 +5,14 @@ import DefaultTile from "../../../helpers/defaultTile";
 import * as palette from "../../../../themeworks/darkspaceUI/swatch";
 
 const CurrentMetrics = ({ feed }) => {
+ console.log('parsed current fed',feed)
+
   return (
     <DefaultTile title="current" caption="metrics">
       <ResponsiveLine
         data={feed}
         xScale={{ type: "time", format: "native" }}
-        yScale={{ type: "linear", min: -100, max: 100 }}
+        yScale={{ type: "linear", min: -5, max: 5 }}
         axisTop={null}
         axisRight={null}
         axisLeft={{

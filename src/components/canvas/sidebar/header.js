@@ -2,7 +2,9 @@ import React from "react";
 import { makeStyles, Typography, Grid, Badge } from "@material-ui/core";
 
 const useStyles = makeStyles(
-  (theme) => ({
+  (theme) => (
+   
+    {
     "@keyframes blink": {
       from: { opacity: 1 },
       to: { opacity: 0 },
@@ -23,23 +25,33 @@ const useStyles = makeStyles(
       animationDirection: "alternate",
       animationTimingFunction: "ease-in-out",
     },
+    badgeErr: {
+      backgroundColor: theme.palette.T5,
+      animationName: "$blink",
+      animationDuration: "0.3s",
+      animationIterationCount: "infinite",
+      animationDirection: "alternate",
+      animationTimingFunction: "ease-in-out",
+    },
   }),
   { index: 1 }
 );
 
-const SideBarHeader = ({ make, model, linktype }) => {
+const SideBarHeader = ({ make, model, isConnected }) => {
   const cl = useStyles();
+
+ var link='CanBus'
   return (
     <Grid item className={cl.root}>
       <Grid container direction="row" wrap="nowrap">
         <Grid item xs>
           <Typography variant="h4">{make}</Typography>
-          <Typography variant="subtitle1">{model}</Typography>
-          <Typography variant="caption">{linktype}</Typography>
+          <Typography variant="subtitle2">{model}</Typography>
+          <Typography variant="body2">{link}</Typography>
         </Grid>
         <Grid item>
           <Badge
-            classes={{ colorPrimary: cl.badge }}
+            classes={{ colorPrimary:isConnected==1?cl.badge:cl.badgeErr }}
             className={cl.indicator}
             color="primary"
             variant="dot"

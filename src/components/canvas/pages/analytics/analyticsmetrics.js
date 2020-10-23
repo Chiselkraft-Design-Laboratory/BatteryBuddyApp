@@ -30,10 +30,11 @@ const AnalyticsMetrics = ({ split, feed }) => {
         }}
         axisBottom={{
           format: "%M:%S",
-          tickValues: "every 2 seconds",
+          tickValues: "every 4 seconds",
           legend: "time",
           legendPosition: "end",
           legendOffset: 46,
+          tickValues: 4,
         }}
         legends={[
           {
@@ -53,7 +54,8 @@ const AnalyticsMetrics = ({ split, feed }) => {
         ]}
         margin={{ top: 30, right: 10, bottom: 60, left: 50 }}
         enablePoints={false}
-        enableGridX={true}
+        enableGridX={false}
+        enableGridY={false}
         curve="cardinal"
         animate={false}
         motionStiffness={120}
