@@ -93,7 +93,7 @@ function initialTimeMetrics(bufferSize) {
   let dummy = [];
   let t = new Date().getTime();
   range(bufferSize).forEach((i) => {
-    dummy.push({ x: time.timeMillisecond.offset(t, i * 500), y: 0 });
+    dummy.push({ x: time.timeMillisecond.offset(t, i * 500), y: null });
   });
   return dummy;
 }
