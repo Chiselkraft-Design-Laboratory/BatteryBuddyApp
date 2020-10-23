@@ -636,11 +636,15 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
     // console.log("zone", this.state.zoneTemperatures);
  
     if (this.state.linked === 0) {
+
+      console.log('1')
 this.setState({disconnect:false,progress:1},()=>{
   this.requestPort();
 
 })    }
 else{
+  console.log('2')
+
   this.setState({linked:0})
 }
   };

@@ -12,7 +12,7 @@ const CurrentMetrics = ({ feed }) => {
       <ResponsiveLine
         data={feed}
         xScale={{ type: "time", format: "native" }}
-        yScale={{ type: "linear", min: -5, max: 5 }}
+        yScale={{ type: "linear", min: 'auto', max: 'auto' }}
         axisTop={null}
         axisRight={null}
         axisLeft={{
