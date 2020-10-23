@@ -3,7 +3,7 @@ import * as time from "d3-time";
 import { metricsOptions as options } from "../constants/preferences";
 
 const logToMetrics = (prev, log) => {
-  console.log("log", { prev, log });
+  // console.log("log", { prev, log });
   // if (prev !== undefined) {
   //   return {
   //     cellVoltage: parseBarMetrics(log.cellVoltage),
@@ -73,7 +73,7 @@ export function parseTimeMetrics(prev, timestamp, value) {
   if (prev && timestamp) {
     metrics = prev.slice(1);
     metrics.push({ x: time.timeMillisecond(timestamp), y:value });
-  console.log('parseTime',metrics)
+  // console.log('parseTime',metrics)
 
   } else return prev;
   return metrics;

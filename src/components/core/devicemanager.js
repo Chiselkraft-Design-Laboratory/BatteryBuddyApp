@@ -160,7 +160,7 @@ export class DeviceManager extends React.Component {
 
     // else if(this.state.identity)
     // {
-      console.log('parsed gf',gf)
+      // console.log('parsed gf',gf)
 
     var s = {};
     var i = 0;
@@ -181,7 +181,7 @@ export class DeviceManager extends React.Component {
           },
           () => {
             this.next();
-console.log('parsed 1',this.state.voltages)
+// console.log('parsed 1',this.state.voltages)
 let date = new Date();
 date = time.timeSecond.offset(date);
 var cellData= parseBarMetrics(this.state.voltages.cellVoltages)
@@ -219,7 +219,7 @@ this.setState({ metrics: { ...this.state.metrics, cellVoltage: cellData,voltages
         // var temp=zoneTemp(this.state.ZoneTempPrev,sate,s.temperatures)
         
         this.setState({ tempratures: s.temperatures }, () => {
-console.log('parsed 2',this.state.tempratures)
+// console.log('parsed 2',this.state.tempratures)
 
           this.next();
           let date = new Date();
@@ -247,7 +247,7 @@ this.setState({ metrics: { ...this.state.metrics, zoneTemperatures: tempData} })
         // console.log("parsed3", JSON.stringify(s));
        
         this.setState({ currents: s }, () => {
-console.log('parsed 3',this.state.currents)
+// console.log('parsed 3',this.state.currents)
 
           this.next();
 
@@ -318,7 +318,7 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
         bms_info.parallel = data.getUint8(28);
 
         this.setState({ bms_info: bms_info ,interval:1000}, () => {
-          console.log("parsed 8", this.state.bms_info);
+          // console.log("parsed 8", this.state.bms_info);
           this.next();
 
         });
@@ -627,7 +627,7 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
     this.setState({
       log: log,
       dataLog: tempdatalog,
-    },()=>{console.log('log',this.state.metrics)});
+    },()=>{});
   }
 
   conncect = (mode) => {
