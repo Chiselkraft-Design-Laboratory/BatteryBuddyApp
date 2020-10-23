@@ -54,7 +54,7 @@ const useStyles = (dense) =>
   );
 const ConnectDialog = ({ canvas, connect,linked }) => {
 
-  console.log('camvas',linked)
+  // console.log('camvas',linked)
   const cl = useStyles(canvas.dense)();
   return (
     <React.Fragment>

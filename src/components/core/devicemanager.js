@@ -11,6 +11,67 @@ import {
 } from "../constants/preferences";
 
 
+const initialState =  {
+  activeChannel: 0,
+  listOfChannels: [],
+  linked: linkMode.NONE,
+  spec: dummy.spec,
+  log: {
+    timestamp: 0,
+    cellVoltage: [],
+    PackVoltage: 0,
+    PackCurrent: 0,
+    packTemperature: 0,
+    SOC: 0,
+    SoH: 0,
+    zones: 7,
+    zoneTemperatures: [],
+    voltages: [],
+  },
+  metrics: logToMetrics(),
+
+  enableLog: false,
+  dataLog: [],
+  firstMenu: firstMenu,
+  secondMenuData: ["Select Metrics"],
+  analyticsData: ["PackCurrent", "SOC"],
+  tempZoneData: thirdMenu,
+  tempData: [0],
+  cellindex: [0],
+  cellsData: fourthMenu,
+  report: {},
+  settings: {
+    UVcutoff: 22,
+    UVrelease: 23.6,
+    OVrelease: 26.2,
+    OVcutoff: 28.4,
+    TLcutoff: 24,
+    TLrelease: 28,
+    THrelease: 52,
+    THcutoff: 55,
+    CTrelease: 44,
+    CTcutoff: 56,
+  },
+  showDisclaimer: true,
+  // IOT states >>>>>>>>>>>>>>>>>>>>>>>
+  connectedButton: "",
+  packet_rx: { metadata: "" },
+  selectedDevice: {},
+  bms_info: {},
+  productName: "",
+  manufacturerName: "",
+  serialNumber: "",
+  voltages: "",
+  tempratures: "",
+  currents: "",
+  Lltte_Endian: false,
+  identity: false,
+  disconnect:false,
+  interval:200,
+  progress:0
+  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+};
+
 const opCodes = Object.freeze({
   FLCAN_CMD_FLUSH_HOSTQ: 0x00,
   FLCAN_CMD_FLUSH_DEVQ: 0x01,
@@ -27,66 +88,7 @@ const opCodes = Object.freeze({
 });
 
 export class DeviceManager extends React.Component {
-  state = {
-    activeChannel: 0,
-    listOfChannels: [],
-    linked: linkMode.NONE,
-    spec: dummy.spec,
-    log: {
-      timestamp: 0,
-      cellVoltage: [],
-      PackVoltage: 0,
-      PackCurrent: 0,
-      packTemperature: 0,
-      SOC: 0,
-      SoH: 0,
-      zones: 7,
-      zoneTemperatures: [],
-      voltages: [],
-    },
-    metrics: logToMetrics(),
-
-    enableLog: false,
-    dataLog: [],
-    firstMenu: firstMenu,
-    secondMenuData: ["Select Metrics"],
-    analyticsData: ["PackCurrent", "SOC"],
-    tempZoneData: thirdMenu,
-    tempData: [0],
-    cellindex: [0],
-    cellsData: fourthMenu,
-    report: {},
-    settings: {
-      UVcutoff: 22,
-      UVrelease: 23.6,
-      OVrelease: 26.2,
-      OVcutoff: 28.4,
-      TLcutoff: 24,
-      TLrelease: 28,
-      THrelease: 52,
-      THcutoff: 55,
-      CTrelease: 44,
-      CTcutoff: 56,
-    },
-    showDisclaimer: true,
-    // IOT states >>>>>>>>>>>>>>>>>>>>>>>
-    connectedButton: "",
-    packet_rx: { metadata: "" },
-    selectedDevice: {},
-    bms_info: {},
-    productName: "",
-    manufacturerName: "",
-    serialNumber: "",
-    voltages: "",
-    tempratures: "",
-    currents: "",
-    Lltte_Endian: false,
-    identity: false,
-    disconnect:false,
-    interval:200,
-    progress:0
-    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  };
+  state = initialState
   populateChannels = () => {
     this.setState({
       listOfChannels: ["Battery X", "Battery Y", "Battery Z", "Battery ∞"],
@@ -647,7 +649,10 @@ else{
      this.state.selectedDevice.close();
     this.bmsSleep();
     this.canIotStop();
-    this.setState({disconnect:true,linked:linkMode.NONE,progress:0})
+    // this.setState({disconnect:true,linked:linkMode.NONE,progress:0})
+ this.setState(initialState)
+
+ 
 
 
   };

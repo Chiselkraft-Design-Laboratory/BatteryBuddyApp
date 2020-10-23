@@ -31,7 +31,7 @@ const useStyles = makeStyles(
 const SideBar = ({ canvas, spec, feed, disconnect,isConnected }) => {
   const cl = useStyles();
 
-  console.log('side',feed.metrics)
+  // console.log('side',feed.metrics)
 
   var minTemp = Math.min(...feed.zoneTemperatures);
   var maxTemp = Math.max(...feed.zoneTemperatures);

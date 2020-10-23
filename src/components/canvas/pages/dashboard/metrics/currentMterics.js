@@ -5,7 +5,7 @@ import DefaultTile from "../../../helpers/defaultTile";
 import * as palette from "../../../../themeworks/darkspaceUI/swatch";
 
 const CurrentMetrics = ({ feed }) => {
- console.log('parsed current fed',feed)
+//  console.log('parsed current fed',feed)
 
   return (
     <DefaultTile title="current" caption="metrics">

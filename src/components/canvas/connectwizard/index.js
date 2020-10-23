@@ -27,7 +27,7 @@ const useStyles = (dense) =>
   );
 
 const ConnectWizard = ({ canvas, connect,device }) => {
-  console.log('camvas',device.progress)
+  // console.log('camvas',device.progress)
   
   const cl = useStyles(canvas.dense)();
   const [progress, SetProgress] = React.useState(0);
