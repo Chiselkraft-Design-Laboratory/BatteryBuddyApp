@@ -67,7 +67,7 @@ export class DeviceManager extends React.Component {
     voltages: "",
     tempratures: "",
     currents: "",
-    Lltte_Endian: true,
+    Lltte_Endian: false,
     identity: false,
     disconnect:false,
     interval:200,
@@ -130,13 +130,16 @@ export class DeviceManager extends React.Component {
 
   parseData = (gf, data) => {
 
-    // if(gf===8)
-    // {
-    // }
+    if(this.state.identity==false)
+    {
+    this.identity(0x23)
+
+    }
  
 
     // else if(this.state.identity)
     // {
+      console.log('parsed gf',gf)
 
     var s = {};
     var i = 0;
@@ -157,7 +160,7 @@ export class DeviceManager extends React.Component {
           },
           () => {
             this.next();
-console.log('prev 1',this.state.voltages)
+console.log('parsed 1',this.state.voltages)
 let date = new Date();
 date = time.timeSecond.offset(date);
 var cellData= parseBarMetrics(this.state.voltages.cellVoltages)
@@ -195,7 +198,7 @@ this.setState({ metrics: { ...this.state.metrics, cellVoltage: cellData,voltages
         // var temp=zoneTemp(this.state.ZoneTempPrev,sate,s.temperatures)
         
         this.setState({ tempratures: s.temperatures }, () => {
-console.log('prev 2',this.state.tempratures)
+console.log('parsed 2',this.state.tempratures)
 
           this.next();
           let date = new Date();
@@ -210,7 +213,6 @@ this.setState({ metrics: { ...this.state.metrics, zoneTemperatures: tempData} })
 
       case 3: {
         //misc
-        console.log('prev 3',gf)
 
         if (this.state.bms_info === null) {
           return;
@@ -224,7 +226,7 @@ this.setState({ metrics: { ...this.state.metrics, zoneTemperatures: tempData} })
         // console.log("parsed3", JSON.stringify(s));
        
         this.setState({ currents: s }, () => {
-console.log('prev 3',this.state.currents)
+console.log('parsed 3',this.state.currents)
 
           this.next();
 
@@ -295,7 +297,7 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
         bms_info.parallel = data.getUint8(28);
 
         this.setState({ bms_info: bms_info ,interval:1000}, () => {
-          console.log("parsed", this.state.bms_info);
+          console.log("parsed 8", this.state.bms_info);
           this.next();
 
         });
@@ -402,9 +404,9 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
           // console.log("start command");
           this.sendCommand(opCodes.FLCAN_CMD_START);
         })
-        // .then(() => {
-        // this.sync(0x23);
-        // })
+        .then(() => {
+        this.sync(0x23);
+        })
         .then(() => {
           if (!this.state.disconnect) {
             this.readLoop();
@@ -412,13 +414,18 @@ this.setState({ metrics: { ...this.state.metrics, PackCurrent: currentData,SOC:S
             // console.log("disconnected");
           }
         })
-        // .then(() => {
-        //   console.log("identity calling");
-        //   setInterval(() => {
-        //     this.identity(0x23);
-        //   }, this.state.interval);
+        .then(() => {
+            this.identity(0x23);
+
+          // setInterval(() => {
+          //   this.identity(0x23);
+          // console.log("identity calling");
+
+
+
+          // }, 1000);
           
-        // })
+        })
     );
   }
   identity = (addr) => {
