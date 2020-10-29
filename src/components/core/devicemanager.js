@@ -220,7 +220,7 @@ this.setState({ metrics: { ...this.state.metrics, zoneTemperatures: tempData} })
         s.isenseCurrent = data.getInt32(5, !this.state.Lltte_Endian); //4
         s.SOC = data.getFloat32(9, !this.state.Lltte_Endian);
         s.SOH = data.getFloat32(13, !this.state.Lltte_Endian);
-        s.stackVoltage = data.getUint16(17, !this.state.Lltte_Endian); //2
+        s.stackVoltage = data.getUint32(17, !this.state.Lltte_Endian); //2
         // console.log("parsed3", JSON.stringify(s));
        
         this.setState({ currents: s }, () => {
